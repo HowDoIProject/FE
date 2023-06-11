@@ -9,6 +9,7 @@ import QuestionList from '../pages/QuestionList';
 import ScrapList from '../pages/ScrapList';
 import SearchedList from '../pages/SearchedList';
 import SignUp from '../pages/SignUp';
+import MobileAuthScreen from '../components/SignupPages/MobileAuth';
 
 const Router = () => {
     return (
@@ -31,6 +32,8 @@ const Router = () => {
                     <Route path="/scrap" element={<ScrapList />} />
                     {/* 마페이지 */}
                     <Route path="/mypage" element={<MyPage />} />
+                    {/*휴대전화인증*/}
+                    <Route path="/MobileAuth" element={<MobileAuthScreen />} />
                 </Route>
             </Routes>
         </BrowserRouter>
