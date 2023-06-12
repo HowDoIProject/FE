@@ -13,8 +13,10 @@ export default function SignUpMain() {
         };
     };
     return (
+
         <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
             <div className="text-xl font-bold">회원가입</div>
+
             <div className="flex flex-col items-center gap-6 w-full max-w-md p-4">
                 <div className="relative w-80 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-left">
                     <p>엄빠없는 세상은 험하다!</p>
@@ -58,6 +60,7 @@ export default function SignUpMain() {
                     </button>
                 </div>
             </div>
+
             <button
                 onClick={handleButtonClick}
                 className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue"
@@ -65,6 +68,7 @@ export default function SignUpMain() {
                 Next
             </button>
             <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
+
                 <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
                     Home
                 </a>
@@ -77,7 +81,7 @@ export default function SignUpMain() {
                 <a href="/MyPage" className="text-white text-sm no-underline hover:text-decoration-underline">
                     My Page
                 </a>
-            </footer>
+            </footer> */}
         </div>
     );
 }
