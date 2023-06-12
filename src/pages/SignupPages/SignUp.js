@@ -1,17 +1,19 @@
-import React, { useNavigate, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function SignUpMain() {
+export default function SignUp() {
     const [selectedButton, setSelectedButton] = useState('');
+    const navigate = useNavigate();
 
     const handleButtonClick = buttonName => {
         setSelectedButton(buttonName);
-
-        const navigate = useNavigate();
-
-        const handleButtonClick = () => {
-            navigate('/MobileAuth');
-        };
     };
+
+    const navigateToMobileAuthScreen = () => {
+        setSelectedButton('');
+        navigate('MobileAuth');
+    };
+
     return (
         <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
             <div className="text-xl font-bold">회원가입</div>
@@ -59,13 +61,18 @@ export default function SignUpMain() {
                 </div>
             </div>
             <button
-                onClick={handleButtonClick}
+                onClick={navigateToMobileAuthScreen}
                 className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue"
             >
                 Next
             </button>
             <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
-                <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
+                <a
+                    href="/"
+                    className="text-white text-sm no
+
+-underline hover:text-decoration-underline"
+                >
                     Home
                 </a>
                 <a href="/PostQuestion" className="text-white text-sm no-underline hover:text-decoration-underline">
