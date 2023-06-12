@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function SignUp() {
     return (
-        <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
+        <div className="flex flex-col gap-6 p-4 items-center">
             <div className="text-xl font-bold">Register</div>
             <div className="flex flex-col items-center gap-6 w-full max-w-md p-4">
                 <div className="relative w-50 h-10 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
@@ -45,7 +45,7 @@ export default function SignUp() {
                 </button>
             </Link>
 
-            <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
+            {/* <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
                 <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
                     Home
                 </a>
@@ -58,7 +58,7 @@ export default function SignUp() {
                 <a href="/MyPage" className="text-white text-sm no-underline hover:text-decoration-underline">
                     My Page
                 </a>
-            </footer>
+            </footer> */}
         </div>
     );
 }
