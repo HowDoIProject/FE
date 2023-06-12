@@ -1,51 +1,75 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useNavigate, useState } from 'react';
 
-export default function SignUp() {
+export default function SignUpMain() {
+    const [selectedButton, setSelectedButton] = useState('');
+
+    const handleButtonClick = buttonName => {
+        setSelectedButton(buttonName);
+
+        const navigate = useNavigate();
+
+        const handleButtonClick = () => {
+            navigate('/MobileAuth');
+        };
+    };
     return (
-        <div className="flex flex-col gap-6 p-4 items-center">
-            <div className="text-xl font-bold">Register</div>
+
+        <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
+            <div className="text-xl font-bold">회원가입</div>
+
+
             <div className="flex flex-col items-center gap-6 w-full max-w-md p-4">
-                <div className="relative w-50 h-10 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
-                    <p>The world without mom and dad is rough!</p>
+                <div className="relative w-80 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-left">
+                    <p>엄빠없는 세상은 험하다!</p>
                 </div>
-                <div className="relative w-50 h-10 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-auto">
-                    <p>Will my puppy do well?</p>
+                <div className="relative w-50 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-auto">
+                    <p>우리 강아지 잘 하고 있나?</p>
                 </div>
-                <div className="relative w-50 h-10 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
-                    <p>Leave all your worries to Howduai!</p>
+                <div className="relative w-50 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
+                    <p>그런 모든 고민들 하우두아이에 내려놓으세요!</p>
                 </div>
                 <div className="text-center">
                     <h2 className="text-xl font-bold">How Do I?</h2>
                     <h1 className="text-lg">
-                        Welcome to Howuai!
+                        하우두아이에 어서오세요
                         <br />
-                        Which member would you like to join?
+                        어떤 회원으로 가입하시겠습니까?
                     </h1>
                 </div>
             </div>
-            <div className="flex flex-row gap-4">
-                <div className="flex flex-col items-right">
-                    <h1 className="text-sm mb-2">I want to help!</h1>
-                    <button className="text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue">
-                        Member member
+            <div className="flex justify-between gap-4">
+                <div className="flex flex-col items-center">
+                    <h1 className="text-sm mb-2">도와주고 싶어요!</h1>
+                    <button
+                        className={`text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs ${
+                            selectedButton === 'uncle' ? 'bg-darkblue' : 'bg-blue-500'
+                        } rounded-full hover:bg-darkblue`}
+                        onClick={() => handleButtonClick('엄빠')}
+                    >
+                        엄빠
                     </button>
                 </div>
-                <div className="flex flex-col items-left">
-                    <h1 className="text-sm mb-2">I need help!</h1>
-                    <button className="text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs bg-gray-500 rounded-full hover:bg-darkgray">
-                        Dog member
+                <div className="flex flex-col items-center">
+                    <h1 className="text-sm mb-2">도움이 필요해요!</h1>
+                    <button
+                        className={`text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs ${
+                            selectedButton === 'puppy' ? 'bg-darkgray' : 'bg-gray-500'
+                        } rounded-full hover:bg-darkgray`}
+                        onClick={() => handleButtonClick('강아지')}
+                    >
+                        강아지
                     </button>
                 </div>
             </div>
 
-            <Link to="/MobileAuth">
-                <button className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue">
-                    Next
-                </button>
-            </Link>
+            <button
+                onClick={handleButtonClick}
+                className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue"
+            >
+                Next
+            </button>
+            <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
 
-            {/* <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
                 <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
                     Home
                 </a>
