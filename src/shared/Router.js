@@ -8,11 +8,11 @@ import QuestionDetail from '../pages/QuestionDetail';
 import QuestionList from '../pages/QuestionList';
 import ScrapList from '../pages/ScrapList';
 import SearchedList from '../pages/SearchedList';
-import SignUp from '../pages/SignupSteps/SignUp';
-import UserInfo from '../pages/SignupSteps/UserInfo';
-import MobileAuthScreen from '../pages/SignupSteps/MobileAuth';
-import Interest from '../pages/SignupSteps/Interest';
-import Confirm from '../pages/SignupSteps/Confirm';
+import UserInfo from '../pages/SignupPages/UserInfo';
+import SignUp from '../pages/SignupPages/SignUp';
+import Confirm from '../pages/SignupPages/Confirm';
+import MobileAuthScreen from '../pages/SignupPages/MobileAuth';
+import Interest from '../pages/SignupPages/Interest';
 
 // Create and export a new context
 export const MembershipContext = React.createContext();
@@ -57,13 +57,11 @@ const Router = () => {
                         <Route path="mypage" element={<MyPage />} />
 
                         {/* Membership registration steps */}
+                        <Route path="MobileAuth" element={<MobileAuthScreen />} />
+                        <Route path="UserInfo" element={<UserInfo />} />
+                        <Route path="confirm" element={<Confirm />} />
                         <Route path="interest" element={<Interest />} />
-                        <Route path="/signup" element={<SignUp />}>
-                            <Route path="MobileAuth" element={<MobileAuthScreen />} />
-                            <Route path="UserInfo" element={<UserInfo />} />
-
-                            <Route path="confirm" element={<Confirm />} />
-                        </Route>
+                        <Route path="signup" element={<SignUp />}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

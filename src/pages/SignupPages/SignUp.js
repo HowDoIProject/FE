@@ -1,16 +1,16 @@
 import React, { useNavigate, useState } from 'react';
 
-export default function SignUpMain() {
+export default function SignUp() {
     const [selectedButton, setSelectedButton] = useState('');
+
+    const navigate = useNavigate();
+
+    const MobileAuthhandleButtonClick = () => {
+        navigate('/MobileAuth');
+    };
 
     const handleButtonClick = buttonName => {
         setSelectedButton(buttonName);
-
-        const navigate = useNavigate();
-
-        const handleButtonClick = () => {
-            navigate('/MobileAuth');
-        };
     };
     return (
         <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
@@ -59,7 +59,7 @@ export default function SignUpMain() {
                 </div>
             </div>
             <button
-                onClick={handleButtonClick}
+                onClick={MobileAuthhandleButtonClick}
                 className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue"
             >
                 Next
