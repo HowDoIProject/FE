@@ -17,7 +17,6 @@ export default function SignUpMain() {
         <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
             <div className="text-xl font-bold">회원가입</div>
 
-
             <div className="flex flex-col items-center gap-6 w-full max-w-md p-4">
                 <div className="relative w-80 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-left">
                     <p>엄빠없는 세상은 험하다!</p>
