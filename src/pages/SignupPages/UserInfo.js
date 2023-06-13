@@ -78,7 +78,7 @@ const UserInfo = () => {
                             비밀번호
                         </label>
                         <input
-                            type="password"
+                            type="new-password"
                             id="password"
                             value={password}
                             onChange={handlePasswordChange}
@@ -115,22 +115,6 @@ const UserInfo = () => {
                     </div>
                 </form>
             </div>
-            <footer className="bg-gray-500 px-4 py-6 text-white">
-                <div className="flex justify-between">
-                    <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
-                        Home
-                    </a>
-                    <a href="/PostQuestion" className="text-white text-sm no-underline hover:text-decoration-underline">
-                        Upload post
-                    </a>
-                    <a href="/ScrapList" className="text-white text-sm no-underline hover:text-decoration-underline">
-                        Scrap
-                    </a>
-                    <a href="/MyPage" className="text-white text-sm no-underline hover:text-decoration-underline">
-                        My Page
-                    </a>
-                </div>
-            </footer>
         </div>
     );
 };
