@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function PostQuestion() {
@@ -9,7 +10,8 @@ export default function PostQuestion() {
         content: '',
         image: '',
     });
-
+    const [file, setFile] = useState('');
+    const navigate = useNavigate();
     const categories = [
         { id: 1, name: '사회생활' },
         { id: 2, name: '자취/일상' },
@@ -19,8 +21,8 @@ export default function PostQuestion() {
     const queryClient = useQueryClient();
 
     const newPostMutation = useMutation({
-        mutationFn: async values => {
-            return await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/post`, values, {
+        mutationFn: async payload => {
+            return await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/post`, payload, {
                 headers: {
                     // Authorization: ``,
                     'Content-Type': 'multipart/form-data',
@@ -28,7 +30,9 @@ export default function PostQuestion() {
             });
         },
         onSuccess: () => {
+            alert('게시글 작성을 하였습니다!');
             queryClient.invalidateQueries(['posts']);
+            navigate('/');
         },
     });
 
@@ -37,10 +41,29 @@ export default function PostQuestion() {
         setValues({ ...values, [name]: value });
     };
 
+    const onChangeFileHandler = e => {
+        const file = e.target.files[0];
+        setValues(prev => ({ ...prev, image: file }));
+        setFile(URL.createObjectURL(file));
+    };
+
     const onSubmitHandler = e => {
         e.preventDefault();
-        // newPostMutation.mutate(values)
-        console.log(values);
+
+        const formData = new FormData();
+        formData.append('category', values.category);
+        formData.append('title', values.title);
+        formData.append('content', values.content);
+
+        if (values.image) {
+            formData.append('image', values.image);
+        }
+
+        // FormData의 key와 value 확인
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        newPostMutation.mutate(formData);
     };
 
     return (
@@ -76,7 +99,10 @@ export default function PostQuestion() {
                     onChange={onChange}
                 />
             </div>
-            <div>사진첨부</div>
+            <div>
+                <input type="file" accept="image/*" name="image" onChange={onChangeFileHandler} />
+                {file && <img src={file} alt={file} />}
+            </div>
             <button>도움 요청하기</button>
         </form>
     );
