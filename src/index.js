@@ -6,7 +6,7 @@ import store from './redux/config/configStore';
 import './index.css'; // 삭제
 import './styles/app.css'; // 추가
 import { HelmetProvider } from 'react-helmet-async';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryClient = new QueryClient();
@@ -15,7 +15,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools />
             <HelmetProvider>
                 <App />
             </HelmetProvider>
