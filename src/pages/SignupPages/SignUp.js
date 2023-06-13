@@ -1,16 +1,37 @@
-import React, { useNavigate, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
-    const [selectedButton, setSelectedButton] = useState('');
-
+    const [selectedUserType, setSelectedUserType] = useState('');
     const navigate = useNavigate();
 
-    const MobileAuthhandleButtonClick = () => {
+    const handleUserTypeSelect = userType => {
+        setSelectedUserType(userType);
+    };
+
+    const handleNextClick = () => {
         navigate('/MobileAuth');
     };
 
-    const handleButtonClick = buttonName => {
-        setSelectedButton(buttonName);
+    const renderUserTypeContent = () => {
+        switch (selectedUserType) {
+            case '엄빠':
+                return (
+                    <div>
+                        <h1>엄빠 회원가입 폼</h1>
+                        {/* Add your 엄빠-specific signup form components here */}
+                    </div>
+                );
+            case '강아지':
+                return (
+                    <div>
+                        <h1>강아지 회원가입 폼</h1>
+                        {/* Add your 강아지-specific signup form components here */}
+                    </div>
+                );
+            default:
+                return null;
+        }
     };
     return (
         <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
@@ -39,9 +60,9 @@ export default function SignUp() {
                     <h1 className="text-sm mb-2">도와주고 싶어요!</h1>
                     <button
                         className={`text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs ${
-                            selectedButton === 'uncle' ? 'bg-darkblue' : 'bg-blue-500'
+                            selectedUserType === '엄빠' ? 'bg-darkblue' : 'bg-blue-500'
                         } rounded-full hover:bg-darkblue`}
-                        onClick={() => handleButtonClick('엄빠')}
+                        onClick={() => handleUserTypeSelect('엄빠')}
                     >
                         엄빠
                     </button>
@@ -50,34 +71,20 @@ export default function SignUp() {
                     <h1 className="text-sm mb-2">도움이 필요해요!</h1>
                     <button
                         className={`text-white px-4 py-2 transition duration-300 ease-in-out w-full max-w-xs ${
-                            selectedButton === 'puppy' ? 'bg-darkgray' : 'bg-gray-500'
+                            selectedUserType === '강아지' ? 'bg-darkgray' : 'bg-gray-500'
                         } rounded-full hover:bg-darkgray`}
-                        onClick={() => handleButtonClick('강아지')}
+                        onClick={() => handleUserTypeSelect('강아지')}
                     >
                         강아지
                     </button>
                 </div>
             </div>
             <button
-                onClick={MobileAuthhandleButtonClick}
+                onClick={handleNextClick}
                 className="text-white px-4 py-2 mt-4 transition duration-300 ease-in-out w-full max-w-xs bg-blue-500 rounded-full hover:bg-darkblue"
             >
                 Next
             </button>
-            <footer className="bg-gray-500 px-4 py-6 text-white flex justify-between w-full">
-                <a href="/" className="text-white text-sm no-underline hover:text-decoration-underline">
-                    Home
-                </a>
-                <a href="/PostQuestion" className="text-white text-sm no-underline hover:text-decoration-underline">
-                    Upload post
-                </a>
-                <a href="/ScrapList" className="text-white text-sm no-underline hover:text-decoration-underline">
-                    Scrap
-                </a>
-                <a href="/MyPage" className="text-white text-sm no-underline hover:text-decoration-underline">
-                    My Page
-                </a>
-            </footer>
         </div>
     );
 }
