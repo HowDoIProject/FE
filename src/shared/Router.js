@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { createContext, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import Login from '../pages/Login';
@@ -11,54 +11,59 @@ import SearchedList from '../pages/SearchedList';
 import UserInfo from '../pages/SignupPages/UserInfo';
 import SignUp from '../pages/SignupPages/SignUp';
 import Confirm from '../pages/SignupPages/Confirm';
-import MobileAuthScreen from '../pages/SignupPages/MobileAuth';
 import Interest from '../pages/SignupPages/Interest';
 
-// Create and export a new context
-export const MembershipContext = React.createContext();
+// 새로운 컨텍스트를 생성하고 내보냅니다
+export const MembershipContext = createContext();
 
-const SignUpinitialValues = {
-    type: '',
-    phoneNumber: '',
-    userInfo: {
-        name: '',
-        email: '',
-        address: '',
-        // 추가 필드
-    },
-    interest: '',
-    confirm: false,
+const initialState = {
+    user_type: '',
+    user_number: '',
+    nickname: '',
+    password: '',
+    category: '',
+    // 추가 필드
 };
 
+function membershipReducer(state, action) {
+    switch (action.type) {
+        case 'SET_USER_TYPE':
+            return { ...state, user_type: action.payload };
+        default:
+            return state;
+    }
+}
+
 const Router = () => {
+    const [value, dispatch] = useReducer(membershipReducer, initialState);
     return (
-        <MembershipContext.Provider value={SignUpinitialValues}>
+        <MembershipContext.Provider value={{ value, dispatch }}>
             <BrowserRouter>
                 <Routes>
-                    {/* Here we use the Layout component to construct nested routes. */}
+                    {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
                     <Route path="/" element={<Layout />}>
-                        {/* Member related */}
+                        {/* 회원 관련 */}
                         <Route path="login" element={<Login />} />
 
-                        {/* Main screen related */}
+                        {/* 메인 화면 관련 */}
                         <Route path="/" element={<QuestionList />} />
                         <Route path="question/:searchword" element={<SearchedList />} />
 
-                        {/* Detailed screen related */}
+                        {/* 상세 화면 관련 */}
                         <Route path="detail/:id" element={<QuestionDetail />} />
 
-                        {/* Create screen related */}
+                        {/* 생성 화면 관련 */}
                         <Route path="post" element={<PostQuestion />} />
 
-                        {/* Scrap screen related */}
+                        {/* 스크랩 화면 관련 */}
                         <Route path="scrap" element={<ScrapList />} />
 
-                        {/* my page */}
+                        {/* 마이페이지 */}
                         <Route path="mypage" element={<MyPage />} />
 
-                        {/* Membership registration steps */}
-                        <Route path="MobileAuth" element={<MobileAuthScreen />} />
-                        <Route path="UserInfo" element={<UserInfo />} />
+                        {/* 멤버십 등록 단계 */}
+
+                        <Route path="userinfo" element={<UserInfo />} />
                         <Route path="confirm" element={<Confirm />} />
                         <Route path="interest" element={<Interest />} />
                         <Route path="signup" element={<SignUp />}></Route>
@@ -69,4 +74,4 @@ const Router = () => {
     );
 };
 
-export { Router as default };
+export default Router;

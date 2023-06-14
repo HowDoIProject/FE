@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MembershipContext } from '../../shared/Router';
 
 export default function SignUp() {
+    const { value, dispatch } = useContext(MembershipContext);
     const [selectedUserType, setSelectedUserType] = useState('');
+
     const navigate = useNavigate();
 
     const handleUserTypeSelect = userType => {
@@ -10,7 +13,8 @@ export default function SignUp() {
     };
 
     const handleNextClick = () => {
-        navigate('/MobileAuth');
+        dispatch({ value, user_type: '' });
+        navigate('/UserInfo');
     };
 
     const renderUserTypeContent = () => {
@@ -19,14 +23,12 @@ export default function SignUp() {
                 return (
                     <div>
                         <h1>엄빠 회원가입 폼</h1>
-                        {/* Add your 엄빠-specific signup form components here */}
                     </div>
                 );
             case '강아지':
                 return (
                     <div>
                         <h1>강아지 회원가입 폼</h1>
-                        {/* Add your 강아지-specific signup form components here */}
                     </div>
                 );
             default:
