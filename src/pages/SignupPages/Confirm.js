@@ -13,7 +13,7 @@ function RegistrationConfirmationPage() {
 
         // API 엔드포인트로 데이터 전송
         try {
-            await axios.post('API 엔드포인트 주소');
+            await axios.post('api/signup');
 
             // 등록 성공 시 상태 업데이트
             setRegistered(true);
