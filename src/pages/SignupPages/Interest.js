@@ -67,12 +67,13 @@ const Interest = () => {
                 </button>
             </div>
             <div className="mt-4">
-                <h2 className="text-xl font-bold">Selected Interests:</h2>
-                <ul className="list-disc pl-8">
+                {/* //선택 된 카테고리를 화면에 렌더링 시킵니다. */}
+                {/* <h2 className="text-xl font-bold">Selected Interests:</h2> */}
+                {/* <ul className="list-disc pl-8">
                     {selectedInterests.map(interest => (
                         <li key={interest}>{interest}</li>
                     ))}
-                </ul>
+                </ul> */}
                 <div className="flex justify-between mt-4">
                     <button
                         type="button"

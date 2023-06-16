@@ -13,16 +13,27 @@ const UserInfo = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [remainingTime, setRemainingTime] = useState(180);
     const [verificationError, setVerificationError] = useState(null);
-    const [cookies, setCookie] = useCookies(['user_number']);
+    const [cookies, setCookie] = useCookies(['verification-token']);
     const formRef = useRef();
     const navigate = useNavigate();
     const [isVerified, setIsVerified] = useState(false);
+
+    const formatTime = time => {
+        const minutes = Math.floor(time / 60); // Calculate the minutes
+        const seconds = time % 60; // Calculate the seconds
+
+        // Pad the minutes and seconds with leading zeros if necessary
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+        const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+        return `${formattedMinutes}:${formattedSeconds} minutes`;
+    };
 
     useEffect(() => {
         if (remainingTime > 0) {
             const timer = setTimeout(() => {
                 setRemainingTime(prevTime => prevTime - 1);
-            }, 1000);
+            }, 1000); // Timer interval set to 1000 milliseconds (1 second)
             return () => clearTimeout(timer);
         }
     }, [remainingTime]);
@@ -31,39 +42,49 @@ const UserInfo = () => {
         setPhoneNumber(event.target.value);
     };
 
-    const handleVerificationCodeChange = event => {
+    const handleVerificationCodeChange = e => {
         setVerificationCode(event.target.value);
+        const code = e.target.value;
+        setVerificationCode(code);
     };
+
     const handleSendVerificationCode = () => {
-        axios
-            .post('api/send', { user_number: formRef.current.user.value })
-            .then(response => {
-                console.log('Authentication number sent successfully');
-                // Handle the response or perform additional actions
-            })
-            .catch(error => {
-                console.error('Error sending authentication number:', error);
-                // Handle the error
-            });
+        // formRef가 현재 DOM 요소를 참조하는지 확인합니다.
+        if (formRef.current) {
+            const userInput = formRef.current.querySelector('input[name="user"]');
+            // userInput이 존재하는지 확인합니다.
+            if (userInput) {
+                const userNumber = userInput.value;
+
+                // 이제 API 호출을 할 수 있습니다.
+                axios.post('http://3.34.191.171/api/send', { user_number: userNumber });
+            } else {
+                console.error('입력하신 것을 찾을 수 없습니다.');
+            }
+        } else {
+            console.error('form 참조가 null로 되어있습니다.');
+        }
     };
 
     const handleVerificationCodeSubmit = event => {
         event.preventDefault();
-        const userNumber = formRef.current.querySelector('#user-number').value;
-        console.log(userNumber);
+        const user_number = document.getElementById('userNumberInput').value;
+        const verify_code = document.getElementById('verifyCodeInput').value;
+        const payload = {
+            user_number,
+            verify_code,
+        };
+
         axios
-            .post('api/verify', { verificationCode })
+            .post('http://3.34.191.171/api/verify', payload)
             .then(response => {
-                console.log('Authentication number verified successfully');
-
-                // Save user's phone number in cookies after successful verification
-                setCookie('user_number', phoneNumber, { path: '/' });
-
-                // Handle the response or perform additional actions
+                const token = response.data.token;
+                if (token) {
+                    setCookie('jwt_token', token, { path: '/' });
+                }
             })
             .catch(error => {
-                console.error('Error verifying authentication number:', error);
-                setVerificationError('Error verifying authentication number');
+                console.error('Error:인증에 실패했습니다.', error);
             });
     };
 
@@ -103,7 +124,7 @@ const UserInfo = () => {
     const handlePrevious = event => {
         event.preventDefault();
         navigate('/SignUp');
-        console.log('Previous button clicked');
+        console.log('이전으로 가기 버튼이 눌려졌습니다.!');
     };
 
     const handleNext = event => {
@@ -111,11 +132,9 @@ const UserInfo = () => {
         if (validateForm()) {
             dispatch({ ...value, user_number: '', nickname: '', password: '' });
             navigate('/Interest');
-            console.log('Registration successful');
-            // Add your registration logic here
+            console.log('가입이 성공적으로 되었습니다.');
         } else {
-            console.log('Invalid registration data');
-            // Display error messages or handle invalid data case
+            console.log('유효하지 않은 가입 데이터입니다');
         }
     };
 
@@ -124,9 +143,10 @@ const UserInfo = () => {
             <div className="flex flex-col justify-center items-center h-screen">
                 <div className="w-96 p-8 mt-4">
                     <h1 className="text-2xl mb-6 text-center">번호입력</h1>
-                    <form onSubmit={handleSendVerificationCode} className="flex items-center">
+                    <form ref={formRef} onSubmit={handleSendVerificationCode} className="flex items-center">
                         <input
                             type="text"
+                            name="user"
                             placeholder="번호를 입력하세요"
                             className="w-60 px-4 py-2 mb-4 border border-gray-300 rounded-md"
                             value={phoneNumber}
@@ -146,7 +166,6 @@ const UserInfo = () => {
                 <div className="w-96 p-8  mb-4">
                     <h1 className="text-2xl mb-6 text-center">인증번호입력</h1>
                     <form
-                        ref={formRef}
                         onSubmit={handleVerificationCodeSubmit}
                         className="mt-4 flex flex-wrap justify-between items-center"
                     >
@@ -154,23 +173,23 @@ const UserInfo = () => {
                             type="text"
                             placeholder="인증번호를 입력하세요"
                             className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md"
-                            value={remainingTime > 0 ? verificationCode : ''}
+                            value={verificationCode}
                             onChange={handleVerificationCodeChange}
                         />
                         <div className="flex items-center justify-center">
                             <button
                                 type="submit"
                                 disabled={remainingTime <= 0}
+                                onClick={handleVerificationCodeSubmit}
                                 className="py-2 px-4 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-700"
                             >
                                 확인
                             </button>
                         </div>
                     </form>
-                    <p className="text-center">
-                        {remainingTime > 0 ? `Remaining Time: ${remainingTime}s` : 'Time Expired'}
-                    </p>
+                    <p className="text-center"> Remaining Time: {formatTime(remainingTime)}</p>
                     {verificationError && <p>{verificationError}</p>}
+                    {isVerified && <p>Authentication succeeded</p>}
                 </div>
                 {isVerified && (
                     <div className="w-96 p-8 bg-gray-100 rounded-md shadow-md mb-4">
