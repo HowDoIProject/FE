@@ -14,8 +14,7 @@ export default function Login() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        // You can perform your login logic here with the userNumber and password values
-        // For simplicity, let's just display them in the console for now
+
         console.log('User Number:', userNumber);
         console.log('Password:', password);
     };
