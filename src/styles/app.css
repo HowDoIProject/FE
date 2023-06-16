@@ -469,6 +469,39 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.container {
+  width: 100%;
+}
+@media (min-width: 640px) {
+
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+
+  .container {
+    max-width: 1536px;
+  }
+}
 .fixed {
   position: fixed;
 }
@@ -512,6 +545,9 @@ video {
 .mt-4 {
   margin-top: 1rem;
 }
+.mt-2 {
+  margin-top: 0.5rem;
+}
 .block {
   display: block;
 }
@@ -542,6 +578,9 @@ video {
 .w-6 {
   width: 1.5rem;
 }
+.w-60 {
+  width: 15rem;
+}
 .w-80 {
   width: 20rem;
 }
@@ -550,18 +589,6 @@ video {
 }
 .w-full {
   width: 100%;
-}
-.w-40 {
-  width: 10rem;
-}
-.w-10 {
-  width: 2.5rem;
-}
-.w-60 {
-  width: 15rem;
-}
-.w-1\/2 {
-  width: 50%;
 }
 .min-w-\[360px\] {
   min-width: 360px;
@@ -572,14 +599,8 @@ video {
 .max-w-md {
   max-width: 28rem;
 }
-.max-w-sm {
-  max-width: 24rem;
-}
 .max-w-xs {
   max-width: 20rem;
-}
-.flex-grow {
-  flex-grow: 1;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -616,6 +637,11 @@ video {
 }
 .gap-6 {
   gap: 1.5rem;
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 .rounded {
   border-radius: 0.25rem;
@@ -689,6 +715,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
 .p-4 {
   padding: 1rem;
 }
@@ -717,6 +747,14 @@ video {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 .pb-8 {
   padding-bottom: 2rem;
@@ -761,6 +799,10 @@ video {
 }
 .leading-tight {
   line-height: 1.25;
+}
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 .text-gray-700 {
   --tw-text-opacity: 1;
