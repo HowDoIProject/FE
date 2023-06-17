@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faUtensils, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import 'tailwindcss/tailwind.css';
-import { useNavigate } from 'react-router-dom';
-import { MembershipContext } from '../../shared/Router';
 
 const Interest = () => {
-    const { value, dispatch } = useContext(MembershipContext);
-    const [selectedInterests, setSelectedInterests] = useState([]);
+    const location = useLocation();
     const navigate = useNavigate();
+    const [selectedInterests, setSelectedInterests] = useState([]);
 
     const handleInterestSelection = interest => {
         if (selectedInterests.includes(interest)) {
@@ -24,14 +23,12 @@ const Interest = () => {
 
     const handlePrevious = event => {
         event.preventDefault();
-        navigate('/UserInfo');
+        navigate('/UserInfo', { state: location.state });
     };
 
     const handleNext = event => {
         event.preventDefault();
-        const categoryIntegers = selectedInterests.map(interest => parseInt(interest, 10));
-        dispatch({ ...value, category: categoryIntegers });
-        navigate('/confirm');
+        navigate('/confirm', { state: { ...location.state, selectedInterests } });
     };
 
     return (
@@ -67,13 +64,6 @@ const Interest = () => {
                 </button>
             </div>
             <div className="mt-4">
-                {/* //선택 된 카테고리를 화면에 렌더링 시킵니다. */}
-                {/* <h2 className="text-xl font-bold">Selected Interests:</h2> */}
-                {/* <ul className="list-disc pl-8">
-                    {selectedInterests.map(interest => (
-                        <li key={interest}>{interest}</li>
-                    ))}
-                </ul> */}
                 <div className="flex justify-between mt-4">
                     <button
                         type="button"

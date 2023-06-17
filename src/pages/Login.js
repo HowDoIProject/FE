@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 export default function Login() {
+    const navigate = useNavigate();
     const [userNumber, setUserNumber] = useState('');
     const [password, setPassword] = useState('');
+    const [cookies, setCookie] = useCookies(['verification-token']);
 
     const handleUserNumberChange = event => {
         setUserNumber(event.target.value);
@@ -12,19 +17,26 @@ export default function Login() {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
 
-        console.log('User Number:', userNumber);
-        console.log('Password:', password);
-    };
+        try {
+            const response = await axios.post('http://3.34.191.171/api/login', {
+                user_number: userNumber,
+                password: password,
+            });
 
-    const handlePrevious = () => {
-        // Logic for previous button click
-    };
+            // Get the token from the response
+            const token = response.data.Authorization.replace('Bearer ', '');
 
-    const handleNext = () => {
-        // Logic for next button click
+            // Set the token as a cookie
+            setCookie('verification-token', token, { path: '/' });
+
+            // Redirect to the next page after successful login
+            navigate('/', { state: { userNumber: response.data.user_number } });
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
 
     return (
@@ -59,26 +71,11 @@ export default function Login() {
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
                         type="submit"
                     >
-                        Login
+                        로그인하기
                     </button>
                 </div>
             </form>
-            <div className="flex items-center justify-between">
-                <button
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handlePrevious}
-                >
-                    Previous
-                </button>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleNext}
-                >
-                    Next
-                </button>
-            </div>
+            <div className="flex items-center justify-between"></div>
         </div>
     );
 }
