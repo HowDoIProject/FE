@@ -1,54 +1,70 @@
 {
-  "name": "howdoi",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.9.5",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "axios": "^1.4.0",
-    "eslint-plugin-react": "^7.32.2",
-    "react": "^18.2.0",
-    "react-cookie": "^4.1.1",
-    "react-dom": "^18.2.0",
-    "react-helmet-async": "^1.3.0",
-    "react-query": "^3.39.3",
-    "react-query-devtools": "^2.6.3",
-    "react-redux": "^8.0.7",
-    "react-router-dom": "^6.12.1",
-    "react-scripts": "5.0.1",
-    "redux": "^4.2.1",
-    "redux-devtools-extension": "^2.13.9",
-    "redux-toolkit": "^1.1.2",
-    "web-vitals": "^2.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "eslint-config-react-app": "^7.0.1",
-    "tailwindcss": "^3.3.2"
-  }
+    "name": "howdoi",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.4.0",
+        "@fortawesome/free-solid-svg-icons": "^6.4.0",
+        "@fortawesome/react-fontawesome": "^0.2.0",
+        "@reduxjs/toolkit": "^1.9.5",
+        "@tanstack/react-query": "^4.29.12",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^13.0.0",
+        "@testing-library/user-event": "^13.2.1",
+        "axios": "^1.4.0",
+        "eslint-plugin-react": "^7.32.2",
+        "jsonwebtoken": "^9.0.0",
+        "jwt": "^0.2.0",
+        "react": "^18.2.0",
+        "react-cookie": "^4.1.1",
+        "react-dom": "^18.2.0",
+        "react-helmet-async": "^1.3.0",
+        "react-query": "^3.39.3",
+        "react-query-devtools": "^2.6.3",
+        "react-redux": "^8.0.7",
+        "react-router-dom": "^6.12.1",
+        "react-scripts": "5.0.1",
+        "react-select": "^5.7.3",
+        "redux": "^4.2.1",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-toolkit": "^1.1.2",
+        "styled-components": "^6.0.0-rc.3",
+        "web-vitals": "^2.1.0"
+    },
+    "scripts": {
+        "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
+        "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
+        "react-scripts:start": "sleep 5 && react-scripts start",
+        "start": "run-p watch:css react-scripts:start",
+        "build": "run-s build:css react-scripts:build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "autoprefixer": "^10.4.14",
+        "eslint-config-react-app": "^7.0.1",
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.4.24",
+        "postcss-cli": "^10.1.0",
+        "tailwindcss": "^3.3.2"
+    }
 }

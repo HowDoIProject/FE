@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import Login from '../pages/Login';
@@ -8,29 +8,44 @@ import QuestionDetail from '../pages/QuestionDetail';
 import QuestionList from '../pages/QuestionList';
 import ScrapList from '../pages/ScrapList';
 import SearchedList from '../pages/SearchedList';
-import SignUp from '../pages/SignUp';
+import UserInfo from '../pages/SignupPages/UserInfo';
+import SignUp from '../pages/SignupPages/SignUp';
+import Confirm from '../pages/SignupPages/Confirm';
+import Interest from '../pages/SignupPages/Interest';
+
+// 새로운 컨텍스트를 생성하고 내보냅니다
 
 const Router = () => {
     return (
-        // url 라우터 처리
         <BrowserRouter>
             <Routes>
-                {/* 공통영역(상단 gnb메뉴)을 위한 Layout  */}
-                <Route element={<Layout />}>
+                {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
+                <Route path="/" element={<Layout />}>
                     {/* 회원 관련 */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    {/* 메인화면 관련 */}
+                    <Route path="login" element={<Login />} />
+
+                    {/* 메인 화면 관련 */}
                     <Route path="/" element={<QuestionList />} />
-                    <Route path="/question/:searchword" element={<SearchedList />} />
-                    {/* 상세화면 관련 */}
-                    <Route path="/detail/:id" element={<QuestionDetail />} />
-                    {/* 작성화면 관련 */}
-                    <Route path="/post" element={<PostQuestion />} />
-                    {/* 스크랩화면 관련 */}
-                    <Route path="/scrap" element={<ScrapList />} />
-                    {/* 마페이지 */}
-                    <Route path="/mypage" element={<MyPage />} />
+                    <Route path="question/:searchword" element={<SearchedList />} />
+
+                    {/* 상세 화면 관련 */}
+                    <Route path="detail/:id" element={<QuestionDetail />} />
+
+                    {/* 생성 화면 관련 */}
+                    <Route path="post" element={<PostQuestion />} />
+
+                    {/* 스크랩 화면 관련 */}
+                    <Route path="scrap" element={<ScrapList />} />
+
+                    {/* 마이페이지 */}
+                    <Route path="mypage" element={<MyPage />} />
+
+                    {/* 멤버십 등록 단계 */}
+
+                    <Route path="userinfo" element={<UserInfo />} />
+                    <Route path="confirm" element={<Confirm />} />
+                    <Route path="interest" element={<Interest />} />
+                    <Route path="signup" element={<SignUp />}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
