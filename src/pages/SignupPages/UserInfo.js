@@ -16,9 +16,6 @@ const UserInfo = () => {
     const [remainingTime, setRemainingTime] = useState(180);
     const [verificationError, setVerificationError] = useState(null);
     const [cookies, setCookie] = useCookies(['verification-token']);
-
-    // const formRef = useRef();
-
     const [isVerified, setIsVerified] = useState(false);
     const [userNumber, setUserNumber] = useState('');
     const [value, setValue] = useState({
@@ -150,6 +147,8 @@ const UserInfo = () => {
     };
 
     const handleSignUp = () => {
+        event.preventDefault();
+
         const signUpData = {
             user_type: userType,
             user_number: phoneNumber,
@@ -161,25 +160,33 @@ const UserInfo = () => {
         // 여기에 회원 가입 처리 로직을 추가하세요
         // 백엔드 서버와의 통신 등 필요한 작업을 수행합니다
 
-        // 예시로 console.log를 사용하여 회원 가입 데이터를 출력합니다
-        console.log(signUpData);
+        // // 예시로 console.log를 사용하여 회원 가입 데이터를 출력합니다
+        // console.log(signUpData);
 
         // 회원 가입 후에 필요한 추가 작업을 수행하세요
 
         // setValue를 사용하여 상태 업데이트 등을 수행할 수 있습니다
-        setValue({ ...value, signUpData });
+        setValue({ signUpData });
+        console.log(setValue);
     };
 
     const handleNext = event => {
         event.preventDefault();
         console.log(value);
 
+        const signUpData = {
+            user_type: userType,
+            user_number: phoneNumber,
+            nickname,
+            password,
+            password_confirm: confirmPassword,
+        };
         if (validateForm()) {
-            const queryParams = `nickname=${nickname}&password=${password}&user_number=${phoneNumber}&usertype=${userType}`;
+            const queryParams = new URLSearchParams(signUpData).toString();
             navigate(`/Interest?${queryParams}`);
-            console.log('Registration was successful.');
+            console.log('등록이 성공적으로 완료되었습니다.');
         } else {
-            console.log('Invalid subscription data');
+            console.log('유효하지 않은 가입 데이터입니다.');
         }
     };
 

@@ -8,11 +8,11 @@ export default function SignUp() {
     const [userType, setUserType] = useState();
     const [value, setValue] = useState({
         user_type: userType,
-        // user_number: '',
-        // nickname: '',
-        // password: '',
-        // password_confirm: '',
-        // category: 123,
+        user_number: '',
+        nickname: '',
+        password: '',
+        password_confirm: '',
+        category: 123,
     });
 
     const handleUserTypeSelect = userType => {

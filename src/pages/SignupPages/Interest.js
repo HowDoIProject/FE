@@ -5,20 +5,28 @@ import { faUsers, faUtensils, faMoneyBill } from '@fortawesome/free-solid-svg-ic
 import 'tailwindcss/tailwind.css';
 
 const Interest = () => {
-    const location = useLocation();
+    const userType = location.state?.SignUpData;
     const navigate = useNavigate();
-    const [selectedInterests, setSelectedInterests] = useState([]);
-
-    const handleInterestSelection = interest => {
-        if (selectedInterests.includes(interest)) {
-            setSelectedInterests(selectedInterests.filter(item => item !== interest));
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [value, setValue] = useState({
+        user_type: userType,
+        user_number: '',
+        nickname: '',
+        password: '',
+        password_confirm: '',
+        category: 123,
+    });
+    const handleInterestSelection = category => {
+        if (selectedCategories.includes(category)) {
+            setSelectedCategories(selectedCategories.filter(item => item !== category));
         } else {
-            setSelectedInterests([...selectedInterests, interest]);
+            setSelectedCategories([...selectedCategories, category]);
         }
     };
 
-    const isInterestSelected = interest => {
-        return selectedInterests.includes(interest);
+    const isInterestSelected = categories => {
+        console.log(value);
+        return selectedCategories.includes(categories);
     };
 
     const handlePrevious = event => {
@@ -28,7 +36,8 @@ const Interest = () => {
 
     const handleNext = event => {
         event.preventDefault();
-        navigate('/confirm', { state: { ...location.state, selectedInterests } });
+        setValue({ ...value, categories });
+        navigate('/confirm', { state: { ...value, selectedCategories } });
     };
 
     return (

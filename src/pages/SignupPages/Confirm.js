@@ -4,24 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 const RegistrationConfirmationPage = () => {
+    const [cookie, setCookie, removeCookie] = useCookies(['verification-token']);
     const navigate = useNavigate();
     const [isRegistered, setRegistered] = useState(false);
-    const [cookies] = useCookies(['verification-token']);
 
     useEffect(() => {
-        const isRegistrationComplete = cookies['verification-token'];
+        const isRegistrationComplete = cookie['verification-token'];
+        removeCookie('verification-token');
 
         if (isRegistrationComplete) {
             setRegistered(true);
         }
-    }, [cookies]);
+    }, [cookie]);
 
     const handleSubmit = async e => {
         e.preventDefault();
 
         try {
             const data = {
-                verification_token: cookies['verification-token'],
+                verification_token: cookie['verification-token'],
             };
             await axios.post('http://3.34.191.171/api/signup', data);
 
