@@ -605,9 +605,6 @@ video {
 .cursor-pointer {
   cursor: pointer;
 }
-.list-disc {
-  list-style-type: disc;
-}
 .appearance-none {
   appearance: none;
 }
@@ -761,9 +758,6 @@ video {
 }
 .pb-\[80px\] {
   padding-bottom: 80px;
-}
-.pl-8 {
-  padding-left: 2rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
