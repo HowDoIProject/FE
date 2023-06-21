@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import Login from '../pages/Login';
-import MyPage from '../pages/MyPage';
+import MyPage from '../pages/MyPageContents/MyPage';
 import PostQuestion from '../pages/PostQuestion';
 import QuestionDetail from '../pages/QuestionDetail';
 import QuestionList from '../pages/QuestionList';
@@ -41,10 +41,10 @@ const Router = () => {
                     <Route path="mypage" element={<MyPage />} />
 
                     {/* 멤버십 등록 단계 */}
-
+                    <Route path="interest" element={<Interest />} />
                     <Route path="userinfo" element={<UserInfo />} />
                     <Route path="confirm" element={<Confirm />} />
-                    <Route path="interest" element={<Interest />} />
+
                     <Route path="signup" element={<SignUp />}></Route>
                 </Route>
             </Routes>

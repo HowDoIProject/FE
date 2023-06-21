@@ -1,29 +1,29 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-
 import { useCookies } from 'react-cookie';
+import SignUp from './SignUp';
 
 const UserInfo = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userType = location.state?.userType;
+    const userType = location.state?.user_type;
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [verificationCode, setVerificationCode] = useState('');
+    const [verify_code, setVerifyCode] = useState('');
     const [remainingTime, setRemainingTime] = useState(180);
     const [verificationError, setVerificationError] = useState(null);
-    const [cookies, setCookie] = useCookies(['verification-token']);
+    const [cookies, setCookie] = useCookies(['verification']);
     const [isVerified, setIsVerified] = useState(false);
-    const [userNumber, setUserNumber] = useState('');
+    const [user_number, setUserNumber] = useState('');
+    const [user_type, setUserType] = useState('');
     const [value, setValue] = useState({
-        user_type: userType,
-        user_number: phoneNumber,
+        user_type,
+        user_number,
         nickname,
-        password: password,
-        password_confirm: confirmPassword,
+        password,
+        password_confirm: password,
     });
 
     const formatTime = time => {
@@ -45,18 +45,18 @@ const UserInfo = () => {
         }
     }, [remainingTime]);
 
-    const handlePhoneNumberChange = event => {
-        setPhoneNumber(event.target.value);
+    const handleUserNumberChange = event => {
+        setUserNumber(event.target.value);
     };
 
     const handleVerificationCodeChange = event => {
-        setVerificationCode(event.target.value);
+        setVerifyCode(event.target.value);
     };
 
     const handleSendVerificationCode = () => {
-        if (phoneNumber) {
+        if (user_number) {
             axios
-                .post('http://3.34.191.171/api/send', { user_number: phoneNumber })
+                .post('http://3.34.191.171/api/send', { user_number })
                 .then(response => {
                     console.log('인증번호 전송에 성공!');
                 })
@@ -71,19 +71,27 @@ const UserInfo = () => {
     const handleVerificationCodeSubmit = event => {
         event.preventDefault();
 
-        if (verificationCode && phoneNumber) {
+        if (verify_code && user_number) {
             const payload = {
-                user_number: phoneNumber,
-                verify_code: verificationCode,
+                user_number,
+                verify_code,
             };
 
             //API 인증코드
             axios
-                .post('http://3.34.191.171/api/verify', payload)
+                .post('http://3.34.191.171/api/verify', payload, {
+                    // headers: {
+                    //     Verification: user_number,
+                    // },
+                })
                 .then(response => {
                     const success = response.data;
                     if (success) {
-                        setCookie('verification-token', phoneNumber, { path: '/' });
+                        setCookie('verification', user_number.toString(), {
+                            path: '/',
+                            sameSite: 'none',
+                            secure: true,
+                        });
 
                         console.log('휴대전화 인증 성공!');
                         setIsVerified(true);
@@ -125,13 +133,13 @@ const UserInfo = () => {
     const validateForm = () => {
         const isNicknameValid = validateNickname(nickname);
         const isPasswordValid = validatePassword(password);
-        const isUserNumberValid = validateUserNumber(phoneNumber);
+        // const isUserNumberValid = validateUserNumber(phoneNumber);
 
         console.log('Nickname validation:', isNicknameValid);
         console.log('Password validation:', isPasswordValid);
-        console.log('User number validation:', isUserNumberValid);
+        // console.log('User number validation:', isUserNumberValid);
 
-        const isValid = isNicknameValid && isPasswordValid && isUserNumberValid;
+        const isValid = isNicknameValid && isPasswordValid;
         console.log('Form validation:', isValid);
 
         return isValid;
@@ -142,53 +150,84 @@ const UserInfo = () => {
         navigate('/SignUp');
     };
 
-    const validateUserNumber = userNumber => {
-        return userNumber.trim() !== '';
-    };
-
+    // const validateUserNumber = userNumber => {
+    //     return userNumber.trim() !== '';
+    // };
+    // useEffect(() => {
+    //     console.log(value);
+    // }, [value]);
     const handleSignUp = () => {
-        event.preventDefault();
-
-        const signUpData = {
-            user_type: userType,
-            user_number: phoneNumber,
-            nickname,
-            password,
-            password_confirm: confirmPassword,
-        };
-
-        // 여기에 회원 가입 처리 로직을 추가하세요
-        // 백엔드 서버와의 통신 등 필요한 작업을 수행합니다
-
-        // // 예시로 console.log를 사용하여 회원 가입 데이터를 출력합니다
-        // console.log(signUpData);
-
-        // 회원 가입 후에 필요한 추가 작업을 수행하세요
-
-        // setValue를 사용하여 상태 업데이트 등을 수행할 수 있습니다
-        setValue({ signUpData });
-        console.log(setValue);
-    };
-
-    const handleNext = event => {
-        event.preventDefault();
         console.log(value);
-
-        const signUpData = {
+        setValue({
+            ...value,
             user_type: userType,
-            user_number: phoneNumber,
+            user_number,
+            nickname,
+            password,
+            password_confirm: password,
+        });
+    };
+
+    // const SignupData = {
+    //     user_type: userType,
+    //     user_number: phoneNumber,
+    //     nickname,
+    //     password,
+    //     password_confirm: confirmPassword,
+    //     category: [],
+    // };
+
+    const handleNext = () => {
+        navigate('/Interest', {
+            state: {
+                user_type: userType,
+                nickname,
+                password,
+                password_confirm: confirmPassword,
+                user_number,
+            },
+        });
+        console.log('State:', {
+            user_type: userType,
             nickname,
             password,
             password_confirm: confirmPassword,
-        };
-        if (validateForm()) {
-            const queryParams = new URLSearchParams(signUpData).toString();
-            navigate(`/Interest?${queryParams}`);
-            console.log('등록이 성공적으로 완료되었습니다.');
-        } else {
-            console.log('유효하지 않은 가입 데이터입니다.');
-        }
+            user_number,
+        });
     };
+
+    // const signUpData = {
+    //     user_type: userType,
+    //     user_number: phoneNumber,
+    //     nickname,
+    //     password,
+    //     password_confirm: confirmPassword,
+    // };
+
+    // 여기에 회원 가입 처리 로직을 추가하세요
+    // 백엔드 서버와의 통신 등 필요한 작업을 수행합니다
+
+    // // 예시로 console.log를 사용하여 회원 가입 데이터를 출력합니다
+    // console.log(signUpData);
+
+    // 회원 가입 후에 필요한 추가 작업을 수행하세요
+
+    // setValue를 사용하여 상태 업데이트 등을 수행할 수 있습니다
+    // setSignUpData();
+    // console.log(setSignUpData);
+
+    // const handleNext = event => {
+    //     event.preventDefault();
+    //     console.log(signUpData);
+
+    //     if (validateForm()) {
+    //         const state = { signUpData };
+    //         navigate('/Interest', { state });
+    //         console.log('Registration completed successfully.');
+    //     } else {
+    //         console.log('Invalid subscription data.');
+    //     }
+    // };
 
     return (
         <>
@@ -200,9 +239,10 @@ const UserInfo = () => {
                         name="phoneNumber"
                         placeholder="번호를 입력하세요"
                         className="w-60 px-4 py-2 mb-4 border border-gray-300 rounded-md"
-                        value={phoneNumber}
-                        onChange={handlePhoneNumberChange}
+                        value={user_number}
+                        onChange={handleUserNumberChange}
                     />
+
                     <button
                         type="button"
                         onClick={handleSendVerificationCode}
@@ -222,7 +262,7 @@ const UserInfo = () => {
                             name="verificationCode"
                             placeholder="인증번호를 입력하세요"
                             className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md"
-                            value={verificationCode}
+                            value={verify_code}
                             onChange={handleVerificationCodeChange}
                         />
                         <div className="flex items-center justify-center">

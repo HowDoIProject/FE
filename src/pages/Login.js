@@ -5,9 +5,9 @@ import { useCookies } from 'react-cookie';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [userNumber, setUserNumber] = useState('');
+    const [user_number, setUserNumber] = useState('');
     const [password, setPassword] = useState('');
-    const [cookies, setCookie] = useCookies(['verification-token']);
+    const [cookies, setCookie] = useCookies(['verification']);
 
     const handleUserNumberChange = event => {
         setUserNumber(event.target.value);
@@ -22,15 +22,15 @@ export default function Login() {
 
         try {
             const response = await axios.post('http://3.34.191.171/api/login', {
-                user_number: userNumber,
-                password: password,
+                user_number,
+                password,
             });
 
             // Get the token from the response
             const token = response.data.Authorization.replace('Bearer ', '');
 
             // Set the token as a cookie
-            setCookie('verification-token', token, { path: '/' });
+            setCookie('verification', token, { path: '/' });
 
             // Redirect to the next page after successful login
             navigate('/', { state: { userNumber: response.data.user_number } });
@@ -50,7 +50,7 @@ export default function Login() {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
                         id="user_number"
-                        value={userNumber}
+                        value={user_number}
                         onChange={handleUserNumberChange}
                     />
                 </div>
