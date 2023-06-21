@@ -5,23 +5,22 @@ import { useNavigate } from 'react-router-dom';
 export default function SignUp() {
     // const { value, dispatch } = useContext(MembershipContext);
     const Navigate = useNavigate();
-    const [userType, setUserType] = useState();
+    const [user_type, setUserType] = useState('');
     const [value, setValue] = useState({
-        user_type: userType,
-        // user_number: '',
-        // nickname: '',
-        // password: '',
-        // password_confirm: '',
-        // category: 123,
+        user_type,
+        // user_number,
+        // nickname,
+        // password,
+        // password_confirm: password,
     });
 
-    const handleUserTypeSelect = userType => {
-        setValue({ ...value, user_type: userType });
+    const handleUserTypeSelect = user_type => {
+        setValue({ ...value, user_type: user_type });
     };
 
     const handleNextClick = () => {
         console.log(value);
-        Navigate('/UserInfo', { state: { userType: value.user_type } });
+        Navigate('/UserInfo', { state: { user_type: value.user_type } });
     };
 
     return (
