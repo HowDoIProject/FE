@@ -1,66 +1,154 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import 'tailwindcss/tailwind.css';
+// import { getCookie } from '../../shared/Cookie';
 
-const RegistrationConfirmationPage = () => {
+const Confirm = () => {
     const navigate = useNavigate();
-    const [isRegistered, setRegistered] = useState(false);
-    const [cookies] = useCookies(['verification-token']);
+    const location = useLocation();
+    const {
+        user_type,
+        user_number,
+        nickname,
+        password,
+        password_confirm,
+        category: selectedCategories,
+    } = location.state;
+    console.log(user_type, user_number, nickname, password, password_confirm, { category: selectedCategories });
+    const [cookies, setCookies, removeCookies] = useCookies(['verification']);
+    // const [isVerified, setIsVerified] = useState(false);
+    // const [verificationError, setVerificationError] = useState(null);
+    const [value, setValue] = useState({
+        user_type,
+        user_number,
+        nickname,
+        password,
+        password_confirm,
+        category: 123,
+    });
 
-    useEffect(() => {
-        const isRegistrationComplete = cookies['verification-token'];
+    console.log('Received state:', {
+        user_type,
+        nickname,
+        password,
+        password_confirm,
+        user_number,
+        category: parseInt(selectedCategories.join(''), 10),
+    });
+    const handlePrevious = event => {
+        event.preventDefault();
+        navigate('/Interest', { state: location.state });
+    };
 
-        if (isRegistrationComplete) {
-            setRegistered(true);
-        }
-    }, [cookies]);
-
-    const handleSubmit = async e => {
-        e.preventDefault();
+    const handleConfirm = async () => {
+        const payload = {
+            user_type,
+            user_number,
+            nickname,
+            password,
+            password_confirm,
+            category: parseInt(selectedCategories.join(''), 10),
+        };
 
         try {
-            const data = {
-                verification_token: cookies['verification-token'],
-            };
-            await axios.post('http://3.34.191.171/api/signup', data);
+            // const verification = cookies[('verification', user_number)];
+            const response = await axios.post(
+                'http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/signup',
+                {
+                    payload,
+                },
+                {
+                    // withCredentials: true,
+                    // headers: {
+                    //     Cookie: `verification=${user_number}`, // Set the cookie in the request headers
+                    // },
+                    Header: {
+                        verification: cookies.verification ? cookies.verification : '',
+                    },
+                }
+            );
 
-            setRegistered(true);
-            console.log('Registration successful!');
-            navigate('/');
+            console.log(response);
         } catch (error) {
             console.error(error);
         }
     };
 
+    // const handleConfirm = async e => {
+    //     e.preventDefault();
+
+    //     try {
+    //         // Check if validation token cookie exists.
+    //         const verification = cookie['verification'];
+    //         console.log(verification);
+
+    //         if (!verification) {
+    //             console.log('Verification token cookie does not exist.');
+    //             // Set how to handle when validation token cookie is missing.
+    //             // For example, you can display an error message or redirect to another page.
+    //             return;
+    //         }
+
+    // const payload = {
+    //     user_type,
+    //     user_number: user_number,
+    //     nickname,
+    //     password,
+    //     password_confirm,
+    //     category: parseInt(selectedCategories.join(''), 10), // or use any category string format you want
+    //             // verification: user_number, // Include the verification token in the payload
+    //         };
+    //         console.log(payload);
+
+    //         // Send a POST request to the signup endpoint.
+    //         axios
+    //             .post('http://3.34.191.171/api/signup', payload, {
+    //                 // withCredentials: true,
+    //                 // headers: {
+    //                 //     Verification: user_number,
+    //                 // },
+    //             })
+    //             .then(response => {
+    //                 console.log('Registration successful!');
+    //                 // Handle any necessary responses.
+    //                 navigate('/');
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error: Registration Failed', error);
+    //                 // Handle any necessary responses.
+    //             });
+    //     } catch (error) {
+    //         console.error('Error: Registration Failed', error);
+    //         // Handle any necessary responses.
+    //     }
+    // };
+
     return (
-        <div>
-            {!isRegistered ? (
-                <form>
+        <div className="flex flex-col items-center justify-center h-screen">
+            <h1 className="text-3xl font-bold mb-8">버튼을 누르면 완료됩니다.</h1>
+            {/* <div>Render the confirmation details here</div> */}
+            <div className="mt-4">
+                <div className="flex justify-between mt-4">
                     <button
-                        onClick={handleSubmit}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        type="button"
+                        onClick={handleConfirm}
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                        가입하기
+                        가입완료
                     </button>
-                </form>
-            ) : (
-                <div>
-                    <h1>가입완료!</h1>
-                    <span>성공적으로 가입이 완료되었습니다!</span>
-                    <svg
-                        className="h-6 w-6 text-green-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    <button
+                        type="button"
+                        onClick={handlePrevious}
+                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                        이전으로가기
+                    </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
 
-export default RegistrationConfirmationPage;
+export default Confirm;

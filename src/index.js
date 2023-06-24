@@ -13,13 +13,13 @@ const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-            <HelmetProvider>
-                <CookiesProvider>
+    <CookiesProvider>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <HelmetProvider>
                     <App />
-                </CookiesProvider>
-            </HelmetProvider>
-        </QueryClientProvider>
-    </Provider>
+                </HelmetProvider>
+            </QueryClientProvider>
+        </Provider>
+    </CookiesProvider>
 );
