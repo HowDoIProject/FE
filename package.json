@@ -33,12 +33,7 @@
         "web-vitals": "^2.1.0",
         "yarn": "^1.22.19"
     },
-    "engines": {
-        "node": "14.20.0",
-        "npm": "7.24.2"
-    },
     "scripts": {
-        "predeploy": "npm run build",
         "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
         "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
         "react-scripts:start": "react-scripts start",
