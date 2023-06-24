@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { FaUserCircle, FaEdit } from 'react-icons/fa';
+import { doggy } from '../../assets/doggy.svg';
 
 const ProfilePicture = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -31,7 +32,7 @@ const ProfilePicture = () => {
                 ref={fileInputRef}
             />
             {selectedFile ? (
-                <img src={URL.createObjectURL(selectedFile)} alt="Profile" className="w-full h-full" />
+                <img className="absolute top-[186px] left-[30px] w-20 h-20" alt="" src="/group-7387.svg" />
             ) : (
                 <FaUserCircle className="w-full h-full text-gray-800" onClick={handleEditClick} />
             )}

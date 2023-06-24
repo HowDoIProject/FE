@@ -24,18 +24,14 @@ const TableOfContents = ({ onPageChange, user_type = '엄빠', currentPage }) =>
 
     const user_typeItems = {
         강아지: [
-            { title: '내가 작성한 글 보기', page: 1 },
-            { title: '내 채택 내역', page: 2 },
-            { title: '고객 센터', page: 3 },
-            { title: '로그 아웃', page: 4 },
-            { title: '정보 수정', page: 5 },
+            { title: '내활동 보기', page: 1 },
+            { title: '고객센터연결', page: 2 },
+            { title: '로그아웃', page: 3 },
         ],
         엄빠: [
             { title: '내 히스토리', page: 1 },
             { title: '내 레벨조회', page: 2 },
             { title: '고객 센터', page: 3 },
-            { title: '로그 아웃', page: 4 },
-            { title: '정보 수정', page: 5 },
         ],
     };
 

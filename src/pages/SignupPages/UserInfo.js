@@ -56,7 +56,7 @@ const UserInfo = () => {
     const handleSendVerificationCode = () => {
         if (user_number) {
             axios
-                .post('http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/send', {
+                .post('https://howdoiapp.shop/api/send', {
                     user_number,
                 })
                 .then(response => {
@@ -81,7 +81,7 @@ const UserInfo = () => {
 
             //API 인증코드
             axios
-                .post('http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/verify', payload, {
+                .post('https://howdoiapp.shop/api/verify', payload, {
                     // headers: {
                     //     Verification: user_number,
                     // },
@@ -89,7 +89,8 @@ const UserInfo = () => {
                 .then(response => {
                     const success = response.data;
                     if (success) {
-                        setCookie('verification', user_number.toString(), {
+                        const verification = user_number.toString();
+                        setCookie('verification', verification, {
                             path: '/',
                             sameSite: 'none',
                             secure: true,
@@ -315,7 +316,7 @@ const UserInfo = () => {
                             </label>
                             <input
                                 type="password"
-                                id="confirmPassword"
+                                id="password_confirm"
                                 value={confirmPassword}
                                 onChange={handleConfirmPasswordChange}
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

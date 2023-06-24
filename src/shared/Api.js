@@ -1,17 +1,18 @@
 import axios from 'axios';
 
-// 싱글톤 패턴으로 axios 인스터스를 생성
+// create axios instance with singleton pattern
 export const api = axios.create({
-    baseURL: 'http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com',
+    baseURL: 'https://howdoiapp.shop',
     headers: {
         /* */
     },
+    withCredentials: true, // set withCredentials to true globally
 });
 
 export const AuthApi = {
-    // 회원정보 관련
+    // Regarding member information
     signup: payload => api.post('/api/signup', payload),
-    // signup: payload => api.get('/api/signup', payload),
-    // signup: payload => api.fetch('api/signup', payload),
+    send: payload => api.post('/api/send', payload),
+    verify: payload => api.post('/api/verify', payload),
     login: payload => api.post('/api/login', payload),
 };
