@@ -123,9 +123,7 @@ export default function Confirm() {
             );
 
             if (response.status === 201) {
-
                 navigate('/login', { state: { user_type: 'user_type' } });
-
             } else {
                 console.error('Signup failed');
             }
@@ -172,10 +170,6 @@ export default function Confirm() {
     //         config,
     //     }
     // );
-
-    // useEffect(() => {
-    //     handleConfirm();
-    // }, []);
 
     // const handleConfirm = async event => {
     //     event.preventDefault();
