@@ -17,7 +17,7 @@ const TableOfContentsItem = ({ title, onClick, isActive }) => {
     );
 };
 
-const TableOfContents = ({ onPageChange, user_type = '엄빠', currentPage }) => {
+const TableOfContents = ({ onPageChange, user_type, currentPage }) => {
     const handleItemClick = page => {
         onPageChange(page);
     };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PageContent = ({ currentPage, user_type = '강아지' }) => {
+const PageContent = ({ currentPage, user_type }) => {
     let content = null;
 
     const handleClick = () => {

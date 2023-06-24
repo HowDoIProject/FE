@@ -123,7 +123,7 @@ export default function Confirm() {
             );
 
             if (response.status === 201) {
-                navigate('/login');
+                navigate('/login', { state: { user_type: 'user_type' } });
             } else {
                 console.error('Signup failed');
             }
