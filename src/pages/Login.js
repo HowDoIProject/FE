@@ -32,17 +32,14 @@ export default function Login() {
                 });
 
                 if (response.status === 200) {
-                    // Login successful
                     const { access } = response.data;
 
                     setCookie('verification', access, { path: '/', secure: true });
                     navigate('/', { state: { userNumber: userNumber } });
                 } else {
-                    // Login failed
                     console.error('Login failed');
                 }
             } catch (error) {
-                // Error handling
                 console.error('Login failed:', error);
             }
         }

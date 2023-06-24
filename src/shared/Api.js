@@ -11,5 +11,7 @@ export const api = axios.create({
 export const AuthApi = {
     // 회원정보 관련
     signup: payload => api.post('/api/signup', payload),
+    // signup: payload => api.get('/api/signup', payload),
+    // signup: payload => api.fetch('api/signup', payload),
     login: payload => api.post('/api/login', payload),
 };

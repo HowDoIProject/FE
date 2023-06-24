@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import 'tailwindcss/tailwind.css';
 // import { getCookie } from '../../shared/Cookie';
+import { AuthApi } from '../../shared/Api';
 
 const Confirm = () => {
     const navigate = useNavigate();
@@ -16,65 +17,126 @@ const Confirm = () => {
         password_confirm,
         category: selectedCategories,
     } = location.state;
-    console.log(user_type, user_number, nickname, password, password_confirm, { category: selectedCategories });
-    const [cookies, setCookies, removeCookies] = useCookies(['verification']);
-    // const [isVerified, setIsVerified] = useState(false);
-    // const [verificationError, setVerificationError] = useState(null);
+
+    const [cookies, setCookies] = useCookies(['verification']); // Retrieve the 'verification' cookie
+    const verification = `${user_number}`;
     const [value, setValue] = useState({
         user_type,
         user_number,
         nickname,
         password,
         password_confirm,
-        category: 123,
-    });
-
-    console.log('Received state:', {
-        user_type,
-        nickname,
-        password,
-        password_confirm,
-        user_number,
         category: parseInt(selectedCategories.join(''), 10),
     });
+
     const handlePrevious = event => {
         event.preventDefault();
         navigate('/Interest', { state: location.state });
     };
 
     const handleConfirm = async () => {
-        const payload = {
-            user_type,
-            user_number,
-            nickname,
-            password,
-            password_confirm,
-            category: parseInt(selectedCategories.join(''), 10),
+        const config = {
+            // withCredentials: true,
+            Header: {
+                // verification: cookies.verification ? cookies.verification : '',
+                verification: cookies.verification,
+                path: '/',
+                sameSite: 'none',
+                secure: true,
+                httpOnly: true,
+            },
         };
 
         try {
-            // const verification = cookies[('verification', user_number)];
-            const response = await axios.post(
-                'http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/signup',
+            const response = await AuthApi.signup(
                 {
-                    payload,
+                    user_type,
+                    user_number,
+                    nickname,
+                    password,
+                    password_confirm,
+                    category: parseInt(selectedCategories.join(''), 10),
                 },
-                {
-                    // withCredentials: true,
-                    // headers: {
-                    //     Cookie: `verification=${user_number}`, // Set the cookie in the request headers
-                    // },
-                    Header: {
-                        verification: cookies.verification ? cookies.verification : '',
-                    },
-                }
+                config
             );
 
-            console.log(response);
+            if (response.status === 201) {
+                // Signup successful
+                navigate('/login');
+            } else {
+                // Signup failed
+                console.error('Signup failed');
+            }
         } catch (error) {
-            console.error(error);
+            // Error handling
+            console.error('Signup failed:', error);
         }
     };
+
+    // useEffect(() => {
+    //     handleConfirm();
+    // }, []);
+
+    // const handleConfirm = async event => {
+    //     event.preventDefault();
+
+    //     if (user_type && user_number && nickname && password && password_confirm) {
+    //         try {
+    //             const response = await AuthApi.signup({
+    //                 user_type,
+    //                 user_number,
+    //                 nickname,
+    //                 password,
+    //                 password_confirm,
+    //                 category: parseInt(selectedCategories.join(''), 10),
+    //             });
+
+    //             if (response.status === 201) {
+    //                 // Signup successful
+    //                 navigate('/login');
+    //             } else {
+    //                 // Signup failed
+    //                 console.error('Signup failed');
+    //             }
+    //         } catch (error) {
+    //             // Error handling
+    //             console.error('Signup failed:', error);
+    //         }
+    //     }
+    // };
+    // const handleConfirm = async event => {
+    //     const payload = {
+    //         user_type,
+    //         user_number,
+    //         nickname,
+    //         password,
+    //         password_confirm,
+    //         category: parseInt(selectedCategories.join(''), 10),
+    //     };
+
+    //     try {
+    //         // const verification = cookies[('verification', user_number)];
+    //         const response = await axios.post(
+    //             'http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/signup',
+    //             {
+    //                 payload,
+    //             },
+    //             {
+    //                 // withCredentials: true,
+    //                 // headers: {
+    //                 //     Cookie: `verification=${user_number}`, // Set the cookie in the request headers
+    //                 // },
+    //                 Header: {
+    //                     verification: cookies.verification ? cookies.verification : '',
+    //                 },
+    //             }
+    //         );
+
+    //         console.log(response);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
 
     // const handleConfirm = async e => {
     //     e.preventDefault();
