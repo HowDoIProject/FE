@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function QuestionDetail() {
-    return <>질문상세화면</>;
+function QuestionDetail() {
+    return <div>Hello World</div>;
 }
+
+export default QuestionDetail;
