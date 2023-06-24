@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import TableOfContents from './TableOfContents';
 import PageContent from './PageContent';
 import ProfilePicture from './ProfilePic';
 
-const MyPage = ({ user_type = '강아지' }) => {
+const MyPage = () => {
+    const location = useLocation();
+    const user_type = location.state?.user_type || '';
     const [currentPage, setCurrentPage] = useState(1);
 
     const handlePageChange = page => {
