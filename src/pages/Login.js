@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { AuthApi } from '../shared/Api';
 
 export default function Login() {
-    const navigate = useNavigate();
-    const [user_number, setUserNumber] = useState('');
+    const [userNumber, setUserNumber] = useState('');
     const [password, setPassword] = useState('');
     const [cookies, setCookie] = useCookies(['verification']);
+    const navigate = useNavigate();
 
     const handleUserNumberChange = event => {
         setUserNumber(event.target.value);
@@ -20,22 +21,30 @@ export default function Login() {
     const handleSubmit = async event => {
         event.preventDefault();
 
-        try {
-            const response = await axios.post('http://3.34.191.171/api/login', {
-                user_number,
-                password,
-            });
+        if (userNumber && password) {
+            alert('Log in!');
 
-            // Get the token from the response
-            const token = response.data.Authorization.replace('Bearer ', '');
+            try {
+                //instance 사용해 구현
+                const response = await AuthApi.login({
+                    user_number: userNumber,
+                    password: password,
+                });
 
-            // Set the token as a cookie
-            setCookie('verification', token, { path: '/' });
+                if (response.status === 200) {
+                    // Login successful
+                    const { access } = response.data;
 
-            // Redirect to the next page after successful login
-            navigate('/', { state: { userNumber: response.data.user_number } });
-        } catch (error) {
-            console.error('Login failed:', error);
+                    setCookie('verification', access, { path: '/', secure: true });
+                    navigate('/', { state: { userNumber: userNumber } });
+                } else {
+                    // Login failed
+                    console.error('Login failed');
+                }
+            } catch (error) {
+                // Error handling
+                console.error('Login failed:', error);
+            }
         }
     };
 
@@ -50,7 +59,7 @@ export default function Login() {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
                         id="user_number"
-                        value={user_number}
+                        value={userNumber}
                         onChange={handleUserNumberChange}
                     />
                 </div>
@@ -75,7 +84,6 @@ export default function Login() {
                     </button>
                 </div>
             </form>
-            <div className="flex items-center justify-between"></div>
         </div>
     );
 }

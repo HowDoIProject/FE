@@ -53,9 +53,9 @@ const Confirm = () => {
         };
 
         try {
-            // const CookieValue = cookies[('verification', user_number)];
+            // const verification = cookies[('verification', user_number)];
             const response = await axios.post(
-                'http://3.39.252.163/api/signup',
+                'http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/signup',
                 {
                     payload,
                 },
@@ -64,7 +64,7 @@ const Confirm = () => {
                     // headers: {
                     //     Cookie: `verification=${user_number}`, // Set the cookie in the request headers
                     // },
-                    headers: {
+                    Header: {
                         verification: cookies.verification ? cookies.verification : '',
                     },
                 }

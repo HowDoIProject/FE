@@ -56,7 +56,9 @@ const UserInfo = () => {
     const handleSendVerificationCode = () => {
         if (user_number) {
             axios
-                .post('http://3.34.191.171/api/send', { user_number })
+                .post('http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/send', {
+                    user_number,
+                })
                 .then(response => {
                     console.log('인증번호 전송에 성공!');
                 })
@@ -79,7 +81,7 @@ const UserInfo = () => {
 
             //API 인증코드
             axios
-                .post('http://3.34.191.171/api/verify', payload, {
+                .post('http://howdoiapp-env-1.eba-s7pxzptz.ap-northeast-2.elasticbeanstalk.com/api/verify', payload, {
                     // headers: {
                     //     Verification: user_number,
                     // },
