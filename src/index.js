@@ -7,7 +7,6 @@ import './index.css'; // 삭제
 import './styles/app.css'; // 추가
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import { CookiesProvider } from 'react-cookie';
 
 const queryClient = new QueryClient();
