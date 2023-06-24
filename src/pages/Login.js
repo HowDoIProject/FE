@@ -33,7 +33,7 @@ export default function Login() {
                     const { access } = response.data;
 
                     setCookie('verification', access, { path: '/', secure: true });
-                    navigate('/', { state: { userNumber: userNumber } });
+                    navigate('/MyPage', { state: { nickname: 'nickname' } });
                 } else {
                     console.error('Login failed');
                 }

@@ -3,12 +3,12 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
-    const [cookies, setCookie, removeCookie] = useCookies(['verification-token']);
+    const [cookies, setCookie, removeCookie] = useCookies(['verification']);
     const navigate = useNavigate();
 
     const handleLogout = () => {
         // 토큰 쿠키 제거
-        removeCookie('verification-token');
+        removeCookie('verification');
 
         // 페이지 새로고침하여 제거된 것을 적용
         window.location.reload();
