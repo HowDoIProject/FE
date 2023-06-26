@@ -30,9 +30,9 @@ export default function Login() {
                 });
 
                 if (response.status === 200) {
-                    const { access } = response.data;
+                    const { accessToken } = response.data;
 
-                    setCookie('verification', access, { path: '/', secure: true });
+                    setCookie('verification', accessToken, { path: '/', secure: true });
                     navigate('/MyPage', { state: { nickname: 'nickname' } });
                 } else {
                     console.error('Login failed');

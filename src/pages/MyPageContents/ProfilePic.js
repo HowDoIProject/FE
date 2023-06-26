@@ -18,11 +18,12 @@ const ProfilePicture = () => {
     };
 
     return (
-        <div
-            className="rounded-full overflow-hidden w-12 h-12 relative"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="rounded-full overflow-hidden w-12 h-12 relative flex items-start">
+            {selectedFile ? (
+                <img alt="Profile" src="/group-73871.svg" className="absolute top-[186px] left-[30px] w-20 h-20" />
+            ) : (
+                <FaUserCircle className="w-full h-full text-gray-800" onClick={handleEditClick} />
+            )}
             <input
                 type="file"
                 accept="image/*"
@@ -30,11 +31,6 @@ const ProfilePicture = () => {
                 style={{ display: 'none' }}
                 ref={fileInputRef}
             />
-            {selectedFile ? (
-                <img src={URL.createObjectURL(selectedFile)} alt="Profile" className="w-full h-full" />
-            ) : (
-                <FaUserCircle className="w-full h-full text-gray-800" onClick={handleEditClick} />
-            )}
             {isHovered && (
                 <div className="absolute top-1 right-1">
                     <FaEdit className="w-4 h-4 text-gray-800 cursor-pointer" onClick={handleEditClick} />
