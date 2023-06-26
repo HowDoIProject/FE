@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 export default function PostQuestion() {
     const [values, setValues] = useState({
@@ -18,52 +19,91 @@ export default function PostQuestion() {
         { id: 3, name: '재테크/자산' },
     ];
 
-    const queryClient = useQueryClient();
+    const [cookies] = useCookies(['verification']);
 
-    const newPostMutation = useMutation({
-        mutationFn: async payload => {
-            return await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/post`, payload, {
-                headers: {
-                    // Authorization: ``,
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-        },
-        onSuccess: () => {
-            alert('게시글이 등록되었습니다!');
-            queryClient.invalidateQueries(['posts']);
-            navigate('/');
-        },
-    });
+    // const queryClient = useQueryClient();
+
+    // const newPostMutation = useMutation({
+    //     mutationFn: async payload => {
+    //         return await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/post`, payload, {
+    //             headers: {
+    //                 Authorization: cookies.verification,
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //         });
+    //     },
+    //     onSuccess: () => {
+    //         alert('게시글이 등록되었습니다!');
+    //         queryClient.invalidateQueries(['posts']);
+    //         navigate('/');
+    //     },
+    // });
 
     const onChange = e => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
     };
 
+    // const onChangeFileHandler = e => {
+    //     const file = e.target.files[0];
+    //     setValues(prev => ({ ...prev, image: file }));
+    //     setFile(URL.createObjectURL(file));
+    // };
+
     const onChangeFileHandler = e => {
+        const { name } = e.target;
+        const imgFormData = new FormData();
         const file = e.target.files[0];
-        setValues(prev => ({ ...prev, image: file }));
+        imgFormData.append(name, file);
+        axios
+            .post(`${process.env.REACT_APP_SERVER_URL}/api/uploads`, imgFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    access: cookies.verification,
+                },
+            })
+            .then(res => setValues({ ...values, image: res.data.url }))
+            .catch(e => {
+                console.log(e);
+            });
+
         setFile(URL.createObjectURL(file));
     };
 
+    // const onSubmitHandler = e => {
+    //     e.preventDefault();
+
+    //     const formData = new FormData();
+    //     formData.append('category', values.category);
+    //     formData.append('title', values.title);
+    //     formData.append('content', values.content);
+
+    //     if (values.image) {
+    //         formData.append('image', values.image);
+    //     }
+
+    //     // FormData의 key와 value 확인
+    //     for (let [key, value] of formData.entries()) {
+    //         console.log(key, value);
+    //     }
+    //     newPostMutation.mutate(formData);
+    // };
+
     const onSubmitHandler = e => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('category', values.category);
-        formData.append('title', values.title);
-        formData.append('content', values.content);
-
-        if (values.image) {
-            formData.append('image', values.image);
-        }
-
-        // FormData의 key와 value 확인
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-        newPostMutation.mutate(formData);
+        axios
+            .post(`${process.env.REACT_APP_SERVER_URL}/api/post`, values, {
+                headers: {
+                    access: cookies.verification,
+                },
+            })
+            .then(res => {
+                alert('글이 등록되었습니다');
+                navigate('/');
+            })
+            .catch(e => {
+                console.log(e);
+            });
     };
 
     return (
