@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import { AuthApi } from '../shared/Api';
 
 export default function Login() {
     const [userNumber, setUserNumber] = useState('');
@@ -25,24 +24,20 @@ export default function Login() {
             alert('Log in!');
 
             try {
-                //instance 사용해 구현
-                const response = await AuthApi.login({
+                const response = await axios.post('https://howdoiapp.shop/api/login', {
                     user_number: userNumber,
                     password: password,
                 });
 
                 if (response.status === 200) {
-                    // Login successful
                     const { access } = response.data;
 
                     setCookie('verification', access, { path: '/', secure: true });
-                    navigate('/', { state: { userNumber: userNumber } });
+                    navigate('/MyPage', { state: { nickname: 'nickname' } });
                 } else {
-                    // Login failed
                     console.error('Login failed');
                 }
             } catch (error) {
-                // Error handling
                 console.error('Login failed:', error);
             }
         }

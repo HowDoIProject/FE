@@ -25,20 +25,21 @@
         "react-query-devtools": "^2.6.3",
         "react-redux": "^8.0.7",
         "react-router-dom": "^6.13.0",
-        "react-scripts": "5.0.1",
+        "react-scripts": "^5.0.1",
         "react-select": "^5.7.3",
         "redux": "^4.2.1",
         "redux-devtools-extension": "^2.13.9",
         "redux-toolkit": "^1.1.2",
         "styled-components": "^6.0.0-rc.3",
-        "web-vitals": "^2.1.0"
+        "web-vitals": "^2.1.0",
+        "yarn": "^1.22.19"
     },
     "scripts": {
         "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
         "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
-        "react-scripts:start": "sleep 5 && react-scripts start",
+        "react-scripts:start": "react-scripts start",
         "start": "run-p watch:css react-scripts:start",
-        "build": "run-s build:css react-scripts:build",
+        "build": "run-s build:css react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
