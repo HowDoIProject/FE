@@ -12,6 +12,7 @@ import UserInfo from '../pages/SignupPages/UserInfo';
 import SignUp from '../pages/SignupPages/SignUp';
 import Confirm from '../pages/SignupPages/Confirm';
 import Interest from '../pages/SignupPages/Interest';
+import Main from '../pages/Main';
 
 // 새로운 컨텍스트를 생성하고 내보냅니다
 
@@ -25,7 +26,7 @@ const Router = () => {
                     <Route path="login" element={<Login />} />
 
                     {/* 메인 화면 관련 */}
-                    <Route path="/" element={<QuestionList />} />
+                    <Route path="/" element={<Main />} />
                     <Route path="question/:searchword" element={<SearchedList />} />
 
                     {/* 상세 화면 관련 */}
