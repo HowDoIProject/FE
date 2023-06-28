@@ -13,6 +13,7 @@ import SignUp from '../pages/SignupPages/SignUp';
 import Confirm from '../pages/SignupPages/Confirm';
 import Interest from '../pages/SignupPages/Interest';
 import Main from '../pages/Main';
+import DoggysActivity from '../pages/doggypages/DoggysActivity';
 
 // 새로운 컨텍스트를 생성하고 내보냅니다
 
@@ -24,28 +25,23 @@ const Router = () => {
                 <Route path="/" element={<Layout />}>
                     {/* 회원 관련 */}
                     <Route path="login" element={<Login />} />
-
                     {/* 메인 화면 관련 */}
                     <Route path="/" element={<Main />} />
                     <Route path="question/:searchword" element={<SearchedList />} />
-
                     {/* 상세 화면 관련 */}
                     <Route path="detail/:id" element={<QuestionDetail />} />
-
                     {/* 생성 화면 관련 */}
                     <Route path="post" element={<PostQuestion />} />
-
                     {/* 스크랩 화면 관련 */}
                     <Route path="scrap" element={<ScrapList />} />
-
                     {/* 마이페이지 */}
                     <Route path="mypage" element={<MyPage />} />
+                    <Route path="activity" element={<DoggysActivity />} />
 
                     {/* 멤버십 등록 단계 */}
                     <Route path="interest" element={<Interest />} />
                     <Route path="userinfo" element={<UserInfo />} />
                     <Route path="confirm" element={<Confirm />} />
-
                     <Route path="signup" element={<SignUp />}></Route>
                 </Route>
             </Routes>

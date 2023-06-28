@@ -1,32 +1,28 @@
 import React, { useState } from 'react';
-import TableOfContents from './TableOfContents';
-import PageContent from './PageContent';
-import ProfilePicture from './ProfilePic';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom'; // Updated
 import jwtDecode from 'jwt-decode';
+import ProfilePicture from './ProfilePic';
 
 const MyPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [cookies] = useCookies(['verification']);
+    const navigate = useNavigate();
 
-    // Retrieve the JWT token from the cookie
-    const jwtToken = cookies.verification;
-
-    // JWT TOKEN decoding
+    const [cookies] = useCookies(['accessToken']);
+    const jwtToken = cookies.accessToken;
     const decodedToken = jwtDecode(jwtToken);
 
     const user_type = decodedToken.user_type;
     const nickname = decodedToken.nickname;
+    const user_id = decodedToken.user_id;
+
     const handlePageChange = page => {
         setCurrentPage(page);
     };
 
-    const renderPageContent = () => {
-        if (user_type === '강아지' || user_type === '엄빠') {
-            return <PageContent currentPage={currentPage} user_type={user_type} />;
-        }
-        return null;
+    const handleShowActivity = () => {
+        navigate('/activity', { state: { user_type, nickname, user_id } });
     };
 
     return (
@@ -39,14 +35,16 @@ const MyPage = () => {
                 <div className="bg-white-100 rounded-lg p-4">
                     <ProfilePicture />
                     <div>
-                        <text>
+                        <h1>
                             {nickname && nickname.nickname}
                             {user_type && ` ${user_type.user_type}`}님
-                        </text>
+                        </h1>
                     </div>
-                    <TableOfContents onPageChange={handlePageChange} user_type={user_type} />
+
+                    <button onClick={handleShowActivity}>내 활동 보기</button>
                 </div>
-                <div className="bg-pink-200 rounded-lg p-4">{renderPageContent()}</div>
+
+                <div className="bg-pink-200 rounded-lg p-4"></div>
             </div>
         </div>
     );

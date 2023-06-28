@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const [userNumber, setUserNumber] = useState('');
     const [password, setPassword] = useState('');
-    const [cookies, setCookie] = useCookies(['verification']);
+    const [cookies, setCookie] = useCookies(['accessToken']);
     const navigate = useNavigate();
 
     const handleUserNumberChange = event => {
@@ -30,10 +30,10 @@ export default function Login() {
                 });
 
                 if (response.status === 200) {
-                    const { accessToken } = response.data;
+                    const { access } = response.data;
 
-                    setCookie('verification', accessToken, { path: '/', secure: true });
-                    navigate('/MyPage', { state: { nickname: 'nickname' } });
+                    setCookie('accessToken', access, { path: '/', secure: true });
+                    navigate('/');
                 } else {
                     console.error('Login failed');
                 }
