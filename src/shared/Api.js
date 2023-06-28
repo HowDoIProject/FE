@@ -21,4 +21,7 @@ export const apiPosts = {
     getTopFive: () => {
         return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/topfive`);
     },
+    getAll: () => {
+        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/post`);
+    },
 };
