@@ -1,20 +1,31 @@
 import React from 'react';
 
 const PageContent = ({ currentPage, user_type }) => {
-    let content = null;
+    let content = <>;</>;
 
     const handleClick = () => {
         // Function to execute when the content is clicked
+
         console.log('Content clicked!');
     };
 
     if (user_type === '강아지') {
         if (currentPage === 1) {
-            content = <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}></h1>;
+            content = (
+                <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
+                    내활동 보기
+                </h1>
+            );
         } else if (currentPage === 2) {
             content = (
                 <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
-                    내 채택 내역
+                    고객센터연결
+                </h1>
+            );
+        } else if (currentPage === 3) {
+            content = (
+                <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
+                    로그아웃
                 </h1>
             );
         }
@@ -22,13 +33,19 @@ const PageContent = ({ currentPage, user_type }) => {
         if (currentPage === 1) {
             content = (
                 <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
-                    내 히스토리
+                    내활동 보기
                 </h1>
             );
         } else if (currentPage === 2) {
             content = (
                 <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
-                    내 레벨 조회
+                    고객센터연결
+                </h1>
+            );
+        } else if (currentPage === 3) {
+            content = (
+                <h1 className="text-2xl font-semibold text-gray-800" onClick={handleClick}>
+                    로그아웃
                 </h1>
             );
         }
