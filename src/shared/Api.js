@@ -16,3 +16,9 @@ export const AuthApi = {
     verify: payload => api.post('/api/verify', payload),
     login: payload => api.post('/api/login', payload),
 };
+
+export const apiPosts = {
+    getTopFive: () => {
+        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/topfive`);
+    },
+};
