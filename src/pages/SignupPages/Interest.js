@@ -139,11 +139,8 @@ const Interest = () => {
     const { user_type, nickname, password, password_confirm, user_number } = location.state;
     const navigate = useNavigate();
     const [selectedCategories, setSelectedCategories] = useState([]);
-
-    const isInterestSelected = category => {
-        const categoryInt = parseInt(category, 10);
-        return selectedCategories.includes(categoryInt);
-    };
+    const [selectedGender, setSelectedGender] = useState('');
+    const [selectedAge, setSelectedAge] = useState('');
 
     const handleInterestSelection = category => {
         const categoryInt = parseInt(category, 10);
@@ -155,10 +152,21 @@ const Interest = () => {
         }
     };
 
-    const handleConfirm = () => {
-        const selectedNumbers = selectedCategories.map(category => parseInt(category, 10));
+    const handleGenderSelection = gender => {
+        setSelectedGender(gender);
+    };
 
-        console.log('category:', selectedNumbers.join(''));
+    const handleAgeSelection = age => {
+        setSelectedAge(parseInt(age, 10));
+    };
+
+    const isInterestSelected = category => {
+        const categoryInt = parseInt(category, 10);
+        return selectedCategories.includes(categoryInt);
+    };
+
+    const handleConfirm = () => {
+        const selectedCategoriesString = selectedCategories.toString();
 
         console.log('State:', {
             user_type,
@@ -166,9 +174,12 @@ const Interest = () => {
             password,
             password_confirm,
             user_number,
-            category: selectedNumbers,
+            category: selectedCategories.toString(),
+            gender: selectedGender,
+            age: selectedAge,
         });
     };
+    console.log(selectedCategories.toString());
 
     const handlePrevious = event => {
         event.preventDefault();
@@ -176,8 +187,8 @@ const Interest = () => {
     };
 
     const handleNext = () => {
-        if (selectedCategories.length === 0) {
-            console.log('최소한 하나의 카테고리를 선택해주세요.');
+        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+            console.log('Please select at least one category, gender, and age.');
             return;
         }
 
@@ -188,7 +199,9 @@ const Interest = () => {
                 password,
                 password_confirm,
                 user_number,
-                category: selectedCategories.map(category => parseInt(category, 10)),
+                category: selectedCategories.map(String), // Convert categories to strings
+                gender: selectedGender,
+                age: selectedAge.toString(),
             },
         });
     };
@@ -203,8 +216,7 @@ const Interest = () => {
                     }`}
                     onClick={() => handleInterestSelection('1')}
                 >
-                    <FontAwesomeIcon icon={faUsers} className="text-white" />
-                    <span className="ml-2">Society & Human Relations</span>
+                    Human Relationship
                 </button>
                 <button
                     className={`p-4 rounded-lg ${
@@ -212,8 +224,7 @@ const Interest = () => {
                     }`}
                     onClick={() => handleInterestSelection('2')}
                 >
-                    <FontAwesomeIcon icon={faUtensils} className="text-white" />
-                    <span className="ml-2">Life & Cooking</span>
+                    Life and Cooking
                 </button>
                 <button
                     className={`p-4 rounded-lg ${
@@ -221,8 +232,49 @@ const Interest = () => {
                     }`}
                     onClick={() => handleInterestSelection('3')}
                 >
-                    <FontAwesomeIcon icon={faMoneyBill} className="text-white" />
-                    <span className="ml-2">Rent & Finance</span>
+                    Rent and Finance
+                </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+                <button
+                    className={`p-4 rounded-lg ${
+                        selectedGender === '남성' ? 'bg-blue-500' : 'bg-gray-200 hover:bg-blue-600'
+                    }`}
+                    onClick={() => handleGenderSelection('남성')}
+                >
+                    Male
+                </button>
+                <button
+                    className={`p-4 rounded-lg ${
+                        selectedGender === '여성' ? 'bg-pink-500' : 'bg-gray-200 hover:bg-pink-600'
+                    }`}
+                    onClick={() => handleGenderSelection('여성')}
+                >
+                    Female
+                </button>
+                <button
+                    className={`p-4 rounded-lg ${
+                        selectedAge === '10s' ? 'bg-purple-500' : 'bg-gray-200 hover:bg-purple-600'
+                    }`}
+                    onClick={() => handleAgeSelection('10')}
+                >
+                    10s
+                </button>
+                <button
+                    className={`p-4 rounded-lg ${
+                        selectedAge === '20s' ? 'bg-indigo-500' : 'bg-gray-200 hover:bg-indigo-600'
+                    }`}
+                    onClick={() => handleAgeSelection('20')}
+                >
+                    20s
+                </button>
+                <button
+                    className={`p-4 rounded-lg ${
+                        selectedAge === '30s+' ? 'bg-red-500' : 'bg-gray-200 hover:bg-red-600'
+                    }`}
+                    onClick={() => handleAgeSelection('30')}
+                >
+                    30s+
                 </button>
             </div>
             <div className="mt-4">
