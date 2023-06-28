@@ -14,9 +14,9 @@ export default function PostQuestion() {
     const [file, setFile] = useState('');
     const navigate = useNavigate();
     const categories = [
-        { id: 1, name: '사회생활' },
-        { id: 2, name: '자취/일상' },
-        { id: 3, name: '재테크/자산' },
+        { id: 1, name: '생활비' },
+        { id: 2, name: '자취끼니' },
+        { id: 3, name: '집안일' },
     ];
 
     const [cookies] = useCookies(['verification']);
@@ -109,17 +109,18 @@ export default function PostQuestion() {
     return (
         <form onSubmit={onSubmitHandler}>
             <div>
-                <span>카테고리를 선택해주세요(중복선택 불가)</span>
+                <h1 className="text-xl">카테고리를 선택해주세요(중복선택 불가)</h1>
                 {categories.map(item => (
-                    <div key={item.id}>
+                    <div className="flex" key={item.id}>
                         <input type="radio" id={item.id} name="category" value={item.name} onChange={onChange} />
                         <label htmlFor={item.id}>{item.name}</label>
                     </div>
                 ))}
             </div>
-            <div>
+            <div className="flex flex-col">
                 <label htmlFor="title">제목</label>
                 <input
+                    className="w-[319px] h-[44px] border-2 rounded-lg border-[#999999]"
                     type="text"
                     name="title"
                     value={values.title}
@@ -128,22 +129,24 @@ export default function PostQuestion() {
                     onChange={onChange}
                 />
             </div>
-            <div>
+            <div className="flex flex-col">
                 <label htmlFor="content">질문 내용</label>
                 <input
+                    className="w-[319px] h-[288px] border-2 rounded-lg border-[#999999]"
                     type="text"
                     name="content"
                     value={values.content}
-                    placeholder="나의 고민을 이야기해주세요"
+                    placeholder="자취와 관련된 나의 고민을 이야기해주세요! 상세히 적을수록 더욱 도움이 되는 답변을 얻을 수 있어요."
                     id="content"
                     onChange={onChange}
                 />
             </div>
-            <div>
+            <div className="flex flex-col">
+                <span>사진 첨부</span>
                 <input type="file" accept="image/*" name="image" onChange={onChangeFileHandler} />
                 {file && <img src={file} alt={file} />}
             </div>
-            <button>도움 요청하기</button>
+            <button>엄빠에게 도움 요청하기</button>
         </form>
     );
 }
