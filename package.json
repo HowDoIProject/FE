@@ -31,6 +31,7 @@
         "redux-devtools-extension": "^2.13.9",
         "redux-toolkit": "^1.1.2",
         "styled-components": "^6.0.0-rc.3",
+        "tailwind-scrollbar-hide": "^1.1.7",
         "web-vitals": "^2.1.0",
         "yarn": "^1.22.19"
     },
