@@ -14,6 +14,11 @@ const DoggysActivity = () => {
     const [showMyAdoptionHistory, setShowMyAdoptionHistory] = useState(false);
     const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
+    const [formValues, setFormValues] = useState({
+        title: '',
+        content: '',
+        image: '',
+    });
     // const [values, setValues] = useState({
     //     nickname: '',
     //     user_name: '',
@@ -46,6 +51,32 @@ const DoggysActivity = () => {
 
     //     fetchData();
     // }, [cookies.accessToken]);
+
+    const handleEditPost = async (post_id, updatedData) => {
+        try {
+            const response = await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, formValues, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    access: ` ${cookies.accessToken}`,
+                },
+            });
+
+            if (response.status === 200) {
+                console.log('Post updated successfully');
+                // Handle success, such as updating the UI or showing a success message
+            } else {
+                console.error('Post update failed');
+                // Handle failure, such as showing an error message or taking appropriate action
+            }
+        } catch (error) {
+            console.error('Error updating post:', error);
+            // Handle error, such as showing an error message or taking appropriate action
+        }
+    };
+
+    const handleFormSubmit = () => {
+        handleEditPost(`$(post_id)`, formValues);
+    };
 
     const handleFilterByPeriod = period => {
         const currentDate = new Date();
@@ -85,7 +116,7 @@ const DoggysActivity = () => {
             const response = await axios.get('https://howdoiapp.shop/api/mypage', {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `${cookies.accessToken}`,
+                    access: `${cookies.accessToken}`,
                 },
             });
 
@@ -119,8 +150,6 @@ const DoggysActivity = () => {
             }
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Handle the error case
-            // For example, you can show an error message to the user or handle the error state accordingly
         }
     };
 
@@ -221,6 +250,12 @@ const DoggysActivity = () => {
                             <p>Scraps: {post.scrap}</p>
                             <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
                             <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
+                            <button
+                                onClick={() => handleEditPost(post.post_id)}
+                                className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
+                            >
+                                수정하기
+                            </button>
                         </div>
                     ))}
                 </div>
