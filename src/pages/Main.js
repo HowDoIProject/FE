@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiPosts } from '../shared/Api';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import WelcomeCard from '../components/WelcomeCard';
+import { Link } from 'react-router-dom';
 
 export default function Main() {
     const queryClient = useQueryClient();
@@ -16,19 +17,17 @@ export default function Main() {
     const { data, error, isLoading } = useQuery(['posts'], () => apiPosts.getAll());
 
     console.log('topfive', topFive?.data.topfive);
-    console.log('allposts', data?.data.posts);
+    console.log('allposts', data);
 
     const slider1 = useRef(null);
     const slider2 = useRef(null);
 
     const slideLeft = sliderRef => {
         sliderRef.current.scrollLeft = sliderRef.current.scrollLeft - 280;
-        console.log(sliderRef);
     };
 
     const slideRight = sliderRef => {
         sliderRef.current.scrollLeft = sliderRef.current.scrollLeft + 280;
-        console.log(sliderRef);
     };
 
     return (
@@ -67,7 +66,16 @@ export default function Main() {
                 </div>
             </section>
             <section className="mb-10">
-                <h1 className="mb-3 ml-5">실시간 글</h1>
+                <div className="mb-3 mx-5 flex justify-between ">
+                    <h1 className="">실시간 글</h1>
+                    <Link to={`/posts`}>
+                        <div className="flex">
+                            <h1>전체보기</h1>
+                            <MdChevronRight size={20} />
+                        </div>
+                    </Link>
+                </div>
+
                 <div className="relative flex items-center">
                     <MdChevronLeft
                         className="opacity-50 cursor-pointer hover:opacity-100"
