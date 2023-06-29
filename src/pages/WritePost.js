@@ -4,7 +4,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 
-export default function PostQuestion() {
+export default function WritePost() {
     const [values, setValues] = useState({
         category: '',
         title: '',
