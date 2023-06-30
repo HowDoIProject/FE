@@ -11,6 +11,7 @@ import Confirm from '../pages/SignupPages/Confirm';
 import Interest from '../pages/SignupPages/Interest';
 import Main from '../pages/Main';
 import DoggysActivity from '../pages/doggypages/DoggysActivity';
+import momsActivity from '../pages/momspages/momsActivity';
 import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
@@ -37,6 +38,7 @@ const Router = () => {
                     {/* 마이페이지 */}
                     <Route path="/mypage" element={<MyPage />} />
                     <Route path="/activity" element={<DoggysActivity />} />
+                    <Route path="/mom_activity" element={<momsActivity />} />
 
                     {/* 멤버십 등록 단계 */}
                     <Route path="/interest" element={<Interest />} />
