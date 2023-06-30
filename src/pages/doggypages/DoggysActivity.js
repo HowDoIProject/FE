@@ -11,71 +11,59 @@ const DoggysActivity = () => {
     const [selectedOption, setSelectedOption] = useState('');
     const [showMyPost, setShowMyPost] = useState(false);
     const [showMyComment, setShowMyComment] = useState(false);
-    const [showMyAdoptionHistory, setShowMyAdoptionHistory] = useState(false);
+    const [showMyHistory, setShowMyHistory] = useState(false);
     const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
-    const [formValues, setFormValues] = useState({
+    const [selectedPostId, setSelectedPostId] = useState();
+    const [post, setPost] = useState({
         title: '',
         content: '',
         image: '',
     });
-    // const [values, setValues] = useState({
-    //     nickname: '',
-    //     user_name: '',
-    //     user_id: '',
-    //     //     post_id: '',
-    //     //     title: '',
-    //     //     content: '',
-    //     //     image: '',
-    //     //     like: 0,
-    //     //     scrap: 0,
-    //     //     created_at: '',
-    //     //     updated_at: '',
-    // });
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get('https://howdoiapp.shop/api/mypage', {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     Authorization: `Bearer ${cookies.accessToken}`, // Access the accessToken from cookies
-    //                 },
-    //             });
-    //             setPostData(response.data.mypage);
-    //             setFilteredPosts(response.data.mypage);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [cookies.accessToken]);
-
-    const handleEditPost = async (post_id, updatedData) => {
+    const handleUpdate = async (post_id, updatedData) => {
         try {
-            const response = await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, formValues, {
+            const response = await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, updatedData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    access: ` ${cookies.accessToken}`,
+                    access: `${cookies.accessToken}`,
                 },
             });
 
-            if (response.status === 200) {
-                console.log('Post updated successfully');
-                // Handle success, such as updating the UI or showing a success message
+            if (response.status === 201) {
+                console.log('게시글이 수정되었습니다');
             } else {
-                console.error('Post update failed');
-                // Handle failure, such as showing an error message or taking appropriate action
+                console.error('게시물 수정에 실패했습니다');
             }
         } catch (error) {
-            console.error('Error updating post:', error);
-            // Handle error, such as showing an error message or taking appropriate action
+            console.error('게시물 수정 중 오류가 발생했습니다:', error);
         }
     };
 
-    const handleFormSubmit = () => {
-        handleEditPost(`$(post_id)`, formValues);
+    const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
+        const updatedData = {
+            title: updatedTitle,
+            content: updatedContent,
+            image: updatedImage,
+        };
+
+        handleUpdate(post_id, updatedData);
+    };
+
+    const handleDelete = post_id => {
+        axios
+            .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    access: `${cookies.accessToken}`,
+                },
+            })
+            .then(response => {
+                console.log('Post successfully deleted');
+            })
+            .catch(error => {
+                console.error('Failed to delete post:', error);
+            });
     };
 
     const handleFilterByPeriod = period => {
@@ -110,7 +98,7 @@ const DoggysActivity = () => {
     const handleShowMyPost = async () => {
         setShowMyPost(true);
         setShowMyComment(false);
-        setShowMyAdoptionHistory(false);
+        setShowMyHistory(false);
 
         try {
             const response = await axios.get('https://howdoiapp.shop/api/mypage', {
@@ -124,8 +112,6 @@ const DoggysActivity = () => {
 
             if (mypage.length === 0) {
                 console.log('No posts found.');
-                // Handle the case when no posts are found
-                // For example, you can show a message to the user or update the state accordingly
             } else {
                 console.log('My Posts:');
                 mypage.forEach(item => {
@@ -144,7 +130,6 @@ const DoggysActivity = () => {
                     console.log('---');
                 });
 
-                // Update the state with the retrieved posts
                 setPostData(mypage);
                 setFilteredPosts(mypage);
             }
@@ -160,14 +145,25 @@ const DoggysActivity = () => {
     const handleShowMyComment = () => {
         setShowMyPost(false);
         setShowMyComment(true);
-        setShowMyAdoptionHistory(false);
+        setShowMyHistory(false);
     };
 
-    const handleShowMyAdoptionHistory = () => {
+    const handleShowMyHistory = () => {
         setShowMyPost(false);
         setShowMyComment(false);
-        setShowMyAdoptionHistory(true);
+        setShowMyHistory(true);
     };
+
+    useEffect(() => {
+        if (selectedPostId !== undefined) {
+            const selectedPost = filteredPosts.find(post => post.post_id === selectedPostId);
+            if (selectedPost) {
+                setPost({
+                    ...selectedPost,
+                });
+            }
+        }
+    }, [selectedPostId, filteredPosts]);
 
     return (
         <div className="max-w-md mx-auto p-4">
@@ -229,9 +225,9 @@ const DoggysActivity = () => {
                         My Comment
                     </button>
                     <button
-                        onClick={handleShowMyAdoptionHistory}
+                        onClick={handleShowMyHistory}
                         className={`px-4 py-2 rounded-md ${
-                            showMyAdoptionHistory ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                            showMyHistory ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
                         }`}
                     >
                         내 채택내역
@@ -243,30 +239,75 @@ const DoggysActivity = () => {
                     <h4 className="text-lg font-bold mb-2">My Posts</h4>
                     {filteredPosts.map(post => (
                         <div key={post.post_id} className="border p-4 rounded-lg mb-4">
-                            <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                            <p className="mb-2">{post.content}</p>
-                            <p>By: {post.nickname}</p>
-                            <p>Likes: {post.like}</p>
-                            <p>Scraps: {post.scrap}</p>
-                            <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
-                            <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
-                            <button
-                                onClick={() => handleEditPost(post.post_id)}
-                                className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
-                            >
-                                수정하기
-                            </button>
+                            {post.post_id === selectedPostId ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={post.title || ''}
+                                        onChange={e => setPost(prevPost => ({ ...prevPost, title: e.target.value }))}
+                                        placeholder="제목"
+                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
+                                    />
+                                    <textarea
+                                        value={post.content || ''}
+                                        onChange={e => setPost(prevPost => ({ ...prevPost, content: e.target.value }))}
+                                        placeholder="내용"
+                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
+                                    ></textarea>
+                                    <input
+                                        type="text"
+                                        value={post.image || ''}
+                                        onChange={e => setPost(prevPost => ({ ...prevPost, image: e.target.value }))}
+                                        placeholder="Language URL"
+                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
+                                    />
+
+                                    <button
+                                        onClick={() =>
+                                            handleEditPost(post.post_id, post.title, post.content, post.image)
+                                        }
+                                        className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2"
+                                    >
+                                        저장
+                                    </button>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                                    <p className="mb-2">{post.content}</p>
+                                    <p>By: {post.nickname}</p>
+                                    <p>Likes: {post.like}</p>
+                                    <p>Scraps: {post.scrap}</p>
+                                    <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
+                                    <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
+                                    <button
+                                        onClick={() => setSelectedPostId(post.post_id)}
+                                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
+                                    >
+                                        수정하기
+                                    </button>
+                                    <div>
+                                        <button
+                                            onClick={() => handleDelete(post.post_id)}
+                                            className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
+                                        >
+                                            삭제하기
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
             )}
+
             {showMyComment && (
                 <div>
                     <h4 className="text-lg font-bold">My Comments</h4>
                     {/* Render your comments */}
                 </div>
             )}
-            {showMyAdoptionHistory && (
+            {showMyHistory && (
                 <div>
                     <h4 className="text-lg font-bold">My Adoption History</h4>
                     {/* Render your adoption history */}

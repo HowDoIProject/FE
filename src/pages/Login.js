@@ -33,7 +33,7 @@ export default function Login() {
                     const { access } = response.data;
 
                     setCookie('accessToken', access, { path: '/', secure: true });
-                    navigate('/');
+                    navigate('/Mypage');
                 } else {
                     console.error('Login failed');
                 }
