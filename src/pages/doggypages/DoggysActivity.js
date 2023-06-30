@@ -30,8 +30,8 @@ const DoggysActivity = () => {
                 },
             });
 
-            if (response.status === 201) {
-                console.log('게시글이 수정되었습니다');
+            if (response.status === 200) {
+                console.log(response);
             } else {
                 console.error('게시물 수정에 실패했습니다');
             }
@@ -39,7 +39,6 @@ const DoggysActivity = () => {
             console.error('게시물 수정 중 오류가 발생했습니다:', error);
         }
     };
-
     const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
         const updatedData = {
             title: updatedTitle,
@@ -49,7 +48,6 @@ const DoggysActivity = () => {
 
         handleUpdate(post_id, updatedData);
     };
-
     const handleDelete = post_id => {
         axios
             .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
@@ -158,9 +156,7 @@ const DoggysActivity = () => {
         if (selectedPostId !== undefined) {
             const selectedPost = filteredPosts.find(post => post.post_id === selectedPostId);
             if (selectedPost) {
-                setPost({
-                    ...selectedPost,
-                });
+                setPost(selectedPost);
             }
         }
     }, [selectedPostId, filteredPosts]);
@@ -244,20 +240,47 @@ const DoggysActivity = () => {
                                     <input
                                         type="text"
                                         value={post.title || ''}
-                                        onChange={e => setPost(prevPost => ({ ...prevPost, title: e.target.value }))}
+                                        onChange={e => {
+                                            const updatedTitle = e.target.value;
+                                            setFilteredPosts(prevPosts =>
+                                                prevPosts.map(prevPost =>
+                                                    prevPost.post_id === post.post_id
+                                                        ? { ...prevPost, title: updatedTitle }
+                                                        : prevPost
+                                                )
+                                            );
+                                        }}
                                         placeholder="제목"
                                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                                     />
                                     <textarea
                                         value={post.content || ''}
-                                        onChange={e => setPost(prevPost => ({ ...prevPost, content: e.target.value }))}
+                                        onChange={e => {
+                                            const updatedContent = e.target.value;
+                                            setFilteredPosts(prevPosts =>
+                                                prevPosts.map(prevPost =>
+                                                    prevPost.post_id === post.post_id
+                                                        ? { ...prevPost, content: updatedContent }
+                                                        : prevPost
+                                                )
+                                            );
+                                        }}
                                         placeholder="내용"
                                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                                     ></textarea>
                                     <input
                                         type="text"
                                         value={post.image || ''}
-                                        onChange={e => setPost(prevPost => ({ ...prevPost, image: e.target.value }))}
+                                        onChange={e => {
+                                            const updatedImage = e.target.value;
+                                            setFilteredPosts(prevPosts =>
+                                                prevPosts.map(prevPost =>
+                                                    prevPost.post_id === post.post_id
+                                                        ? { ...prevPost, image: updatedImage }
+                                                        : prevPost
+                                                )
+                                            );
+                                        }}
                                         placeholder="Language URL"
                                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                                     />
