@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom'; // Updated
 import jwtDecode from 'jwt-decode';
-import ProfilePicture from './ProfilePic';
+import DoggyProfilePicture from './DoggyProfilePic';
+import MomProfilePicture from './MomProfilePic';
 
 const MyPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +23,11 @@ const MyPage = () => {
     };
 
     const handleShowActivity = () => {
-        navigate('/activity', { state: { user_type, nickname, user_id } });
+        if (user_type === '엄빠') {
+            navigate('/mom_activity', { state: { user_type, nickname, user_id } });
+        } else {
+            navigate('/activity', { state: { user_type, nickname, user_id } });
+        }
     };
 
     return (
@@ -33,18 +38,20 @@ const MyPage = () => {
                 </div>
 
                 <div className="bg-white-100 rounded-lg p-4">
-                    <ProfilePicture />
-                    <div>
+                    {user_type === 'Mom' ? <MomProfilePicture /> : <DoggyProfilePicture />}
+
+                    <div className="bg-white-100 rounded-lg p-4">
                         <h1>
                             {nickname && nickname.nickname}
                             {user_type && ` ${user_type.user_type}`}님
                         </h1>
                     </div>
-
-                    <button onClick={handleShowActivity}>내 활동 보기</button>
+                    <div className="bg-white-100 rounded-lg p-4">
+                        <button onClick={handleShowActivity}>내 활동 보기</button>
+                    </div>
                 </div>
 
-                <div className="bg-pink-200 rounded-lg p-4"></div>
+                <div className="bg-white-200 rounded-lg p-4"></div>
             </div>
         </div>
     );

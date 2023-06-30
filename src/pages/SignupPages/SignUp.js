@@ -25,16 +25,16 @@ export default function SignUp() {
 
     return (
         <>
-            <div className="flex flex-col gap-6 p-4 border-2 border-black items-center">
+            <div className="flex flex-col gap-6 p-4 items-center">
                 <div className="text-xl font-bold">회원가입</div>
                 <div className="flex flex-col items-center gap-6 w-full max-w-md p-4">
-                    <div className="relative w-80 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-left">
-                        <p>엄빠없는 세상은 험하다!</p>
+                    <div className="relative w-50 h-15 right-20 max-w-xs p-5 bg-whitesmoke-300 rounded-lg text-center ml-left">
+                        <p>Q. 욕실거울에 때가 잘 안져요 ㅠ_ㅠ</p>
                     </div>
                     <div className="relative w-50 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-auto">
-                        <p>우리 강아지 잘 하고 있나?</p>
+                        <p>A. 주방세제를 활용해보는 거 어때요?</p>
                     </div>
-                    <div className="relative w-50 h-15 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
+                    <div className="relative w-50 h-20 max-w-xs p-5 bg-gray-300 rounded-lg text-center ml-right">
                         <p>그런 모든 고민들 하우두아이에 내려놓으세요!</p>
                     </div>
                     <div className="text-center">
