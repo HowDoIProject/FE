@@ -29,20 +29,19 @@ export default function MyPage() {
     };
 
     return (
-        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
-            <div className="flex flex-col gap-4">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-gray-800">My Page</h1>
-                </div>
+        <div className="bg-white-100 rounded-lg p-4">
+            {user_type === 'Mom' ? <MomProfilePicture /> : <DoggyProfilePicture />}
 
-                <div className="bg-white-100 rounded-lg p-4">
-                    {user_type === 'Mom' ? <MomProfilePicture /> : <DoggyProfilePicture />}
-
-                    <div className="bg-white-100 rounded-lg p-4">
-                        <h1>
-                            {nickname && nickname.nickname}
-                            {user_type && ` ${user_type.user_type}`}님
-                        </h1>
+            <div className="bg-white-100 rounded-lg p-4">
+                <h1>
+                    {nickname && nickname.nickname}
+                    {user_type && ` ${user_type.user_type}`}님
+                </h1>
+            </div>
+            <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
+                <div className="flex flex-col gap-4">
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-2xl font-bold text-gray-800">My Page</h1>
                     </div>
                     <div className="bg-white-100 rounded-lg p-4">
                         <button onClick={handleShowActivity}>내 활동 보기</button>
