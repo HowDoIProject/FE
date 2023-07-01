@@ -1,4 +1,8 @@
 import React from 'react';
+import main from '../assets/icon/main.svg';
+import write from '../assets/icon/write.svg';
+import posts from '../assets/icon/posts.svg';
+import mypage from '../assets/icon/mypage.svg';
 
 export default function Footer() {
     return (
@@ -7,13 +11,13 @@ export default function Footer() {
                 <a href="/" className="no-underline hover:text-decoration-underline">
                     메인
                 </a>
-                <a href="/PostQuestion" className="no-underline hover:text-decoration-underline">
+                <a href="/posts" className="no-underline hover:text-decoration-underline">
                     게시판
                 </a>
-                <a href="/ScrapList" className="no-underline hover:text-decoration-underline">
+                <a href="/write" className="no-underline hover:text-decoration-underline">
                     글 올리기
                 </a>
-                <a href="/MyPage" className="no-underline hover:text-decoration-underline">
+                <a href="/mypage" className="no-underline hover:text-decoration-underline">
                     마이페이지
                 </a>
             </div>

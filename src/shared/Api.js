@@ -24,4 +24,7 @@ export const apiPosts = {
     getAll: () => {
         return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/post`);
     },
+    getDetail: post_id => {
+        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/post/${post_id}`);
+    },
 };
