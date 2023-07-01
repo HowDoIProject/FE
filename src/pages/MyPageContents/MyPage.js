@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom'; // Updated
+import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import DoggyProfilePicture from './DoggyProfilePic';
 import MomProfilePicture from './MomProfilePic';
 
-const MyPage = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-
+export default function MyPage() {
     const navigate = useNavigate();
 
     const [cookies] = useCookies(['accessToken']);
@@ -18,15 +16,15 @@ const MyPage = () => {
     const nickname = decodedToken.nickname;
     const user_id = decodedToken.user_id;
 
-    const handlePageChange = page => {
-        setCurrentPage(page);
-    };
-
     const handleShowActivity = () => {
         if (user_type === '엄빠') {
-            navigate('/mom_activity', { state: { user_type, nickname, user_id } });
+            navigate('/momactivity', {
+                state: { user_type, nickname, user_id },
+            });
         } else {
-            navigate('/activity', { state: { user_type, nickname, user_id } });
+            navigate('/activity', {
+                state: { user_type, nickname, user_id },
+            });
         }
     };
 
@@ -43,11 +41,14 @@ const MyPage = () => {
                     <div className="bg-white-100 rounded-lg p-4">
                         <h1>
                             {nickname && nickname.nickname}
-                            {user_type && ` ${user_type.user_type}`}님
+                            {user_type && ` ${user_type.user}`}님
                         </h1>
                     </div>
                     <div className="bg-white-100 rounded-lg p-4">
                         <button onClick={handleShowActivity}>내 활동 보기</button>
+                    </div>
+                    <div className="bg-white-100 rounded-lg p-4">
+                        <button>고객센터</button>
                     </div>
                 </div>
 
@@ -55,6 +56,4 @@ const MyPage = () => {
             </div>
         </div>
     );
-};
-
-export default MyPage;
+}

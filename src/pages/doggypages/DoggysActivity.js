@@ -326,13 +326,13 @@ const DoggysActivity = () => {
 
             {showMyComment && (
                 <div>
-                    <h4 className="text-lg font-bold">My Comments</h4>
+                    <h4 className="text-lg font-bold">내 댓글</h4>
                     {/* Render your comments */}
                 </div>
             )}
             {showMyHistory && (
                 <div>
-                    <h4 className="text-lg font-bold">My Adoption History</h4>
+                    <h4 className="text-lg font-bold">내 채택내역</h4>
                     {/* Render your adoption history */}
                 </div>
             )}

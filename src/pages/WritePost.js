@@ -19,7 +19,7 @@ export default function WritePost() {
         { id: 3, name: '집안일' },
     ];
 
-    const [cookies] = useCookies(['verification']);
+    const [cookies] = useCookies(['accessToken']);
 
     // const queryClient = useQueryClient();
 
@@ -59,7 +59,7 @@ export default function WritePost() {
             .post(`${process.env.REACT_APP_SERVER_URL}/api/uploads`, imgFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    access: cookies.verification,
+                    access: cookies.accessToken,
                 },
             })
             .then(res => setValues({ ...values, image: res.data.url }))
@@ -94,7 +94,7 @@ export default function WritePost() {
         axios
             .post(`${process.env.REACT_APP_SERVER_URL}/api/post`, values, {
                 headers: {
-                    access: cookies.verification,
+                    access: cookies.accessToken,
                 },
             })
             .then(res => {
