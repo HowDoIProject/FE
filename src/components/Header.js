@@ -27,7 +27,7 @@ export default function Header() {
     };
 
     return (
-        <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20">
+        <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
             <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
                 <img className="h-10" src={logo} alt="" />
                 {cookies['verification-token'] ? (

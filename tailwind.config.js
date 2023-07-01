@@ -20,6 +20,9 @@ module.exports = {
                 bgjoin: '#FFFCF7',
                 bgcard: '#FFFBEC',
             },
+            boxShadow: {
+                mainbox: '0px 2px 15px 0px rgba(0, 0, 0, 0.10)',
+            },
             fontFamily: {},
         },
         fontSize: {},

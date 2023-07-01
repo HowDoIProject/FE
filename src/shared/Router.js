@@ -30,7 +30,7 @@ const Router = () => {
                     {/* 게시판 화면 관련 */}
                     <Route path="/posts" element={<PostList />} />
                     {/* 상세 화면 관련 */}
-                    <Route path="/posts/:id" element={<PostDetail />} />
+                    <Route path="/post/:post_id" element={<PostDetail />} />
                     {/* 생성 화면 관련 */}
                     <Route path="/write" element={<WritePost />} />
                     {/* 스크랩 화면 관련 */}
@@ -44,7 +44,7 @@ const Router = () => {
                     <Route path="/interest" element={<Interest />} />
                     <Route path="/userinfo" element={<UserInfo />} />
                     <Route path="/confirm" element={<Confirm />} />
-                    <Route path="/signup" element={<SignUp />}></Route>
+                    <Route path="/signup" element={<SignUp />} />
                 </Route>
             </Routes>
         </BrowserRouter>
