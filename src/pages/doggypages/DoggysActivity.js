@@ -2,25 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router-dom';
+import PostListCard from '../../components/PostListCard';
 
 const DoggysActivity = () => {
     const location = useLocation();
     const { user_type, nickname, user_id } = location.state || {};
     const [postData, setPostData] = useState([]);
+    const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
     const [showMyPost, setShowMyPost] = useState(false);
-    const [showMyComment, setShowMyComment] = useState(false);
+    const [showMyComments, setShowMyComments] = useState(false);
     const [showMyHistory, setShowMyHistory] = useState(false);
     const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
     const [selectedPostId, setSelectedPostId] = useState();
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [comments, setComments] = useState([]);
     const [post, setPost] = useState({
         title: '',
         content: '',
         image: '',
     });
 
+    const handleButtonClick = buttonName => {
+        setSelectedButton(buttonName === selectedButton ? null : buttonName);
+    };
+
+    // 게시물 수정 요청 처리
     const handleUpdate = async (post_id, updatedData) => {
         try {
             const response = await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, updatedData, {
@@ -39,6 +48,7 @@ const DoggysActivity = () => {
             console.error('게시물 수정 중 오류가 발생했습니다:', error);
         }
     };
+
     const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
         const updatedData = {
             title: updatedTitle,
@@ -48,6 +58,8 @@ const DoggysActivity = () => {
 
         handleUpdate(post_id, updatedData);
     };
+
+    // 게시물 삭제 요청 처리
     const handleDelete = post_id => {
         axios
             .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
@@ -64,6 +76,7 @@ const DoggysActivity = () => {
             });
     };
 
+    // 기간별 필터링 처리
     const handleFilterByPeriod = period => {
         const currentDate = new Date();
         let filteredData = [];
@@ -89,13 +102,23 @@ const DoggysActivity = () => {
             );
         }
 
+        const filteredComments = comments.filter(comment => {
+            const createdAtDate = new Date(comment.created_at);
+            const diffInMonths =
+                (currentDate.getFullYear() - createdAtDate.getFullYear()) * 12 +
+                (currentDate.getMonth() - createdAtDate.getMonth());
+            return diffInMonths <= 6; // Change the condition as per your requirement (e.g., 1 month, 3 months, etc.)
+        });
+
         setFilteredPosts(filteredData);
+        setComments(filteredComments);
         setSelectedOption(period);
     };
 
+    // 내 게시물 보기 처리
     const handleShowMyPost = async () => {
         setShowMyPost(true);
-        setShowMyComment(false);
+        setShowMyComments(false);
         setShowMyHistory(false);
 
         try {
@@ -111,23 +134,7 @@ const DoggysActivity = () => {
             if (mypage.length === 0) {
                 console.log('No posts found.');
             } else {
-                console.log('My Posts:');
-                mypage.forEach(item => {
-                    const { post_id, nickname, title, content, image, like_num, scrap_num, created_at, updated_at } =
-                        item;
-
-                    console.log('Post ID:', post_id);
-                    console.log('Nickname:', nickname);
-                    console.log('Title:', title);
-                    console.log('Content:', content);
-                    console.log('Image:', image);
-                    console.log('Likes:', like_num);
-                    console.log('Scraps:', scrap_num);
-                    console.log('Created At:', created_at);
-                    console.log('Updated At:', updated_at);
-                    console.log('---');
-                });
-
+                console.log('My Posts:', mypage);
                 setPostData(mypage);
                 setFilteredPosts(mypage);
             }
@@ -140,15 +147,71 @@ const DoggysActivity = () => {
         handleShowMyPost();
     }, [cookies.accessToken]);
 
-    const handleShowMyComment = () => {
+    // 내 댓글 보기 처리
+    const handleShowMyComment = async () => {
         setShowMyPost(false);
-        setShowMyComment(true);
+        setShowMyComments(true);
         setShowMyHistory(false);
+
+        try {
+            const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    access: cookies.accessToken,
+                },
+            });
+
+            const { data } = response;
+
+            if (Array.isArray(data)) {
+                if (data.length > 0) {
+                    console.log('My Comments:', data);
+                    setComments(data);
+                } else {
+                    console.log('No comments found.');
+                }
+            } else {
+                console.log('Invalid data format for comments.');
+            }
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
     };
+
+    useEffect(() => {
+        const handleShowMyComment = async () => {
+            setShowMyPost(false);
+            setShowMyComments(true);
+            setShowMyHistory(false);
+
+            try {
+                const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: cookies.accessToken,
+                    },
+                });
+
+                const { data } = response;
+
+                if (Array.isArray(data.mycomment) && data.mycomment.length > 0) {
+                    console.log('My Comments:', data.mycomment);
+                    setComments(data.mycomment);
+                } else {
+                    console.log('No comments found.');
+                    setComments([]);
+                }
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
+        handleShowMyComment();
+    }, [cookies.accessToken]);
 
     const handleShowMyHistory = () => {
         setShowMyPost(false);
-        setShowMyComment(false);
+        setShowMyComments(false);
         setShowMyHistory(true);
     };
 
@@ -163,78 +226,92 @@ const DoggysActivity = () => {
 
     return (
         <div className="max-w-md mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">My Activity</h2>
+            <h2 className="text-2xl font-bold mb-4 text-center">내 활동 보기</h2>
             <div className="mb-4">
-                <h3 className="text-lg font-bold mb-2">Filter by Period</h3>
-                <div className="flex space-x-4">
-                    <button
-                        onClick={() => handleFilterByPeriod('today')}
-                        className={`px-4 py-2 rounded-md ${
-                            selectedOption === 'today' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-                        }`}
-                    >
-                        Today
-                    </button>
-                    <button
-                        onClick={() => handleFilterByPeriod('1month')}
-                        className={`px-4 py-2 rounded-md ${
-                            selectedOption === '1month' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-                        }`}
-                    >
-                        1 Month
-                    </button>
-                    <button
-                        onClick={() => handleFilterByPeriod('3months')}
-                        className={`px-4 py-2 rounded-md ${
-                            selectedOption === '3months' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-                        }`}
-                    >
-                        3 Months
-                    </button>
-                    <button
-                        onClick={() => handleFilterByPeriod('6months')}
-                        className={`px-4 py-2 rounded-md ${
-                            selectedOption === '6months' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-                        }`}
-                    >
-                        6 Months
-                    </button>
-                </div>
+                <h3 className="text-lg font-bold mb-2"></h3>
             </div>
-            <div className="mb-4">
-                <h3 className="text-lg font-bold mb-2">Show</h3>
-                <div className="flex space-x-4">
+            <div className="mb-8">
+                <h3 className="text-lg font-bold text-center mb-10"></h3>
+                <div className="flex justify-center space-x-8 mb-10">
                     <button
                         onClick={handleShowMyPost}
                         className={`px-4 py-2 rounded-md ${
-                            showMyPost ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                            showMyPost
+                                ? 'bg-white-500 text-black border-b-2 border-black'
+                                : 'bg-white-200 text-black-800'
                         }`}
                     >
-                        My Post
+                        내 작성글
                     </button>
+
                     <button
                         onClick={handleShowMyComment}
                         className={`px-4 py-2 rounded-md ${
-                            showMyComment ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                            showMyComments
+                                ? 'bg-white-500 text-black border-b-2 border-black'
+                                : 'bg-white-200 text-black-800'
                         }`}
                     >
-                        My Comment
+                        내 댓글
                     </button>
+
                     <button
                         onClick={handleShowMyHistory}
                         className={`px-4 py-2 rounded-md ${
-                            showMyHistory ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                            showMyHistory
+                                ? 'bg-white-500 text-black border-b-2 border-black'
+                                : 'bg-white-200 text-black-800'
                         }`}
                     >
-                        내 채택내역
+                        내 채택
                     </button>
+                </div>
+
+                <div className="flex justify-center mb-7">
+                    <div className="flex space-x-5">
+                        <button
+                            onClick={() => handleFilterByPeriod('today')}
+                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
+                                selectedOption === 'today' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
+                            }`}
+                        >
+                            오늘
+                        </button>
+
+                        <button
+                            onClick={() => handleFilterByPeriod('1month')}
+                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
+                                selectedOption === '1month' ? 'bg-orange-400 text-white' : 'bg-gray-200 text-white-800'
+                            }`}
+                        >
+                            1 개월
+                        </button>
+
+                        <button
+                            onClick={() => handleFilterByPeriod('3months')}
+                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
+                                selectedOption === '3months' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
+                            }`}
+                        >
+                            3 개월
+                        </button>
+
+                        <button
+                            onClick={() => handleFilterByPeriod('6months')}
+                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
+                                selectedOption === '6months' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
+                            }`}
+                        >
+                            6 개월
+                        </button>
+                    </div>
                 </div>
             </div>
             {showMyPost && (
                 <div>
-                    <h4 className="text-lg font-bold mb-2">My Posts</h4>
+                    <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
                     {filteredPosts.map(post => (
-                        <div key={post.post_id} className="border p-4 rounded-lg mb-4">
+                        <div key={post.post_id} className="border p-4 rounded-lg mb-4 bg-gray-100">
                             {post.post_id === selectedPostId ? (
                                 <div>
                                     <input
@@ -295,47 +372,44 @@ const DoggysActivity = () => {
                                     </button>
                                 </div>
                             ) : (
-                                <div>
-                                    <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                                    <p className="mb-2">{post.content}</p>
-                                    <p>By: {post.nickname}</p>
-                                    <p>Likes: {post.like}</p>
-                                    <p>Scraps: {post.scrap}</p>
-                                    <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
-                                    <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
-                                    <button
-                                        onClick={() => setSelectedPostId(post.post_id)}
-                                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
-                                    >
-                                        수정하기
-                                    </button>
-                                    <div>
-                                        <button
-                                            onClick={() => handleDelete(post.post_id)}
-                                            className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2"
-                                        >
-                                            삭제하기
-                                        </button>
-                                    </div>
+                                <div
+                                    key={post.post_id}
+                                    className="w-full h-[140px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                >
+                                    <PostListCard post={post} />
                                 </div>
                             )}
                         </div>
                     ))}
                 </div>
             )}
+            {showMyComments && (
+                <div>
+                    <h4 className="text-lg font-bold">My Comment</h4>
+                    {Array.isArray(comments) && comments.length > 0 ? (
+                        comments.map(comment => (
+                            <div key={comment.comment_id} className="border p-4 rounded-lg my-4">
+                                <p>{comment.comment}</p>
+                                <p>User ID: {comment.user_id}</p>
+                                <p>Category: {comment.category}</p>
+                                <p>Chosen: {comment.chosen === 1 ? 'Yes' : 'No'}</p>
+                                <p>Created At: {new Date(comment.created_at).toLocaleDateString()}</p>
+                                <p>Updated At: {new Date(comment.updated_at).toLocaleDateString()}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No comments found.</p>
+                    )}
+                </div>
+            )}
 
-            {showMyComment && (
-                <div>
-                    <h4 className="text-lg font-bold">My Comments</h4>
-                    {/* Render your comments */}
-                </div>
-            )}
-            {showMyHistory && (
-                <div>
-                    <h4 className="text-lg font-bold">My Adoption History</h4>
-                    {/* Render your adoption history */}
-                </div>
-            )}
+            {/* 
+         {showMyHistory && (
+                // <div>
+                //     <h4 className="text-lg font-bold">내 채택내역</h4>
+                //      Render your adoption history
+                // </div>
+            )}  */}
         </div>
     );
 };

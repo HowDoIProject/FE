@@ -30,7 +30,7 @@ export default function Header() {
         <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
             <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
                 <img className="h-10" src={logo} alt="" />
-                {/* {cookies['verification-token'] ? (
+                {cookies['verification-token'] ? (
                     // 토큰 쿠키가 존재하면 로그아웃 버튼 표시
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -44,9 +44,9 @@ export default function Header() {
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleLogin}
                     >
-                        로그인
+                        로그인  
                     </button>
-                )} */}
+                )}
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ import PostListCard from '../components/PostListCard';
 
 export default function PostList() {
     const getPostsTimeline = async ({ pageParam = 1, filter = 0, category = 0 }) => {
-        const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/list/${filter}/${category}/${pageParam}`);
+        const res = await axios.get(`https://howdoiapp.shop/api/list/${filter}/${category}/${pageParam}`);
         console.log(res);
         return res;
     };
@@ -42,6 +42,23 @@ export default function PostList() {
     }, [loading]);
 
     return (
+        // <>
+        //     {/* <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()}>
+        //         {' '}
+
+        //         {topFive?.data.topfive.map(post => {
+        //             return (
+        //                 <div
+        //                     key={post.post_id}
+        //                     className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+        //                 >
+        //                     <PostListCard post={post} />
+        //                 </div>
+        //             );
+        //         })}
+        //     </InfiniteScroll> */}
+        // </>
+
         <div className="relative">
             {data?.pages[0].data.mypage.map(post => {
                 return (
