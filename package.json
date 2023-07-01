@@ -14,11 +14,8 @@
         "@testing-library/user-event": "^13.2.1",
         "axios": "^1.4.0",
         "eslint-plugin-react": "^7.32.2",
-
-        "jwt-decode": "^3.1.2",
-
         "framer-motion": "^10.12.17",
-
+        "jwt-decode": "^3.1.2",
         "react": "^18.2.0",
         "react-cookie": "^4.1.1",
         "react-dom": "^18.2.0",
@@ -36,6 +33,7 @@
         "redux-toolkit": "^1.1.2",
         "styled-components": "^6.0.0-rc.3",
         "tailwind-scrollbar-hide": "^1.1.7",
+        "timeago.js": "^4.0.2",
         "web-vitals": "^2.1.0",
         "yarn": "^1.22.19"
     },

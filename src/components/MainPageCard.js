@@ -6,7 +6,7 @@ export default function MainPageCard({ post }) {
         <Link to={`/post/${post.post_id}`}>
             <div className="w-full h-full flex flex-col gap-6 pt-4 pb-10 items-center rounded-xl bg-bgjoin shadow-mainbox">
                 <div>{post.category}</div>
-                <div className="w-[105px] line-clamp-3">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+                <div className="w-[105px] line-clamp-3">{post.title}</div>
             </div>
         </Link>
     );
