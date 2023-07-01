@@ -17,7 +17,7 @@ export default function MyPage() {
     const user_id = decodedToken.user_id;
 
     const handleShowActivity = () => {
-        if (user_type === '엄빠') {
+        if (user_type.user_type === '엄빠') {
             navigate('/momactivity', {
                 state: { user_type, nickname, user_id },
             });
@@ -41,7 +41,7 @@ export default function MyPage() {
                     <div className="bg-white-100 rounded-lg p-4">
                         <h1>
                             {nickname && nickname.nickname}
-                            {user_type && ` ${user_type.user}`}님
+                            {user_type && ` ${user_type.user_type}`}님
                         </h1>
                     </div>
                     <div className="bg-white-100 rounded-lg p-4">

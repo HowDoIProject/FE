@@ -42,24 +42,23 @@ export default function PostList() {
     }, [loading]);
 
     return (
-<<<<<<< HEAD
-        <>
-            {/* <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()}>
-                {' '}
-                
-                {topFive?.data.topfive.map(post => {
-                    return (
-                        <div
-                            key={post.post_id}
-                            className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
-                        >
-                            <PostListCard post={post} />
-                        </div>
-                    );
-                })}
-            </InfiniteScroll> */}
-        </>
-=======
+        // <>
+        //     {/* <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()}>
+        //         {' '}
+
+        //         {topFive?.data.topfive.map(post => {
+        //             return (
+        //                 <div
+        //                     key={post.post_id}
+        //                     className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+        //                 >
+        //                     <PostListCard post={post} />
+        //                 </div>
+        //             );
+        //         })}
+        //     </InfiniteScroll> */}
+        // </>
+
         <div className="relative">
             {data?.pages[0].data.mypage.map(post => {
                 return (
@@ -73,6 +72,5 @@ export default function PostList() {
             })}
             <div className="absolute w-10 h-25" ref={target}></div>
         </div>
->>>>>>> 302699abf04ab7895646910388ec9c10f429af67
     );
 }
