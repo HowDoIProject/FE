@@ -32,11 +32,11 @@ export default function Main() {
 
     return (
         <>
-            <div className="flex justify-center mx-5">
+            <div className="flex justify-center mx-5 my-9">
                 <WelcomeCard />
             </div>
-            <section className="mb-10">
-                <h1 className="mb-3 ml-5">top5 글</h1>
+            <section className="mb-7">
+                <h1 className="ml-7 font-bold">많은 도움됐어요를 받은글 TOP5</h1>
                 <div className="relative flex items-center">
                     <MdChevronLeft
                         className="opacity-50 cursor-pointer hover:opacity-100"
@@ -51,7 +51,7 @@ export default function Main() {
                             return (
                                 <div
                                     key={post.post_id}
-                                    className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
                                 >
                                     <MainPageCard post={post} />
                                 </div>
@@ -65,17 +65,16 @@ export default function Main() {
                     />
                 </div>
             </section>
-            <section className="mb-10">
-                <div className="mb-3 mx-5 flex justify-between ">
-                    <h1 className="">실시간 글</h1>
+            <section className="mb-7">
+                <div className="ml-7 flex justify-between ">
+                    <h1 className="font-bold">실시간 글보기</h1>
                     <Link to={`/posts`}>
-                        <div className="flex">
-                            <h1>전체보기</h1>
-                            <MdChevronRight size={20} />
+                        <div className="flex items-center">
+                            <h1 className="text-sm text-gray_02">전체보기</h1>
+                            <MdChevronRight className="text-gray_02" size={20} />
                         </div>
                     </Link>
                 </div>
-
                 <div className="relative flex items-center">
                     <MdChevronLeft
                         className="opacity-50 cursor-pointer hover:opacity-100"
@@ -90,7 +89,7 @@ export default function Main() {
                             return (
                                 <div
                                     key={post.post_id}
-                                    className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
                                 >
                                     <MainPageCard post={post} />
                                 </div>
@@ -104,8 +103,8 @@ export default function Main() {
                     />
                 </div>
             </section>
-            <section className="mb-10">
-                <h1 className="mb-3 ml-5">추천 글</h1>
+            <section className="mb-7">
+                <h1 className="ml-7 font-bold">회원님을 위한 추천글</h1>
             </section>
         </>
     );
