@@ -7,7 +7,7 @@ import PostListCard from '../components/PostListCard';
 
 export default function PostList() {
     const getPostsTimeline = async ({ pageParam = 1, filter = 0, category = 0 }) => {
-        const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/list/${filter}/${category}/${pageParam}`);
+        const res = await axios.get(`https://howdoiapp.shop/api/list/${filter}/${category}/${pageParam}`);
         console.log(res);
         return res;
     };

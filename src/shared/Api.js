@@ -6,7 +6,7 @@ export const api = axios.create({
     headers: {
         /* */
     },
-    withCredentials: true, // set withCredentials to true globally
+    // withCredentials: true, // set withCredentials to true globally
 });
 
 export const AuthApi = {
@@ -19,12 +19,12 @@ export const AuthApi = {
 
 export const apiPosts = {
     getTopFive: () => {
-        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/topfive`);
+        return api.get(`/api/topfive`);
     },
     getAll: () => {
-        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/post`);
+        return api.get(`/api/post`);
     },
     getDetail: post_id => {
-        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/post/${post_id}`);
+        return api.get(`api/post/${post_id}`);
     },
 };

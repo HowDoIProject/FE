@@ -19,7 +19,7 @@ export default function WritePost() {
         { id: 3, name: '집안일' },
     ];
 
-    const [cookies] = useCookies(['verification']);
+    const [cookies] = useCookies(['accessToken']);
 
     // const queryClient = useQueryClient();
 
@@ -56,10 +56,10 @@ export default function WritePost() {
         const file = e.target.files[0];
         imgFormData.append(name, file);
         axios
-            .post(`${process.env.REACT_APP_SERVER_URL}/api/uploads`, imgFormData, {
+            .post(`https://howdoiapp.shop/api/uploads`, imgFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    access: cookies.verification,
+                    access: cookies.accessToken,
                 },
             })
             .then(res => setValues({ ...values, image: res.data.url }))
@@ -92,9 +92,9 @@ export default function WritePost() {
     const onSubmitHandler = e => {
         e.preventDefault();
         axios
-            .post(`${process.env.REACT_APP_SERVER_URL}/api/post`, values, {
+            .post(`https://howdoiapp.shop/api/post`, values, {
                 headers: {
-                    access: cookies.verification,
+                    access: cookies.accessToken,
                 },
             })
             .then(res => {
@@ -109,7 +109,7 @@ export default function WritePost() {
     return (
         <form onSubmit={onSubmitHandler}>
             <div>
-                <h1 className="text-xl">카테고리를 선택해주세요(중복선택 불가)</h1>
+                <h1 className="mt-8 mb-3">카테고리를 선택해주세요(중복선택 불가)</h1>
                 {categories.map(item => (
                     <div className="flex" key={item.id}>
                         <input type="radio" id={item.id} name="category" value={item.name} onChange={onChange} />
