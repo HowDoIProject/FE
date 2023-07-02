@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/icon/logo.svg';
 
 export default function Header() {
@@ -29,7 +29,9 @@ export default function Header() {
     return (
         <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
             <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
-                <img className="h-10" src={logo} alt="" />
+                <Link to={'/'}>
+                    <img className="h-10" src={logo} alt="" />
+                </Link>
                 {cookies['verification-token'] ? (
                     // 토큰 쿠키가 존재하면 로그아웃 버튼 표시
                     <button
