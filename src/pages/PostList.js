@@ -30,7 +30,9 @@ export default function PostList() {
             //로딩되었을 때만 실행
             const observer = new IntersectionObserver(
                 entries => {
+                    console.log(entries);
                     if (entries[0].isIntersecting) {
+                        console.log('observer', observer);
                         fetchNextPage();
                     }
                 },

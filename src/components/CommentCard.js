@@ -8,11 +8,9 @@ import commentdot from '../assets/icon/commentdot.svg';
 import { formatAgo } from '../util/date';
 import ModalComment from './ModalComment';
 
-export default function CommentCard({ commentInfo, deleteCommentMutate, updateCommentMutate, post_id }) {
+export default function CommentCard({ commentInfo, post_id }) {
     const { comment, created_at, image, nickname, user_type, comment_id } = commentInfo || {};
     const [modalOpen, setModalOpen] = useState(false);
-
-    console.log('commentInfo', commentInfo);
 
     const isDog = user_type === '강아지';
 
@@ -26,14 +24,7 @@ export default function CommentCard({ commentInfo, deleteCommentMutate, updateCo
                     <div className="text-gray_02">{isDog ? '강아지회원' : '엄빠회원'}</div>
                 </div>
                 <img onClick={() => setModalOpen(!modalOpen)} className="cursor-pointer" src={commentdot} alt="" />
-                {modalOpen && (
-                    <ModalComment
-                        commentInfo={commentInfo}
-                        deleteCommentMutate={deleteCommentMutate}
-                        updateCommentMutate={updateCommentMutate}
-                        post_id={post_id}
-                    />
-                )}
+                {modalOpen && <ModalComment commentInfo={commentInfo} post_id={post_id} />}
             </div>
 
             <div className="flex flex-col py-4">

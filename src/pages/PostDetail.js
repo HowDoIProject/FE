@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
@@ -8,6 +8,8 @@ import scrap from '../assets/icon/scrap.svg';
 import comment from '../assets/icon/comment.svg';
 import dog from '../assets/icon/commentdog.svg';
 import parent from '../assets/icon/commentparent.svg';
+import likeActive from '../assets/icon/likeActive.svg';
+import scrapActive from '../assets/icon/scrapActive.svg';
 import { formatAgo } from '../util/date';
 import CommentCard from '../components/CommentCard';
 import AddCommentForm from '../components/AddCommentForm';
@@ -15,27 +17,28 @@ import AddCommentForm from '../components/AddCommentForm';
 export default function PostDetail() {
     const { post_id } = useParams();
     const [cookies] = useCookies(['accessToken']);
+    const [isLike, setIsLike] = useState(false);
+    const [isScrap, setIsScrap] = useState(false);
 
     const queryClient = useQueryClient();
+
     const { data, error, isLoading } = useQuery(['post', post_id], () => apiPosts.getDetail(post_id));
+
     const { category, title, content, image, nickname, created_at, like_num, scrap_num, user_type, user_id } =
         data?.data.post || {};
 
-    console.log('postideverything', data);
-
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updateLike,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', post_id] });
+        },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updateScrap,
-    });
-    const { mutate: deleteCommentMutate } = useMutation({
-        mutationFn: apiPosts.deleteComment,
-    });
-
-    const { mutate: updateCommentMutate } = useMutation({
-        mutationFn: apiPosts.deleteComment,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['post', post_id] });
+        },
     });
 
     const isDog = user_type === '강아지';
@@ -71,18 +74,24 @@ export default function PostDetail() {
                         <div className="flex gap-4">
                             <div className="flex items-center gap-1">
                                 <img
-                                    onClick={() => updateLikeMutate({ post_id, user_id }, cookies)}
+                                    onClick={() => {
+                                        setIsLike(!isLike);
+                                        updateLikeMutate({ user_id, post_id, cookies });
+                                    }}
                                     className="w-5 h-5 cursor-pointer"
-                                    src={like}
+                                    src={isLike ? likeActive : like}
                                     alt=""
                                 />
                                 {like_num}
                             </div>
                             <div className="flex items-center gap-1">
                                 <img
-                                    onClick={() => apiPosts.updateScrap({ post_id, user_id }, cookies)}
+                                    onClick={() => {
+                                        setIsScrap(!isScrap);
+                                        updateScrapMutate({ user_id, post_id, cookies });
+                                    }}
                                     className="w-5 h-5 cursor-pointer"
-                                    src={scrap}
+                                    src={isScrap ? scrapActive : scrap}
                                     alt=""
                                 />
                                 {scrap_num}
@@ -100,12 +109,7 @@ export default function PostDetail() {
                     {data?.data.comments.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
-                                <CommentCard
-                                    deleteCommentMutate={deleteCommentMutate}
-                                    updateCommentMutate={updateCommentMutate}
-                                    commentInfo={comment}
-                                    post_id={post_id}
-                                />
+                                <CommentCard commentInfo={comment} post_id={post_id} />
                             </li>
                         );
                     })}
