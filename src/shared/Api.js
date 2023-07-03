@@ -94,8 +94,8 @@ export const apiPosts = {
                 alert('댓글이 수정되었습니다');
             });
     },
-
-    updateLike: (payload, post_id, cookies) => {
+    updateLike: args => {
+        const { payload, post_id, cookies } = args;
         return api
             .post(`/api/like/${post_id}`, payload, {
                 headers: {
@@ -104,7 +104,8 @@ export const apiPosts = {
             })
             .then(res => console.log('like', res));
     },
-    updateScrap: (payload, post_id, cookies) => {
+    updateScrap: args => {
+        const { payload, post_id, cookies } = args;
         return api
             .post(`/api/scrap/${post_id}`, payload, {
                 headers: {
