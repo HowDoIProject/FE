@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCookies } from 'react-cookie';
 import { apiPosts } from '../shared/Api';
 import like from '../assets/icon/like.svg';
 import scrap from '../assets/icon/scrap.svg';
@@ -13,13 +14,29 @@ import AddCommentForm from '../components/AddCommentForm';
 
 export default function PostDetail() {
     const { post_id } = useParams();
+    const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
     const { data, error, isLoading } = useQuery(['post', post_id], () => apiPosts.getDetail(post_id));
-    console.log(data?.data);
-
-    const { category, title, content, image, nickname, created_at, like_num, scrap_num, user_type } =
+    const { category, title, content, image, nickname, created_at, like_num, scrap_num, user_type, user_id } =
         data?.data.post || {};
+
+    console.log('postideverything', data);
+
+    const { mutate: updateLikeMutate } = useMutation({
+        mutationFn: apiPosts.updateLike,
+    });
+
+    const { mutate: updateScrapMutate } = useMutation({
+        mutationFn: apiPosts.updateScrap,
+    });
+    const { mutate: deleteCommentMutate } = useMutation({
+        mutationFn: apiPosts.deleteComment,
+    });
+
+    const { mutate: updateCommentMutate } = useMutation({
+        mutationFn: apiPosts.deleteComment,
+    });
 
     const isDog = user_type === '강아지';
 
@@ -53,15 +70,25 @@ export default function PostDetail() {
                         <div className="mb-4 text-gray_02">{formatAgo(created_at, 'ko')} </div>
                         <div className="flex gap-4">
                             <div className="flex items-center gap-1">
-                                <img src={like} alt="" />
+                                <img
+                                    onClick={() => updateLikeMutate({ post_id, user_id }, cookies)}
+                                    className="w-5 h-5 cursor-pointer"
+                                    src={like}
+                                    alt=""
+                                />
                                 {like_num}
                             </div>
                             <div className="flex items-center gap-1">
-                                <img src={scrap} alt="" />
+                                <img
+                                    onClick={() => apiPosts.updateScrap({ post_id, user_id }, cookies)}
+                                    className="w-5 h-5 cursor-pointer"
+                                    src={scrap}
+                                    alt=""
+                                />
                                 {scrap_num}
                             </div>
                             <div className="flex items-center gap-1">
-                                <img src={comment} alt="" />
+                                <img className="w-5 h-5" src={comment} alt="" />
                                 {data?.data.comments.length}
                             </div>
                         </div>
@@ -73,7 +100,12 @@ export default function PostDetail() {
                     {data?.data.comments.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
-                                <CommentCard commentInfo={comment} />
+                                <CommentCard
+                                    deleteCommentMutate={deleteCommentMutate}
+                                    updateCommentMutate={updateCommentMutate}
+                                    commentInfo={comment}
+                                    post_id={post_id}
+                                />
                             </li>
                         );
                     })}
