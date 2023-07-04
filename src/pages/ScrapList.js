@@ -1,52 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
-const ScrapLists = () => {
-    const [scraps, setScraps] = useState([]);
+const ScrapScreen = () => {
+    const [scrapList, setScrapList] = useState([]);
+    const [cookies] = useCookies(['accessToken']);
 
     useEffect(() => {
-        const fetchScraps = async () => {
+        const fetchScrapList = async () => {
             try {
-                const response = await axios.get('/api/scrape');
-                setScraps(response.data);
+                const response = await axios.get('https://howdoiapp.shop/api/scrap', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: `${cookies.accessToken}`,
+                    },
+                });
+
+                const { scrap } = response.data;
+
+                if (scrap.length === 0) {
+                    console.log('No posts found.');
+                } else {
+                    console.log('Scrap List:', scrap);
+                    setScrapList(scrap);
+                }
             } catch (error) {
-                console.error('Error fetching scraps:', error);
+                console.error('Error fetching data:', error);
             }
         };
 
-        fetchScraps();
-    }, []);
+        fetchScrapList();
+    }, [cookies.accessToken]);
 
-    const handleDelete = async scrapId => {
-        try {
-            await axios.delete(`/api/scrape/${scrapId}`);
-            setScraps(scraps.filter(scrap => scrap.id !== scrapId));
-        } catch (error) {
-            console.error('Error deleting scrap:', error);
-        }
-    };
+    // Hardcoded categories
+    const categories = ['Category 1', 'Category 2', 'Category 3'];
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Scraps</h1>
-            <ul className="space-y-4">
-                {scraps.map(scrap => (
-                    <li key={scrap.id}>
-                        <div className="bg-gray-200 p-4 rounded">
-                            <h2 className="text-lg font-bold">{scrap.title}</h2>
-                            <p className="text-gray-600">{scrap.content}</p>
-                            <button
-                                className="bg-red-500 text-white px-2 py-1 rounded mt-2"
-                                onClick={() => handleDelete(scrap.id)}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </li>
+        <div className="p-4">
+            <div className="flex mb-4">
+                {categories.map((category, index) => (
+                    <div className="bg-gray-300 rounded-full px-3 py-1 mr-2 text-xs" key={index}>
+                        {category}
+                    </div>
                 ))}
-            </ul>
+            </div>
+            <div className="p-4">
+                <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {scrapList.map(scrap => (
+                        <div className="bg-white rounded shadow p-4" key={scrap.post_id}>
+                            <h3 className="text-xl font-semibold mb-2">{scrap.title}</h3>
+                            <p>{scrap.content}</p>
+                            <p>By: {scrap.nickname}</p>
+                            <img src={scrap.image} alt={scrap.title} />
+                            <p>Likes: {scrap.like}</p>
+                            <p>Scraps: {scrap.scrap}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
 
-export default ScrapLists;
+export default ScrapScreen;
