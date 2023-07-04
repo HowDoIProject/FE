@@ -3,22 +3,25 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router-dom';
 import PostListCard from '../../components/PostListCard';
+import EditDeleteSelectWindow from './EditDeleteSelection';
 
 const DoggysActivity = () => {
     const location = useLocation();
     const { user_type, nickname, user_id } = location.state || {};
     const [postData, setPostData] = useState([]);
-    const [mycomments, setMyComments] = useState([]);
+    // const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
     const [showMyPost, setShowMyPost] = useState(false);
     const [showMyComments, setShowMyComments] = useState(false);
-    const [showMyHistory, setShowMyHistory] = useState(false);
+    const [ShowMyChosenComment, setShowMyChosenComment] = useState(false);
     const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
     const [selectedPostId, setSelectedPostId] = useState();
     const [selectedButton, setSelectedButton] = useState(null);
+    const [mychosen, setMyChosen] = useState([]);
     const [comments, setComments] = useState([]);
+    const [chosencomments, setChosenComments] = useState([]);
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -27,6 +30,11 @@ const DoggysActivity = () => {
 
     const handleButtonClick = buttonName => {
         setSelectedButton(buttonName === selectedButton ? null : buttonName);
+    };
+
+    const handleEdit = () => {
+        // Handle edit action
+        console.log('Edit option selected');
     };
 
     // 게시물 수정 요청 처리
@@ -60,19 +68,20 @@ const DoggysActivity = () => {
     };
 
     // 게시물 삭제 요청 처리
-    const handleDelete = post_id => {
+    const handleDelete = postId => {
         axios
-            .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+            .delete(`https://howdoiapp.shop/api/mypage/${postId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
                 },
             })
-            .then(response => {
+            .then(() => {
                 console.log('Post successfully deleted');
+                setFilteredPosts(prevPosts => prevPosts.filter(post => post.post_id !== postId));
             })
             .catch(error => {
-                console.error('Failed to delete post:', error);
+                console.error('Failed to delete the post:', error);
             });
     };
 
@@ -101,13 +110,13 @@ const DoggysActivity = () => {
                 post => new Date(post.created_at) >= sixMonthsAgo && new Date(post.created_at) <= currentDate
             );
         }
-
+        //댓글 월별 보기
         const filteredComments = comments.filter(comment => {
             const createdAtDate = new Date(comment.created_at);
             const diffInMonths =
                 (currentDate.getFullYear() - createdAtDate.getFullYear()) * 12 +
                 (currentDate.getMonth() - createdAtDate.getMonth());
-            return diffInMonths <= 6; // Change the condition as per your requirement (e.g., 1 month, 3 months, etc.)
+            return diffInMonths <= 6;
         });
 
         setFilteredPosts(filteredData);
@@ -119,7 +128,7 @@ const DoggysActivity = () => {
     const handleShowMyPost = async () => {
         setShowMyPost(true);
         setShowMyComments(false);
-        setShowMyHistory(false);
+        setShowMyChosenComment(false);
 
         try {
             const response = await axios.get('https://howdoiapp.shop/api/mypage', {
@@ -151,7 +160,7 @@ const DoggysActivity = () => {
     const handleShowMyComment = async () => {
         setShowMyPost(false);
         setShowMyComments(true);
-        setShowMyHistory(false);
+        setShowMyChosenComment(false);
 
         try {
             const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
@@ -182,7 +191,7 @@ const DoggysActivity = () => {
         const handleShowMyComment = async () => {
             setShowMyPost(false);
             setShowMyComments(true);
-            setShowMyHistory(false);
+            setShowMyChosenComment(false);
 
             try {
                 const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
@@ -209,11 +218,36 @@ const DoggysActivity = () => {
         handleShowMyComment();
     }, [cookies.accessToken]);
 
-    const handleShowMyHistory = () => {
+    const handleShowMyChosen = async () => {
         setShowMyPost(false);
         setShowMyComments(false);
-        setShowMyHistory(true);
+        setShowMyChosenComment(true);
+
+        try {
+            const response = await axios.get('https://howdoiapp.shop/api/chosencomment', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    access: cookies.accessToken,
+                },
+            });
+
+            const { data } = response;
+
+            if (Array.isArray(data.chosencomment) && data.chosencomment.length > 0) {
+                console.log('My chosencomment:', data.chosencomment);
+                setMyChosen(data.chosencomment);
+            } else {
+                console.log('No adopted articles found.');
+                setMyChosen([]);
+            }
+        } catch (error) {
+            console.error('Error fetching adopted articles:', error);
+        }
     };
+
+    useEffect(() => {
+        handleShowMyChosen();
+    }, [cookies.accessToken]);
 
     useEffect(() => {
         if (selectedPostId !== undefined) {
@@ -235,7 +269,7 @@ const DoggysActivity = () => {
                 <div className="flex justify-center space-x-8 mb-10">
                     <button
                         onClick={handleShowMyPost}
-                        className={`px-4 py-2 rounded-md ${
+                        className={`px-4 py-2 square-md ${
                             showMyPost
                                 ? 'bg-white-500 text-black border-b-2 border-black'
                                 : 'bg-white-200 text-black-800'
@@ -246,7 +280,7 @@ const DoggysActivity = () => {
 
                     <button
                         onClick={handleShowMyComment}
-                        className={`px-4 py-2 rounded-md ${
+                        className={`px-4 py-2 square-md ${
                             showMyComments
                                 ? 'bg-white-500 text-black border-b-2 border-black'
                                 : 'bg-white-200 text-black-800'
@@ -256,9 +290,9 @@ const DoggysActivity = () => {
                     </button>
 
                     <button
-                        onClick={handleShowMyHistory}
-                        className={`px-4 py-2 rounded-md ${
-                            showMyHistory
+                        onClick={handleShowMyChosen}
+                        className={`px-4 py-2 square-md ${
+                            ShowMyChosenComment
                                 ? 'bg-white-500 text-black border-b-2 border-black'
                                 : 'bg-white-200 text-black-800'
                         }`}
@@ -266,7 +300,7 @@ const DoggysActivity = () => {
                         내 채택
                     </button>
                 </div>
-
+                {/* 기간 월별 */}
                 <div className="flex justify-center mb-7">
                     <div className="flex space-x-5">
                         <button
@@ -307,6 +341,7 @@ const DoggysActivity = () => {
                     </div>
                 </div>
             </div>
+            {/* //내가 쓴 글 수정하는 란 */}
             {showMyPost && (
                 <div>
                     <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
@@ -363,26 +398,38 @@ const DoggysActivity = () => {
                                     />
 
                                     <button
-                                        onClick={() =>
-                                            handleEditPost(post.post_id, post.title, post.content, post.image)
-                                        }
+                                        onClick={() => handleEdit(post.post_id, post.title, post.content, post.image)}
                                         className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2"
                                     >
                                         저장
                                     </button>
                                 </div>
                             ) : (
-                                <div
-                                    key={post.post_id}
-                                    className="w-full h-[140px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                                >
-                                    <PostListCard post={post} />
+                                // 내가 쓴글 리스트
+                                <div className="post-card">
+                                    <div className="post-header flex justify-between items-start">
+                                        <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                                        <div className="relative">
+                                            <EditDeleteSelectWindow
+                                                postId={post.post_id}
+                                                onEdit={handleEdit}
+                                                onDelete={handleDelete}
+                                            />
+                                        </div>
+                                    </div>
+                                    <p className="mb-2">{post.content}</p>
+                                    <p>By: {post.nickname}</p>
+                                    <p>Likes: {post.like}</p>
+                                    <p>Scraps: {post.scrap}</p>
+                                    <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
+                                    <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
                                 </div>
                             )}
                         </div>
                     ))}
                 </div>
             )}
+            {/*내가 쓴 댓글 보기*/}
             {showMyComments && (
                 <div>
                     <h4 className="text-lg font-bold">My Comment</h4>
@@ -402,14 +449,22 @@ const DoggysActivity = () => {
                     )}
                 </div>
             )}
-
-            {/* 
-         {showMyHistory && (
-                // <div>
-                //     <h4 className="text-lg font-bold">내 채택내역</h4>
-                //      Render your adoption history
-                // </div>
-            )}  */}
+            {ShowMyChosenComment && (
+                <div>
+                    <h4 className="text-lg font-bold">My Chosen Comments</h4>
+                    {Array.isArray(mychosen) && mychosen.length > 0 ? (
+                        mychosen.map(chosencomment => (
+                            <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
+                                <p>Comment: {chosencomment.comment}</p>
+                                <p>Category: {chosencomment.category}</p>
+                                <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>채택한 데이터가 없습니다.</p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
