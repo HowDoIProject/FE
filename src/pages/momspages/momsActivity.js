@@ -124,7 +124,6 @@ export default function MomsActivity() {
                         </div>
                     </div>
                     <div className="mt-2">
-                        <h1>Love it!</h1>
                         <h1>
                             {nickname && nickname.nickname}
                             {user_type && ` ${user_type.user_type}`}님
