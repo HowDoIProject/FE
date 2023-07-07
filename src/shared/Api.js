@@ -29,7 +29,7 @@ export const AuthApi = {
 };
 
 export const apiPosts = {
-    getTopFive: () => {
+    getPopular: () => {
         return api.get(`/api/topfive`);
     },
     getAll: () => {

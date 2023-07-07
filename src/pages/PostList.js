@@ -1,11 +1,10 @@
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
-
-import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
-import PostListCard from '../components/PostListCard';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from 'react';
+import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { apiPosts } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
+import TotalPosts from '../components/TotalPosts';
+import { useNavigate } from 'react-router-dom';
 
 export default function PostList() {
     const [filter, setFilter] = useState(0);
@@ -14,6 +13,7 @@ export default function PostList() {
     const [targetRef, inView] = useInView({
         threshold: 1,
     });
+    const navigate = useNavigate();
 
     const queryClient = useQueryClient();
 
@@ -32,60 +32,25 @@ export default function PostList() {
         if (inView && hasNextPage) fetchNextPage();
     }, [inView]);
 
-    const filterList = [
-        { id: 1, name: '질문글' },
-        { id: 2, name: '꿀팁글' },
-    ];
-    const categoryList = [
-        { id: 1, name: '생활비' },
-        { id: 2, name: '자취끼니' },
-        { id: 3, name: '집안일' },
-    ];
-
     return (
         <div className="mx-5">
-            <div className="flex mt-4">
-                {categoryList.map(item => (
-                    <div
-                        onClick={() => {
-                            setCategory(item.id);
-                            apiPosts.getByFilterAndCategory(filter, category, page);
-                        }}
-                        key={item.id}
-                        className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1 cursor-pointer"
-                    >
-                        {item.name}
-                    </div>
-                ))}
-                {filterList.map(item => (
-                    <div
-                        onClick={() => {
-                            setFilter(item.id);
-                            apiPosts.getByFilterAndCategory(filter, category, page);
-                        }}
-                        key={item.id}
-                        className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02 mr-1 cursor-pointer"
-                    >
-                        {item.name}
-                    </div>
-                ))}
-            </div>
-            {data?.pages.map(page => (
-                <div key={uuidv4()}>
-                    {page.data.mypage && page.data.mypage.length > 0 ? (
-                        page.data.mypage.map(post => (
-                            <div
-                                key={uuidv4()}
-                                className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                            >
-                                <PostListCard post={post} />
-                            </div>
-                        ))
-                    ) : (
-                        <div className="mt-40">검색 조건에 맞는 글이 없습니다아아아아</div>
-                    )}
+            <div className="flex w-full mt-4">
+                <div className="inline-flex w-1/2 justify-center py-3 border-b-2 border-b-main text-[14px]">전체글</div>
+                <div
+                    onClick={() => navigate('/posts/popular')}
+                    className="inline-flex w-1/2 justify-center py-3 text-[14px] text-gray_02 cursor-pointer"
+                >
+                    인기글
                 </div>
-            ))}
+            </div>
+            <TotalPosts
+                data={data}
+                category={category}
+                setCategory={setCategory}
+                filter={filter}
+                setFilter={setFilter}
+                page={page}
+            />
             <div ref={targetRef}>
                 <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
             </div>
