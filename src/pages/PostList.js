@@ -1,61 +1,36 @@
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import PostListCard from '../components/PostListCard';
 import { v4 as uuidv4 } from 'uuid';
 import { apiPosts } from '../shared/Api';
+import { useInView } from 'react-intersection-observer';
 
 export default function PostList() {
-    // const [posts, setPosts] = useState([]);
     const [filter, setFilter] = useState(0);
     const [category, setCategory] = useState(0);
     const [page, setPage] = useState(1);
-    // const [loading, setLoading] = useState(false);
+    const [targetRef, inView] = useInView({
+        threshold: 1,
+    });
 
-    // const getPostsTimeline = async (filter, category, page) => {
-    //     const data = await axios.get(`https://howdoiapp.shop/api/list/${filter}/${category}/${page}`);
-    //     console.log('data', data);
-    //     console.log('필터카테고리페이지', filter, category, page);
-    //     if (data.data.page > data.data.total_page) return;
-    //     setPosts(prev => [...prev, ...data.data.mypage]);
-    //     console.log('posts', posts);
-    //     setLoading(true);
-    // };
     const queryClient = useQueryClient();
-    const { data, error, isLoading } = useQuery(['posts', filter, category, page], () =>
-        apiPosts.getByFilterAndCategory(filter, category, page)
-    );
+
+    const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['posts', filter, category],
+        getNextPageParam: lastPage => {
+            if (lastPage.data.total_page == lastPage.data.page) return false;
+            return lastPage.data.page + 1;
+        },
+        queryFn: ({ pageParam = 1 }) => apiPosts.getByFilterAndCategory(filter, category, pageParam),
+    });
 
     console.log('data', data);
 
-    // useEffect(() => {
-    //     getPostsTimeline(filter, category, page);
-    // }, [filter, category, page]);
-
-    // const loadMore = () => {
-    //     setPage(prev => prev + 1);
-    // };
-
-    // useEffect(() => {
-    //     getPostsTimeline(filter, category, page);
-    // }, [filter, category, page]);
-
-    const targetRef = useRef();
-
-    // useEffect(() => {
-    //     if (isLoading) {
-    //         const observer = new IntersectionObserver(
-    //             entries => {
-    //                 if (entries[0].isIntersecting) {
-    //                     loadMore();
-    //                 }
-    //             },
-    //             { threshold: 1 }
-    //         );
-    //         observer.observe(targetRef.current);
-    //     }
-    // }, [isLoading]);
+    useEffect(() => {
+        if (inView && hasNextPage) fetchNextPage();
+    }, [inView]);
 
     const filterList = [
         { id: 1, name: '질문글' },
@@ -95,17 +70,25 @@ export default function PostList() {
                     </div>
                 ))}
             </div>
-            {data?.data.mypage.map(post => {
-                return (
-                    <div
-                        key={uuidv4()}
-                        className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                    >
-                        <PostListCard post={post} />
-                    </div>
-                );
-            })}
-            <div className="absolute bottom-0 w-[100px] h-[100px] bg-primary opacity-30" ref={targetRef}></div>
+            {data?.pages.map(page => (
+                <div key={uuidv4()}>
+                    {page.data.mypage && page.data.mypage.length > 0 ? (
+                        page.data.mypage.map(post => (
+                            <div
+                                key={uuidv4()}
+                                className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
+                            >
+                                <PostListCard post={post} />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="mt-40">검색 조건에 맞는 글이 없습니다아아아아</div>
+                    )}
+                </div>
+            ))}
+            <div ref={targetRef}>
+                <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
+            </div>
         </div>
     );
 }
