@@ -10,7 +10,7 @@ const Layout = () => {
             {/* Content that goes under the common area */}
             <div
                 id="content"
-                className="bg-white mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen"
+                className="bg-white mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative"
             >
                 <Outlet className="z=0" />
             </div>

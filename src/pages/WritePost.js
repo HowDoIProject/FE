@@ -1,9 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Form, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { api } from '../shared/Api';
+import { api, apiPosts } from '../shared/Api';
 import image1 from '../assets/icon/camera.svg';
 import image2 from '../assets/icon/delete.svg';
 
@@ -24,93 +22,30 @@ export default function WritePost() {
 
     const [cookies] = useCookies(['accessToken']);
 
-    // const queryClient = useQueryClient();
-
-    // const newPostMutation = useMutation({
-    //     mutationFn: async payload => {
-    //         return await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/post`, payload, {
-    //             headers: {
-    //                 Authorization: cookies.verification,
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //     },
-    //     onSuccess: () => {
-    //         alert('게시글이 등록되었습니다!');
-    //         queryClient.invalidateQueries(['posts']);
-    //         navigate('/');
-    //     },
-    // });
-
     const onChange = e => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
     };
-
-    // const onChangeFileHandler = e => {
-    //     const file = e.target.files[0];
-    //     setValues(prev => ({ ...prev, image: file }));
-    //     setFile(URL.createObjectURL(file));
-    // };
 
     const onChangeFileHandler = e => {
         const { name } = e.target;
         const imgFormData = new FormData();
         const file = e.target.files[0];
         imgFormData.append(name, file);
-        api.post(`/api/uploads`, imgFormData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                access: cookies.accessToken,
-            },
-        })
-            .then(res => setValues({ ...values, image: res.data.url }))
-            .catch(e => {
-                console.log(e);
-            });
-
+        apiPosts.uploadImage(imgFormData, setValues, values, cookies);
         setFile(URL.createObjectURL(file));
-        console.log(values);
+        e.target.value = ''; //이걸 해야지 이미지 삭제 후 같은 이미지 업로드가 가능함
     };
 
     const onDeleteFileHandler = () => {
         setValues({ ...values, image: '' });
         setFile('');
+        console.log('삭제', values);
     };
-
-    // const onSubmitHandler = e => {
-    //     e.preventDefault();
-
-    //     const formData = new FormData();
-    //     formData.append('category', values.category);
-    //     formData.append('title', values.title);
-    //     formData.append('content', values.content);
-
-    //     if (values.image) {
-    //         formData.append('image', values.image);
-    //     }
-
-    //     // FormData의 key와 value 확인
-    //     for (let [key, value] of formData.entries()) {
-    //         console.log(key, value);
-    //     }
-    //     newPostMutation.mutate(formData);
-    // };
 
     const onSubmitHandler = e => {
         e.preventDefault();
-        api.post(`/api/post`, values, {
-            headers: {
-                access: cookies.accessToken,
-            },
-        })
-            .then(res => {
-                alert('글이 등록되었습니다');
-                navigate('/');
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        apiPosts.addPost(values, cookies, navigate);
     };
 
     return (
@@ -128,6 +63,7 @@ export default function WritePost() {
                                     name="category"
                                     value={item.name}
                                     onChange={onChange}
+                                    required
                                 />
                                 <label htmlFor={item.id}>{item.name}</label>
                             </div>
@@ -146,6 +82,7 @@ export default function WritePost() {
                         placeholder="제목을 입력해주세요"
                         id="title"
                         onChange={onChange}
+                        required
                     ></textarea>
                 </div>
                 <div className="flex flex-col mb-4">
@@ -160,6 +97,7 @@ export default function WritePost() {
                         placeholder="자취와 관련된 나의 고민을 이야기해주세요!&#13;&#10;상세히 적을수록 더욱 도움이 되는 답변을 얻을 수 있어요."
                         id="content"
                         onChange={onChange}
+                        required
                     />
                 </div>
                 <div className="mb-8">
@@ -194,8 +132,8 @@ export default function WritePost() {
                         </div>
                     </div>
                 </div>
-                <button className="flex w-[320px] h-[44px] bg-primary rounded-xl justify-center items-center">
-                    엄빠에게 도움 요청하기
+                <button className="flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4">
+                    등록
                 </button>
             </form>
         </div>
