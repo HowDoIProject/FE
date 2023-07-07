@@ -38,6 +38,9 @@ export const apiPosts = {
     getDetail: post_id => {
         return api.get(`api/post/${post_id}`);
     },
+    getByFilterAndCategory: (filter, category, page) => {
+        return api.get(`api/list/${filter}/${category}/${page}`);
+    },
     uploadImage: (payload, setValues, values, cookies) => {
         return api
             .post(`/api/uploads`, payload, {
