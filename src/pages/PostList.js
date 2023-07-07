@@ -4,75 +4,59 @@ import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import PostListCard from '../components/PostListCard';
+import { useInView } from 'react-intersection-observer';
 
 export default function PostList() {
-    const getPostsTimeline = async ({ pageParam = 1, filter = 0, category = 0 }) => {
-        const res = await axios.get(`https://howdoiapp.shop/api/list/${filter}/${category}/${pageParam}`);
-        console.log(res);
-        return res;
+    const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const getPostsTimeline = async (page, category, filter) => {
+        const data = await axios.get(`https://howdoiapp.shop/api/list/0/0/${page}`);
+        console.log('data', data);
+        setPosts(prev => [...prev, ...data.data.mypage]);
+        setLoading(true);
+    };
+    console.log('posts', posts);
+
+    useEffect(() => {
+        getPostsTimeline(page);
+    }, [page]);
+
+    const loadMore = () => {
+        setPage(prev => prev + 1);
     };
 
-    const { data, fetchNextPage, hasNextPage, status, loading } = useInfiniteQuery({
-        queryKey: ['posts', 'infinite'],
-        getNextPageParam: lastPage => {
-            if (lastPage.data.total_page == lastPage.data.page) return false;
-            return lastPage.data.page + 1;
-        },
-        queryFn: ({ pageParam = 1 }) => getPostsTimeline(pageParam),
-    });
-
-    console.log('data', data);
-
-    const target = useRef(null);
+    const targetRef = useRef();
 
     useEffect(() => {
         if (loading) {
-            //로딩되었을 때만 실행
             const observer = new IntersectionObserver(
                 entries => {
-                    console.log(entries);
                     if (entries[0].isIntersecting) {
-                        console.log('observer', observer);
-                        fetchNextPage();
+                        loadMore();
                     }
                 },
                 { threshold: 1 }
             );
-            //옵져버 탐색 시작
-            observer.observe(target.current);
+
+            observer.observe(targetRef.current);
         }
     }, [loading]);
 
     return (
-        // <>
-        //     {/* <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()}>
-        //         {' '}
-
-        //         {topFive?.data.topfive.map(post => {
-        //             return (
-        //                 <div
-        //                     key={post.post_id}
-        //                     className="w-[146px] h-[146px] pr-2 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
-        //                 >
-        //                     <PostListCard post={post} />
-        //                 </div>
-        //             );
-        //         })}
-        //     </InfiniteScroll> */}
-        // </>
-
-        <div className="relative">
-            {data?.pages[0].data.mypage.map(post => {
+        <div className="mx-5">
+            {posts?.map(post => {
                 return (
                     <div
                         key={post.post_id}
-                        className="w-full h-[140px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
+                        className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
                     >
                         <PostListCard post={post} />
                     </div>
                 );
             })}
-            <div className="absolute w-10 h-25" ref={target}></div>
+            <div className="absolute bottom-0 w-[100px] h-[100px] bg-primary opacity-30" ref={targetRef}></div>
         </div>
     );
 }
