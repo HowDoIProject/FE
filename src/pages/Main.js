@@ -13,7 +13,7 @@ export default function Main() {
         data: topFive,
         errorTopfive,
         isLoadingTopfive,
-    } = useQuery(['posts', 'topfive'], () => apiPosts.getTopFive());
+    } = useQuery(['posts', 'popular'], () => apiPosts.getPopular());
     const { data, error, isLoading } = useQuery(['posts'], () => apiPosts.getAll());
 
     console.log('topfive', topFive?.data.topfive);
@@ -47,16 +47,18 @@ export default function Main() {
                         ref={slider1}
                         className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
                     >
-                        {topFive?.data.topfive.map(post => {
-                            return (
-                                <div
-                                    key={post.post_id}
-                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
-                                >
-                                    <MainPageCard post={post} />
-                                </div>
-                            );
-                        })}
+                        {topFive?.data.topfive
+                            .filter((item, index) => index < 5)
+                            .map(post => {
+                                return (
+                                    <div
+                                        key={post.post_id}
+                                        className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    >
+                                        <MainPageCard post={post} />
+                                    </div>
+                                );
+                            })}
                     </div>
                     <MdChevronRight
                         className="opacity-50 cursor-pointer hover:opacity-100"
