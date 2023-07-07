@@ -5,11 +5,35 @@ import { useCookies } from 'react-cookie';
 const ScrapScreen = () => {
     const [scrapList, setScrapList] = useState([]);
     const [cookies] = useCookies(['accessToken']);
+    const [filter, setFilter] = useState('');
+    const [page, setPage] = useState(1);
+    const [category, setCategory] = useState('');
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('https://howdoiapp.shop/api/categories', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: `${cookies.accessToken}`,
+                    },
+                });
+
+                const { categories } = response.data;
+                setCategories(categories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, [cookies.accessToken]);
 
     useEffect(() => {
         const fetchScrapList = async () => {
             try {
-                const response = await axios.get('https://howdoiapp.shop/api/scrap', {
+                const response = await axios.get(`https://howdoiapp.shop/api/scrap/${filter}/${category}/${page}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         access: `${cookies.accessToken}`,
@@ -18,11 +42,12 @@ const ScrapScreen = () => {
 
                 const { scrap } = response.data;
 
-                if (scrap.length === 0) {
-                    console.log('No posts found.');
+                if (Array.isArray(scrap) && scrap.length === 0) {
+                    console.log('My Scrap', scrap);
+                    setScrapList(scrap);
                 } else {
                     console.log('Scrap List:', scrap);
-                    setScrapList(scrap);
+                    setScrapList([]);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -30,10 +55,7 @@ const ScrapScreen = () => {
         };
 
         fetchScrapList();
-    }, [cookies.accessToken]);
-
-    // Hardcoded categories
-    const categories = ['Category 1', 'Category 2', 'Category 3'];
+    }, [cookies.accessToken, filter, category, page]);
 
     return (
         <div className="p-4">

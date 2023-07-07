@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-const EditDeleteSelectWindow = ({ postId, onEdit, onDelete }) => {
+const EditDeleteSelectWindow = ({ post_id, setPostData, setFilteredPosts }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    // const [data, setData] = useState();
     const [updatedTitle, setUpdatedTitle] = useState('');
     const [updatedContent, setUpdatedContent] = useState('');
     const [updatedImage, setUpdatedImage] = useState('');
@@ -20,50 +21,51 @@ const EditDeleteSelectWindow = ({ postId, onEdit, onDelete }) => {
         setUpdatedImage('');
     };
 
-    const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
+    const handleEditPost = async (updatedTitle, updatedContent, updatedImage) => {
         const updatedData = {
             title: updatedTitle,
             content: updatedContent,
             image: updatedImage,
         };
 
-        handleEdit(post_id, updatedData);
+        try {
+            await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, updatedData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    access: `${cookies.accessToken}`,
+                },
+            });
+
+            toggleEditMode(updatedData);
+            // setUpdatedTitle(updatedData);
+            // setUpdatedContent(updatedData);
+            // setUpdatedImage(updatedData);
+        } catch (error) {
+            console.error('An error occurred while updating the post:', error);
+        }
     };
 
     const handleEdit = () => {
-        const updatedData = {
-            title: updatedTitle,
-            content: updatedContent,
-            image: updatedImage,
-        };
-        onEdit(postId, updatedData);
-        toggleEditMode();
+        handleEditPost(updatedTitle, updatedContent, updatedImage);
     };
-    //     try {
-    //         const updatedData = {
-    //             // Define the updated data here
-    //         };
-
-    //         const response = await axios.put(`https://howdoiapp.shop/api/mypage/${postId}`, updatedData, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 access: `${cookies.accessToken}`,
-    //             },
-    //         });
-
-    //         if (response.status === 200) {
-    //             console.log(response);
-    //         } else {
-    //             console.error('Failed to update the post');
-    //         }
-    //     } catch (error) {
-    //         console.error('An error occurred while updating the post:', error);
-    //     }
-    // };
+    // useEffect(
+    //     () => {
+    //         // Update the component's state with the current post data
+    //         setUpdatedTitle(/* Current post title */);
+    //         setUpdatedContent(/* Current post content */);
+    //         setUpdatedImage(/* Current post image */);
+    //     },
+    //     [
+    //         /* Add relevant dependencies here */
+    //     ]
+    // );
+    useEffect(() => {
+        // Your effect logic
+    }, [updatedTitle, updatedContent, updatedImage]);
 
     const handleDelete = () => {
         axios
-            .delete(`https://howdoiapp.shop/api/mypage/${postId}`, {
+            .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -79,44 +81,51 @@ const EditDeleteSelectWindow = ({ postId, onEdit, onDelete }) => {
 
     return (
         <div>
-            <div className="relative inline-block">
-                <button
-                    type="button"
-                    className="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
-                    onClick={toggleOptions}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-                        <path
-                            fillRule="evenodd"
-                            d="M12 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm0 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm0-12a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
-                        />
-                    </svg>
-                </button>
-                {showOptions && (
-                    <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg">
-                        <ul>
-                            <li>
-                                <button
-                                    type="button"
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                    onClick={toggleEditMode}
-                                >
-                                    Edit
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                    onClick={handleDelete}
-                                >
-                                    Delete
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                )}
-            </div>
+            {!editMode && (
+                <div className="relative inline-block">
+                    <button
+                        type="button"
+                        className="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+                        onClick={toggleOptions}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="h-5 w-5"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M12 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm0 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm0-12a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+                            />
+                        </svg>
+                    </button>
+                    {showOptions && (
+                        <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg">
+                            <ul>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="block px-4 py-2 hover:bg-gray-100"
+                                        onClick={toggleEditMode}
+                                    >
+                                        Edit
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="block px-4 py-2 hover:bg-gray-100"
+                                        onClick={handleDelete}
+                                    >
+                                        Delete
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            )}
             {editMode && (
                 <div className="border p-4 rounded-lg bg-gray-100">
                     <input
@@ -127,6 +136,7 @@ const EditDeleteSelectWindow = ({ postId, onEdit, onDelete }) => {
                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                     />
                     <textarea
+                        type="text"
                         value={updatedContent}
                         onChange={e => setUpdatedContent(e.target.value)}
                         placeholder="내용"
@@ -148,5 +158,4 @@ const EditDeleteSelectWindow = ({ postId, onEdit, onDelete }) => {
         </div>
     );
 };
-
 export default EditDeleteSelectWindow;
