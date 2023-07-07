@@ -94,7 +94,17 @@ export const apiPosts = {
                 alert('댓글이 수정되었습니다');
             });
     },
-    updateLike: args => {
+    updateCommentLike: args => {
+        const { payload, comment_id, cookies } = args;
+        return api
+            .post(`/api/commentlike/${comment_id}`, payload, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => console.log('likeComment', res));
+    },
+    updatePostLike: args => {
         const { payload, post_id, cookies } = args;
         return api
             .post(`/api/like/${post_id}`, payload, {
@@ -102,9 +112,9 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('like', res));
+            .then(res => console.log('likePost', res));
     },
-    updateScrap: args => {
+    updatePostScrap: args => {
         const { payload, post_id, cookies } = args;
         return api
             .post(`/api/scrap/${post_id}`, payload, {
@@ -112,6 +122,19 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('scrap', res));
+            .then(res => console.log('scrapPost', res));
+    },
+    chooseComment: args => {
+        const { post_id, comment_id, cookies } = args;
+        console.log('commentcookies', cookies);
+        return api
+            .post(`/api/post/${post_id}/comment/${comment_id}`, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => {
+                alert('답변이 채택되었습니다!');
+            });
     },
 };

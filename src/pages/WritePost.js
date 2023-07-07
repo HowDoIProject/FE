@@ -63,6 +63,7 @@ export default function WritePost() {
                                     name="category"
                                     value={item.name}
                                     onChange={onChange}
+                                    required
                                 />
                                 <label htmlFor={item.id}>{item.name}</label>
                             </div>
@@ -81,6 +82,7 @@ export default function WritePost() {
                         placeholder="제목을 입력해주세요"
                         id="title"
                         onChange={onChange}
+                        required
                     ></textarea>
                 </div>
                 <div className="flex flex-col mb-4">
@@ -95,6 +97,7 @@ export default function WritePost() {
                         placeholder="자취와 관련된 나의 고민을 이야기해주세요!&#13;&#10;상세히 적을수록 더욱 도움이 되는 답변을 얻을 수 있어요."
                         id="content"
                         onChange={onChange}
+                        required
                     />
                 </div>
                 <div className="mb-8">
@@ -129,8 +132,8 @@ export default function WritePost() {
                         </div>
                     </div>
                 </div>
-                <button className="flex w-[320px] h-[44px] bg-primary rounded-xl justify-center items-center">
-                    엄빠에게 도움 요청하기
+                <button className="flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4">
+                    등록
                 </button>
             </form>
         </div>
