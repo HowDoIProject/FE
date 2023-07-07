@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router-dom';
 import PostListCard from '../../components/PostListCard';
+import CommentListCard from '../../components/CommentListCard';
 import EditDeleteSelectWindow from './EditDeleteSelection';
+import FilterButton from './FilteredButton';
 
 const DoggysActivity = () => {
     const location = useLocation();
@@ -22,6 +24,7 @@ const DoggysActivity = () => {
     const [mychosen, setMyChosen] = useState([]);
     const [comments, setComments] = useState([]);
     const [chosencomments, setChosenComments] = useState([]);
+    // const [post_id, setPostId] = useState();
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -81,9 +84,13 @@ const DoggysActivity = () => {
                 setFilteredPosts(prevPosts => prevPosts.filter(post => post.post_id !== postId));
             })
             .catch(error => {
-                console.error('Failed to delete the post:', error);
+                console.error('Failed to delete post:', error);
             });
     };
+
+    useEffect(() => {
+        handleDelete();
+    }, [cookies.accessToken]);
 
     // 기간별 필터링 처리
     const handleFilterByPeriod = period => {
@@ -154,6 +161,7 @@ const DoggysActivity = () => {
 
     useEffect(() => {
         handleShowMyPost();
+        handleEdit();
     }, [cookies.accessToken]);
 
     // 내 댓글 보기 처리
@@ -288,7 +296,6 @@ const DoggysActivity = () => {
                     >
                         내 댓글
                     </button>
-
                     <button
                         onClick={handleShowMyChosen}
                         className={`px-4 py-2 square-md ${
@@ -301,134 +308,87 @@ const DoggysActivity = () => {
                     </button>
                 </div>
                 {/* 기간 월별 */}
-                <div className="flex justify-center mb-7">
+                <div className="flex justify-left mb-7">
                     <div className="flex space-x-5">
-                        <button
+                        <FilterButton
+                            label="오늘"
+                            selected={selectedOption === 'today'}
                             onClick={() => handleFilterByPeriod('today')}
-                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
-                                selectedOption === 'today' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
-                            }`}
-                        >
-                            오늘
-                        </button>
-
-                        <button
+                        />
+                        <FilterButton
+                            label="1 개월"
+                            selected={selectedOption === '1month'}
                             onClick={() => handleFilterByPeriod('1month')}
-                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
-                                selectedOption === '1month' ? 'bg-orange-400 text-white' : 'bg-gray-200 text-white-800'
-                            }`}
-                        >
-                            1 개월
-                        </button>
-
-                        <button
+                        />
+                        <FilterButton
+                            label="3 개월"
+                            selected={selectedOption === '3months'}
                             onClick={() => handleFilterByPeriod('3months')}
-                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
-                                selectedOption === '3months' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
-                            }`}
-                        >
-                            3 개월
-                        </button>
-
-                        <button
+                        />
+                        <FilterButton
+                            label="6 개월"
+                            selected={selectedOption === '6months'}
                             onClick={() => handleFilterByPeriod('6months')}
-                            className={`w-200 h-8 rounded-md flex items-center justify-center text-sm ${
-                                selectedOption === '6months' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-white-800'
-                            }`}
-                        >
-                            6 개월
-                        </button>
+                        />
                     </div>
                 </div>
             </div>
             {/* //내가 쓴 글 수정하는 란 */}
-            {showMyPost && (
-                <div>
-                    <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
-                    {filteredPosts.map(post => (
-                        <div key={post.post_id} className="border p-4 rounded-lg mb-4 bg-gray-100">
-                            {post.post_id === selectedPostId ? (
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={post.title || ''}
-                                        onChange={e => {
-                                            const updatedTitle = e.target.value;
-                                            setFilteredPosts(prevPosts =>
-                                                prevPosts.map(prevPost =>
-                                                    prevPost.post_id === post.post_id
-                                                        ? { ...prevPost, title: updatedTitle }
-                                                        : prevPost
-                                                )
-                                            );
-                                        }}
-                                        placeholder="제목"
-                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
-                                    />
-                                    <textarea
-                                        value={post.content || ''}
-                                        onChange={e => {
-                                            const updatedContent = e.target.value;
-                                            setFilteredPosts(prevPosts =>
-                                                prevPosts.map(prevPost =>
-                                                    prevPost.post_id === post.post_id
-                                                        ? { ...prevPost, content: updatedContent }
-                                                        : prevPost
-                                                )
-                                            );
-                                        }}
-                                        placeholder="내용"
-                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
-                                    ></textarea>
-                                    <input
-                                        type="text"
-                                        value={post.image || ''}
-                                        onChange={e => {
-                                            const updatedImage = e.target.value;
-                                            setFilteredPosts(prevPosts =>
-                                                prevPosts.map(prevPost =>
-                                                    prevPost.post_id === post.post_id
-                                                        ? { ...prevPost, image: updatedImage }
-                                                        : prevPost
-                                                )
-                                            );
-                                        }}
-                                        placeholder="Language URL"
-                                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
-                                    />
-
-                                    <button
-                                        onClick={() => handleEdit(post.post_id, post.title, post.content, post.image)}
-                                        className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2"
-                                    >
-                                        저장
-                                    </button>
-                                </div>
-                            ) : (
-                                // 내가 쓴글 리스트
-                                <div className="post-card">
-                                    <div className="post-header flex justify-between items-start">
-                                        <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                                        <div className="relative">
-                                            <EditDeleteSelectWindow
-                                                postId={post.post_id}
-                                                onEdit={handleEdit}
-                                                onDelete={handleDelete}
-                                            />
+            <div>
+                {/* <button type="button" onClick={toggleShowMyPost}>
+                    {showMyPost ? 'All Posts' : 'My Posts'}
+                </button> */}
+                {showMyPost && (
+                    <div>
+                        <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
+                        {filteredPosts.map(post => (
+                            <div key={post.post_id} className="rounded-lg mb-4 bg-white-100">
+                                {post.post_id === selectedPostId ? (
+                                    <div></div>
+                                ) : (
+                                    <div className="relative">
+                                        <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                            <div className="relative">
+                                                <PostListCard post={post} />
+                                                <div className="absolute top-0 right-0">
+                                                    <EditDeleteSelectWindow
+                                                        post_id={post.post_id}
+                                                        onEdit={updatedData => handleEdit(post.post_id, updatedData)}
+                                                        onDelete={handleDelete}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <p className="mb-2">{post.content}</p>
-                                    <p>By: {post.nickname}</p>
-                                    <p>Likes: {post.like}</p>
-                                    <p>Scraps: {post.scrap}</p>
-                                    <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
-                                    <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            )}
+
+                                    // <div className="post-card">
+                                    //     <div className="post-header flex justify-between items-start">
+                                    //         <div className="inline-flex text-white px-2 py-1 rounded-3xl bg-primary mb-5">
+                                    //             {post.category}
+                                    //         </div>
+
+                                    // <div className="relative">
+                                    //     <EditDeleteSelectWindow
+                                    //         post_id={post.post_id}
+                                    //         onEdit={updatedData => handleEdit(post.post_id, updatedData)}
+                                    //         onDelete={handleDelete}
+                                    //     />
+                                    //     {/* </div>
+                                    //     </div> */}
+                                    //     {/* <p className="mb-2">{post.content}</p>
+                                    //     <p>Title: {post.title}</p> */}
+                                    //     <div
+                                    //         key={post.post_id}
+                                    //         className="w-full h-[140px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    //     >
+                                    //         <PostListCard post={post} />
+                                    //     </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
             {/*내가 쓴 댓글 보기*/}
             {showMyComments && (
                 <div>
@@ -436,12 +396,25 @@ const DoggysActivity = () => {
                     {Array.isArray(comments) && comments.length > 0 ? (
                         comments.map(comment => (
                             <div key={comment.comment_id} className="border p-4 rounded-lg my-4">
+                                <CommentListCard comment={comment} />
+
+                                {/* <p>{post.category}</p>
                                 <p>{comment.comment}</p>
-                                <p>User ID: {comment.user_id}</p>
-                                <p>Category: {comment.category}</p>
-                                <p>Chosen: {comment.chosen === 1 ? 'Yes' : 'No'}</p>
-                                <p>Created At: {new Date(comment.created_at).toLocaleDateString()}</p>
-                                <p>Updated At: {new Date(comment.updated_at).toLocaleDateString()}</p>
+                                <p>글제목: {post.title}</p> */}
+                                {/* <div className="flex flex-row items-center gap-1">
+                                    <img src={like} alt="" />
+                                    {post.like_num}
+                                </div>
+                                <div className="flex flex-row items-center gap-1">
+                                    <img src={scrap} alt="" />
+                                    {post.scrap_num}
+                                </div> */}
+
+                                {/* <p>User ID: {comment.user_id}</p>
+                                <p>Category: {comment.category}</p> */}
+                                {/* <p>Chosen: {comment.chosen === 1 ? 'Yes' : 'No'}</p> */}
+                                {/* <p>Created At: {new Date(comment.created_at).toLocaleDateString()}</p>
+                                <p>Updated At: {new Date(comment.updated_at).toLocaleDateString()}</p> */}
                             </div>
                         ))
                     ) : (

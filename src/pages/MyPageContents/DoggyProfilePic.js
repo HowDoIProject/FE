@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { FaUserCircle, FaEdit } from 'react-icons/fa';
-import image1 from '../../assets/icon/puppy_dog.svg';
+import image3 from '../../assets/icon/newdog.svg';
 
 const ProfilePicture = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -17,8 +17,8 @@ const ProfilePicture = () => {
     };
 
     return (
-        <div className="w-20 h-20 flex justify-center items-center rounded-full bg-[#D9D9D9]">
-            <img src={image1} className="w-full h-full text-gray-800" onClick={handleEditClick} />
+        <div className="w-40 h-40 flex justify-center items-center rounded-full bg-[#D9D9D9]">
+            <img src={image3} className="w-full h-full text-gray-800" onClick={handleEditClick} />
             <input
                 type="file"
                 accept="image/*"
