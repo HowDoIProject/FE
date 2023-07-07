@@ -90,7 +90,7 @@ const UserInfo = () => {
                     const success = response.data;
                     if (success) {
                         const verification = user_number.toString();
-                        setCookie('verification', verification, {
+                        setCookie('accessToken', verification, {
                             path: '/',
                             sameSite: 'none',
                             secure: true,
