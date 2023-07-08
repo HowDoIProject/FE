@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-
+import { api, apiPosts } from '../../shared/Api';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) => {
+const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     // const [data, setData] = useState();
@@ -11,6 +11,16 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
     const [updatedContent, setUpdatedContent] = useState('');
     const [updatedImage, setUpdatedImage] = useState('');
     const [cookies] = useCookies(['accessToken']);
+    const [postId, setPostId] = useState(null);
+    const [post, setPost] = useState({});
+    const [updatedData, setUpdatedData] = useState(null);
+    const [values, setValues] = useState({
+        category: '',
+        title: '',
+        content: '',
+        image: '',
+    });
+    const [file, setFile] = useState('');
 
     const toggleOptions = () => {
         setShowOptions(!showOptions);
@@ -20,6 +30,9 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
         setUpdatedTitle('');
         setUpdatedContent('');
         setUpdatedImage('');
+    };
+    const handleGoBack = () => {
+        goBack(); // Call the goBack function passed as a prop
     };
 
     const handleEditPost = async (updatedTitle, updatedContent, updatedImage) => {
@@ -45,27 +58,45 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
     };
     // Inside EditDeleteSelectWindow component
 
-    const handleEdit = () => {
-        handleEditPost(updatedTitle, updatedContent, updatedImage);
-        // Replace `/edit/${post_id}` with the desired edit screen path
+    // Inside handleEdit function
+    const handleEdit = async () => {
+        await handleEditPost(updatedTitle, updatedContent, updatedImage); // Pass the updated values as parameters
+
+        // Update the filteredPosts state with the edited post
+        setFilteredPosts(prevPosts => {
+            return prevPosts.map(post => {
+                if (post.post_id === post_id) {
+                    return { ...post, title: updatedTitle, content: updatedContent, image: updatedImage };
+                }
+                return post;
+            });
+        });
     };
 
-    const handleDelete = () => {
-        axios
-            .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
                 },
-            })
-            .then(response => {
-                console.log('Post successfully deleted');
-            })
-            .catch(error => {
-                console.error('Failed to delete the post:', error);
             });
+            // Remove the deleted post from the filteredPosts state
+            setFilteredPosts(prevPosts => prevPosts.filter(post => post.post_id !== post_id));
+            console.log('Post successfully deleted');
+        } catch (error) {
+            console.error('Failed to delete the post:', error);
+        }
     };
-
+    const onChangeFileHandler = e => {
+        const { name } = e.target;
+        const imgFormData = new FormData();
+        const file = e.target.files[0];
+        imgFormData.append(name, file);
+        apiPosts.uploadImage(imgFormData, setValues, values, cookies);
+        setFile(URL.createObjectURL(file));
+        e.target.value = ''; //이걸 해야지 이미지 삭제 후 같은 이미지 업로드가 가능함
+    };
     return (
         <div>
             {!editMode && (
@@ -130,16 +161,23 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                     ></textarea>
                     <input
-                        type="text"
-                        value={updatedImage}
-                        onChange={e => setUpdatedImage(e.target.value)}
-                        placeholder="Language URL"
-                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
+                        className="w-0 h-0 opacity-0"
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        id="image"
+                        onChange={onChangeFileHandler}
                     />
 
                     <button onClick={handleEdit} className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2">
                         저장
                     </button>
+                    {/* <button
+                        onClick={handleGoBack}
+                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
+                    >
+                        취소
+                    </button> */}
                 </div>
             )}
         </div>
