@@ -15,7 +15,7 @@ export default function PopularPosts() {
     return (
         <>
             <div className="mx-5">
-                <div className="flex w-full mt-4 mb-10">
+                <div className="flex w-full mt-4 mb-8">
                     <div
                         onClick={() => navigate('/posts')}
                         className="inline-flex w-1/2 justify-center py-3  text-gray_02 cursor-pointer text-[14px]"
@@ -27,10 +27,7 @@ export default function PopularPosts() {
                     </div>
                 </div>
                 {data?.data.topfive.map(post => (
-                    <div
-                        key={uuidv4()}
-                        className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                    >
+                    <div key={uuidv4()} className="w-full h-auto my-4 cursor-pointer">
                         <PostListCard post={post} />
                     </div>
                 ))}

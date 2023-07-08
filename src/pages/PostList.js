@@ -35,7 +35,9 @@ export default function PostList() {
     return (
         <div className="mx-5">
             <div className="flex w-full mt-4">
-                <div className="inline-flex w-1/2 justify-center py-3 border-b-2 border-b-main text-[14px]">전체글</div>
+                <div className="inline-flex w-1/2 justify-center py-3 border-b-2 border-b-main text-[14px] cursor-pointer">
+                    전체글
+                </div>
                 <div
                     onClick={() => navigate('/posts/popular')}
                     className="inline-flex w-1/2 justify-center py-3 text-[14px] text-gray_02 cursor-pointer"

@@ -45,10 +45,7 @@ export default function TotalPosts({ data, category, setCategory, filter, setFil
                 <div key={uuidv4()}>
                     {page.data.mypage && page.data.mypage.length > 0 ? (
                         page.data.mypage.map(post => (
-                            <div
-                                key={uuidv4()}
-                                className="w-full h-auto my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                            >
+                            <div key={uuidv4()} className="w-full h-auto my-4 cursor-pointer">
                                 <PostListCard post={post} />
                             </div>
                         ))
