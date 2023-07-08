@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import DoggyProfilePicture from './DoggyProfilePic';
-import MomProfilePicture from './MomProfilePic';
+import ProfilePicture from './MomProfilePic';
 import arrows from '../../assets/icon/arrow.svg';
 import mypages from '../../assets/icon/mypages.svg';
 
@@ -51,7 +51,7 @@ export default function MyPage() {
                             </div>
                         </div>
                         <div className="p-2">
-                            {user_type === 'Mom' ? <MomProfilePicture /> : <DoggyProfilePicture />}
+                            {user_type === '강아지' ? <ProfilePicture /> : <DoggyProfilePicture />}
                         </div>
                     </div>
                 </div>

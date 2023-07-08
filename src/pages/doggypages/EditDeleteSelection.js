@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-const EditDeleteSelectWindow = ({ post_id, setPostData, setFilteredPosts }) => {
+const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     // const [data, setData] = useState();
@@ -37,31 +38,17 @@ const EditDeleteSelectWindow = ({ post_id, setPostData, setFilteredPosts }) => {
             });
 
             toggleEditMode(updatedData);
-            // setUpdatedTitle(updatedData);
-            // setUpdatedContent(updatedData);
-            // setUpdatedImage(updatedData);
+            setUpdatedData(updatedData); // Set the updatedPostData in the parent component
         } catch (error) {
             console.error('An error occurred while updating the post:', error);
         }
     };
+    // Inside EditDeleteSelectWindow component
 
     const handleEdit = () => {
         handleEditPost(updatedTitle, updatedContent, updatedImage);
+        // Replace `/edit/${post_id}` with the desired edit screen path
     };
-    // useEffect(
-    //     () => {
-    //         // Update the component's state with the current post data
-    //         setUpdatedTitle(/* Current post title */);
-    //         setUpdatedContent(/* Current post content */);
-    //         setUpdatedImage(/* Current post image */);
-    //     },
-    //     [
-    //         /* Add relevant dependencies here */
-    //     ]
-    // );
-    useEffect(() => {
-        // Your effect logic
-    }, [updatedTitle, updatedContent, updatedImage]);
 
     const handleDelete = () => {
         axios

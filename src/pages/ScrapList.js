@@ -7,28 +7,7 @@ const ScrapScreen = () => {
     const [cookies] = useCookies(['accessToken']);
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
-    const [category, setCategory] = useState('');
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get('https://howdoiapp.shop/api/categories', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        access: `${cookies.accessToken}`,
-                    },
-                });
-
-                const { categories } = response.data;
-                setCategories(categories);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
-        };
-
-        fetchCategories();
-    }, [cookies.accessToken]);
+    const [category, setCategory] = useState();
 
     useEffect(() => {
         const fetchScrapList = async () => {
@@ -55,17 +34,10 @@ const ScrapScreen = () => {
         };
 
         fetchScrapList();
-    }, [cookies.accessToken, filter, category, page]);
+    }, [cookies.accessToken, category, filter, page]);
 
     return (
-        <div className="p-4">
-            <div className="flex mb-4">
-                {categories.map((category, index) => (
-                    <div className="bg-gray-300 rounded-full px-3 py-1 mr-2 text-xs" key={index}>
-                        {category}
-                    </div>
-                ))}
-            </div>
+        <>
             <div className="p-4">
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {scrapList.map(scrap => (
@@ -80,7 +52,7 @@ const ScrapScreen = () => {
                     ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

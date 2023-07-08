@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router-dom';
-import PostListCard from '../../components/PostListCard';
+import MyPostListCard from '../../components/MyPostListCard';
 import CommentListCard from '../../components/CommentListCard';
 import EditDeleteSelectWindow from './EditDeleteSelection';
 import FilterButton from './FilteredButton';
+import ChosenListCard from '../../components/ChosenListCard';
+import CommentEditDeleteSelectWindow from './CommentEditDelete';
+import postcss from 'postcss';
 
 const DoggysActivity = () => {
     const location = useLocation();
@@ -19,12 +22,14 @@ const DoggysActivity = () => {
     const [ShowMyChosenComment, setShowMyChosenComment] = useState(false);
     const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
+    const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [selectedPostId, setSelectedPostId] = useState();
     const [selectedButton, setSelectedButton] = useState(null);
+    const [updatedData, setUpdatedData] = useState(null);
     const [mychosen, setMyChosen] = useState([]);
     const [comments, setComments] = useState([]);
     const [chosencomments, setChosenComments] = useState([]);
-    // const [post_id, setPostId] = useState();
+    const [post_id, setPostId] = useState();
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -349,11 +354,17 @@ const DoggysActivity = () => {
                                     <div className="relative">
                                         <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
                                             <div className="relative">
-                                                <PostListCard post={post} />
+                                                <MyPostListCard
+                                                    post={post}
+                                                    updatedData={updatedData}
+                                                    post_id={post.post_id}
+                                                    onEdit={updatedData => handleEdit(post, updatedData)}
+                                                    onDelete={handleDelete}
+                                                />
                                                 <div className="absolute top-0 right-0">
                                                     <EditDeleteSelectWindow
                                                         post_id={post.post_id}
-                                                        onEdit={updatedData => handleEdit(post.post_id, updatedData)}
+                                                        onEdit={updatedData => handleEdit(post, updatedData)}
                                                         onDelete={handleDelete}
                                                     />
                                                 </div>
@@ -395,26 +406,28 @@ const DoggysActivity = () => {
                     <h4 className="text-lg font-bold">My Comment</h4>
                     {Array.isArray(comments) && comments.length > 0 ? (
                         comments.map(comment => (
-                            <div key={comment.comment_id} className="border p-4 rounded-lg my-4">
-                                <CommentListCard comment={comment} />
-
-                                {/* <p>{post.category}</p>
-                                <p>{comment.comment}</p>
-                                <p>글제목: {post.title}</p> */}
-                                {/* <div className="flex flex-row items-center gap-1">
-                                    <img src={like} alt="" />
-                                    {post.like_num}
-                                </div>
-                                <div className="flex flex-row items-center gap-1">
-                                    <img src={scrap} alt="" />
-                                    {post.scrap_num}
-                                </div> */}
-
-                                {/* <p>User ID: {comment.user_id}</p>
-                                <p>Category: {comment.category}</p> */}
-                                {/* <p>Chosen: {comment.chosen === 1 ? 'Yes' : 'No'}</p> */}
-                                {/* <p>Created At: {new Date(comment.created_at).toLocaleDateString()}</p>
-                                <p>Updated At: {new Date(comment.updated_at).toLocaleDateString()}</p> */}
+                            <div key={comment.comment_id} className="rounded-lg mb-4 bg-white-100">
+                                {comment.comment_id === selectedCommentId ? (
+                                    <div></div>
+                                ) : (
+                                    <div className="relative">
+                                        <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                            <div className="relative">
+                                                <CommentListCard comment={comment} />
+                                                <div className="absolute top-0 right-0">
+                                                    <CommentEditDeleteSelectWindow
+                                                        Post_id={post.post_id}
+                                                        comment_id={comment.comment_id}
+                                                        onEdit={updatedData =>
+                                                            handleEdit(comment.comment_id, updatedData)
+                                                        }
+                                                        onDelete={comment.comment_id}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))
                     ) : (
@@ -422,15 +435,17 @@ const DoggysActivity = () => {
                     )}
                 </div>
             )}
+
             {ShowMyChosenComment && (
                 <div>
                     <h4 className="text-lg font-bold">My Chosen Comments</h4>
                     {Array.isArray(mychosen) && mychosen.length > 0 ? (
                         mychosen.map(chosencomment => (
                             <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
-                                <p>Comment: {chosencomment.comment}</p>
-                                <p>Category: {chosencomment.category}</p>
-                                <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p>
+                                <ChosenListCard chosencomment={chosencomment} />
+                                {/* <p>Comment: {chosencomment.comment}</p>
+                                <p>글제목: {chosencomment.category}</p> */}
+                                {/* <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p> */}
                             </div>
                         ))
                     ) : (

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { FaUserCircle, FaEdit } from 'react-icons/fa';
 import image3 from '../../assets/icon/newdog.svg';
 
-const ProfilePicture = () => {
+const DoggyProfilePicture = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
     const fileInputRef = useRef(null);
@@ -30,4 +30,4 @@ const ProfilePicture = () => {
     );
 };
 
-export default ProfilePicture;
+export default DoggyProfilePicture;
