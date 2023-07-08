@@ -151,13 +151,14 @@ const DoggysActivity = () => {
             });
 
             const { mypage } = response.data;
+            setFilteredPosts(Array.isArray(response.data) ? response.data : []);
 
             if (mypage.length === 0) {
                 console.log('No posts found.');
             } else {
                 console.log('My Posts:', mypage);
                 setPostData(mypage);
-                setFilteredPosts(mypage);
+                setFilteredPosts(Array.isArray(mypage) ? mypage : []);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -340,119 +341,96 @@ const DoggysActivity = () => {
             </div>
             {/* //내가 쓴 글 수정하는 란 */}
             <div>
-                {/* <button type="button" onClick={toggleShowMyPost}>
-                    {showMyPost ? 'All Posts' : 'My Posts'}
-                </button> */}
+                {/* 내 작성글 */}
                 {showMyPost && (
                     <div>
                         <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
-                        {filteredPosts.map(post => (
-                            <div key={post.post_id} className="rounded-lg mb-4 bg-white-100">
-                                {post.post_id === selectedPostId ? (
-                                    <div></div>
-                                ) : (
-                                    <div className="relative">
-                                        <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
-                                            <div className="relative">
-                                                <MyPostListCard
-                                                    post={post}
-                                                    updatedData={updatedData}
-                                                    post_id={post.post_id}
-                                                    onEdit={updatedData => handleEdit(post, updatedData)}
-                                                    onDelete={handleDelete}
-                                                />
-                                                <div className="absolute top-0 right-0">
-                                                    <EditDeleteSelectWindow
-                                                        post_id={post.post_id}
-                                                        onEdit={updatedData => handleEdit(post, updatedData)}
-                                                        onDelete={handleDelete}
+                        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
+                            filteredPosts.map(post => (
+                                <div key={post.post_id} className="rounded-lg mb-4 bg-white-100">
+                                    {post.post_id === selectedPostId ? (
+                                        <div></div>
+                                    ) : (
+                                        <div className="relative">
+                                            <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                                <div className="relative">
+                                                    <MyPostListCard
+                                                        post={post}
+                                                        post_id={post_id}
+                                                        setFilteredPosts={setFilteredPosts}
                                                     />
+                                                    <div className="absolute top-0 right-0">
+                                                        <EditDeleteSelectWindow
+                                                            post_id={post.post_id}
+                                                            setFilteredPosts={setFilteredPosts}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
+                                </div>
+                            ))
+                        ) : (
+                            <p>오늘의 게시물이 없습니다.</p>
+                        )}
+                    </div>
+                )}
 
-                                    // <div className="post-card">
-                                    //     <div className="post-header flex justify-between items-start">
-                                    //         <div className="inline-flex text-white px-2 py-1 rounded-3xl bg-primary mb-5">
-                                    //             {post.category}
-                                    //         </div>
+                {/* 내 댓글 보기 */}
+                {showMyComments && (
+                    <div>
+                        <h4 className="text-lg font-bold">My Comment</h4>
+                        {Array.isArray(comments) && comments.length > 0 ? (
+                            comments.map(comment => (
+                                <div key={comment.comment_id} className="rounded-lg mb-4 bg-white-100">
+                                    {comment.comment_id === selectedCommentId ? (
+                                        <div></div>
+                                    ) : (
+                                        <div className="relative">
+                                            <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                                <div className="relative">
+                                                    <CommentListCard comment={comment} />
+                                                    <div className="absolute top-0 right-0">
+                                                        {/* <CommentEditDeleteSelectWindow
+                                    Post_id={post.post_id}
+                                    comment_id={comment.comment_id}
+                                    onEdit={updatedData =>
+                                        handleEdit(comment.comment_id, updatedData)
+                                    }
+                                    onDelete={comment.comment_id}
+                                /> */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        ) : (
+                            <p>No comments found.</p>
+                        )}
+                    </div>
+                )}
 
-                                    // <div className="relative">
-                                    //     <EditDeleteSelectWindow
-                                    //         post_id={post.post_id}
-                                    //         onEdit={updatedData => handleEdit(post.post_id, updatedData)}
-                                    //         onDelete={handleDelete}
-                                    //     />
-                                    //     {/* </div>
-                                    //     </div> */}
-                                    //     {/* <p className="mb-2">{post.content}</p>
-                                    //     <p>Title: {post.title}</p> */}
-                                    //     <div
-                                    //         key={post.post_id}
-                                    //         className="w-full h-[140px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300"
-                                    //     >
-                                    //         <PostListCard post={post} />
-                                    //     </div>
-                                )}
-                            </div>
-                        ))}
+                {ShowMyChosenComment && (
+                    <div>
+                        <h4 className="text-lg font-bold">My Chosen Comments</h4>
+                        {Array.isArray(mychosen) && mychosen.length > 0 ? (
+                            mychosen.map(chosencomment => (
+                                <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
+                                    <ChosenListCard chosencomment={chosencomment} />
+                                    {/* <p>Comment: {chosencomment.comment}</p>
+                      <p>글제목: {chosencomment.category}</p> */}
+                                    {/* <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p> */}
+                                </div>
+                            ))
+                        ) : (
+                            <p>채택한 데이터가 없습니다.</p>
+                        )}
                     </div>
                 )}
             </div>
-            {/*내가 쓴 댓글 보기*/}
-            {showMyComments && (
-                <div>
-                    <h4 className="text-lg font-bold">My Comment</h4>
-                    {Array.isArray(comments) && comments.length > 0 ? (
-                        comments.map(comment => (
-                            <div key={comment.comment_id} className="rounded-lg mb-4 bg-white-100">
-                                {comment.comment_id === selectedCommentId ? (
-                                    <div></div>
-                                ) : (
-                                    <div className="relative">
-                                        <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
-                                            <div className="relative">
-                                                <CommentListCard comment={comment} />
-                                                <div className="absolute top-0 right-0">
-                                                    <CommentEditDeleteSelectWindow
-                                                        Post_id={post.post_id}
-                                                        comment_id={comment.comment_id}
-                                                        onEdit={updatedData =>
-                                                            handleEdit(comment.comment_id, updatedData)
-                                                        }
-                                                        onDelete={comment.comment_id}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <p>No comments found.</p>
-                    )}
-                </div>
-            )}
-
-            {ShowMyChosenComment && (
-                <div>
-                    <h4 className="text-lg font-bold">My Chosen Comments</h4>
-                    {Array.isArray(mychosen) && mychosen.length > 0 ? (
-                        mychosen.map(chosencomment => (
-                            <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
-                                <ChosenListCard chosencomment={chosencomment} />
-                                {/* <p>Comment: {chosencomment.comment}</p>
-                                <p>글제목: {chosencomment.category}</p> */}
-                                {/* <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p> */}
-                            </div>
-                        ))
-                    ) : (
-                        <p>채택한 데이터가 없습니다.</p>
-                    )}
-                </div>
-            )}
         </div>
     );
 };
