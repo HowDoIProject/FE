@@ -1,68 +1,64 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) => {
+const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setCommentData, setFilteredComments }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    // const [data, setData] = useState();
-    const [updatedTitle, setUpdatedTitle] = useState('');
-    const [updatedContent, setUpdatedContent] = useState('');
-    const [updatedImage, setUpdatedImage] = useState('');
+    const [updatedComment, setUpdatedComment] = useState('');
     const [cookies] = useCookies(['accessToken']);
 
     const toggleOptions = () => {
         setShowOptions(!showOptions);
     };
+
     const toggleEditMode = () => {
         setEditMode(!editMode);
-        setUpdatedTitle('');
-        setUpdatedContent('');
-        setUpdatedImage('');
+        setUpdatedComment('');
     };
 
-    const handleEditPost = async (updatedTitle, updatedContent, updatedImage) => {
+    const handleEditComment = async () => {
         const updatedData = {
-            title: updatedTitle,
-            content: updatedContent,
-            image: updatedImage,
+            comment: updatedComment,
         };
 
         try {
-            await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, updatedData, {
+            await axios.put(`https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`, updatedData, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
                 },
             });
 
-            toggleEditMode(updatedData);
-            setUpdatedData(updatedData); // Set the updatedPostData in the parent component
+            toggleEditMode();
+            // Update the comment data in the parent component
+            setCommentData(prevData => {
+                return prevData.map(comment => {
+                    if (comment.comment_id === comment_id) {
+                        return { ...comment, comment: updatedData.comment };
+                    }
+                    return comment;
+                });
+            });
         } catch (error) {
-            console.error('An error occurred while updating the post:', error);
+            console.error('An error occurred while updating the comment:', error);
         }
     };
-    // Inside EditDeleteSelectWindow component
 
-    const handleEdit = () => {
-        handleEditPost(updatedTitle, updatedContent, updatedImage);
-        // Replace `/edit/${post_id}` with the desired edit screen path
-    };
-
-    const handleDelete = () => {
+    const handleDeleteComment = () => {
         axios
-            .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+            .delete(`https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
                 },
             })
             .then(response => {
-                console.log('Post successfully deleted');
+                console.log('Comment successfully deleted');
+                setFilteredComments(prevComments => prevComments.filter(comment => comment.comment_id !== comment_id));
             })
             .catch(error => {
-                console.error('Failed to delete the post:', error);
+                console.error('Failed to delete the comment:', error);
             });
     };
 
@@ -103,7 +99,7 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
                                     <button
                                         type="button"
                                         className="block px-4 py-2 hover:bg-gray-100"
-                                        onClick={handleDelete}
+                                        onClick={handleDeleteComment}
                                     >
                                         Delete
                                     </button>
@@ -115,34 +111,22 @@ const EditDeleteSelectWindow = ({ post_id, setUpdatedData, setFilteredPosts }) =
             )}
             {editMode && (
                 <div className="border p-4 rounded-lg bg-gray-100">
-                    <input
-                        type="text"
-                        value={updatedTitle}
-                        onChange={e => setUpdatedTitle(e.target.value)}
-                        placeholder="제목"
-                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
-                    />
                     <textarea
-                        type="text"
-                        value={updatedContent}
-                        onChange={e => setUpdatedContent(e.target.value)}
-                        placeholder="내용"
+                        value={updatedComment}
+                        onChange={e => setUpdatedComment(e.target.value)}
+                        placeholder="Edit your comment..."
                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                     ></textarea>
-                    <input
-                        type="text"
-                        value={updatedImage}
-                        onChange={e => setUpdatedImage(e.target.value)}
-                        placeholder="Language URL"
-                        className="border border-gray-300 rounded-md px-2 py-1 mt-2"
-                    />
-
-                    <button onClick={handleEdit} className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2">
-                        저장
+                    <button
+                        onClick={handleEditComment}
+                        className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2"
+                    >
+                        Save
                     </button>
                 </div>
             )}
         </div>
     );
 };
-export default EditDeleteSelectWindow;
+
+export default CommentEditDeleteSelectWindow;
