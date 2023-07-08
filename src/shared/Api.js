@@ -29,8 +29,8 @@ export const AuthApi = {
 };
 
 export const apiPosts = {
-    getTopFive: () => {
-        return api.get(`/api/topfive`);
+    getPopular: page => {
+        return api.get(`/api/topfive/${page}`);
     },
     getAll: () => {
         return api.get(`/api/post`);
@@ -142,11 +142,15 @@ export const apiPosts = {
         const { post_id, comment_id, cookies } = args;
         console.log('commentcookies', cookies);
         return api
-            .post(`/api/post/${post_id}/comment/${comment_id}`, {
-                headers: {
-                    access: cookies.accessToken,
-                },
-            })
+            .post(
+                `/api/post/${post_id}/comment/${comment_id}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
             .then(res => {
                 alert('답변이 채택되었습니다!');
             });

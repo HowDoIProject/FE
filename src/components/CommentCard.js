@@ -41,8 +41,6 @@ export default function CommentCard({ commentInfo, post_id, userIdPost }) {
     });
 
     const isDog = user_type === '강아지';
-    // console.log('userIdComment', user_id);
-    // console.log('loggedUserId', loggedUserId);
 
     return (
         <>

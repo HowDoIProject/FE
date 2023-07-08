@@ -15,6 +15,7 @@ import MomsActivity from '../pages/momspages/MomsActivity';
 import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
+import PopularPosts from '../components/PopularPosts';
 
 const Router = () => {
     return (
@@ -29,6 +30,7 @@ const Router = () => {
                     <Route path="/posts/:searchword" element={<SearchList />} />
                     {/* 게시판 화면 관련 */}
                     <Route path="/posts" element={<PostList />} />
+                    <Route path="/posts/popular" element={<PopularPosts />} />
                     {/* 상세 화면 관련 */}
                     <Route path="/post/:post_id" element={<PostDetail />} />
                     {/* 생성 화면 관련 */}
