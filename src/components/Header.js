@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/icon/logo.svg';
 
 export default function Header() {
-    const [cookies, removeCookie] = useCookies(['accessToken']);
+    const [cookies, _, removeCookie] = useCookies(['accessToken']);
     const navigate = useNavigate();
     const logout = () => {
         const result = confirm('정말 로그아웃 하시겠습니까?');
@@ -21,13 +21,12 @@ export default function Header() {
                 <Link to={'/'}>
                     <img className="h-10" src={logo} alt="" />
                 </Link>
-                {console.log(cookies.accessToken)}
                 {cookies.accessToken ? (
                     <div
                         className="px-3 py-1 rounded-3xl bg-gray_03 text-white text-[14px] cursor-pointer"
                         onClick={logout}
                     >
-                        로그아웃s
+                        로그아웃
                     </div>
                 ) : (
                     <div
