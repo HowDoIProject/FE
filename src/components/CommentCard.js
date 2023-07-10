@@ -14,7 +14,8 @@ import ModalComment from './ModalComment';
 import { apiPosts } from '../shared/Api';
 
 export default function CommentCard({ commentInfo, post_id, userIdPost }) {
-    const { comment, created_at, image, nickname, user_type, comment_id, like_num, user_id } = commentInfo || {};
+    const { comment, created_at, image, nickname, user_type, comment_id, like_num, user_id, chosen } =
+        commentInfo || {};
 
     const [cookies] = useCookies(['accessToken']);
     const jwtToken = cookies.accessToken;
@@ -23,9 +24,10 @@ export default function CommentCard({ commentInfo, post_id, userIdPost }) {
         user_id: { user_id: loggedUserId },
     } = decodedToken;
 
+    console.log('commentInfo', commentInfo);
+
     const [modalOpen, setModalOpen] = useState(false);
     const [isLike, setIsLike] = useState(false);
-    const [isCommentChosen, setIsCommentChosen] = useState(false);
 
     const queryClient = useQueryClient();
 
@@ -61,26 +63,24 @@ export default function CommentCard({ commentInfo, post_id, userIdPost }) {
                 <div className="mt-5 flex justify-between items-center">
                     <div className=" text-gray_02">{formatAgo(created_at, 'ko')}</div>
                     <div className="flex items-center">
-                        {loggedUserId == userIdPost ? (
-                            <div
-                                onClick={() => {
-                                    setIsCommentChosen(!isCommentChosen);
-                                    chooseCommentMutate({ post_id, comment_id, cookies });
-                                }}
-                            >
-                                {isCommentChosen ? (
-                                    <div className="inline-flex text-[12px] px-2 py-1 rounded-xl bg-white text-primary border border-primary mr-3 cursor-pointer">
-                                        채택된 답변
-                                    </div>
-                                ) : (
-                                    <div className="inline-flex text-[12px] px-2 py-1 rounded-xl bg-white text-gray_01 border border-gray_01 mr-3 cursor-pointer">
-                                        채택하기
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            ''
-                        )}
+                        <div
+                            onClick={() => {
+                                chooseCommentMutate({ post_id, comment_id, cookies });
+                            }}
+                        >
+                            {chosen == 1 ? (
+                                <div className="inline-flex text-[12px] px-2 py-1 rounded-xl bg-white text-primary border border-primary mr-3 cursor-pointer">
+                                    채택된 답변
+                                </div>
+                            ) : loggedUserId == userIdPost ? (
+                                <div className="inline-flex text-[12px] px-2 py-1 rounded-xl bg-white text-gray_01 border border-gray_01 mr-3 cursor-pointer">
+                                    채택하기
+                                </div>
+                            ) : (
+                                ''
+                            )}
+                        </div>
+
                         <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={() => {

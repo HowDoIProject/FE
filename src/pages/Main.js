@@ -38,8 +38,7 @@ export default function Main() {
     return (
         <>
             <div className="flex justify-center mx-5 my-9">
-                <WelcomeCardNotLoggedIn />
-                {/* {cookies.accessToken? <WelcomeCardLoggedIn /> : <WelcomeCardNotLoggedIn />} */}
+                {cookies.accessToken ? <WelcomeCardLoggedIn /> : <WelcomeCardNotLoggedIn />}
             </div>
             <section className="mb-6">
                 <h1 className="ml-7 font-['Pretendard-Bold']">많은 도움됐어요를 받은글 TOP5</h1>
