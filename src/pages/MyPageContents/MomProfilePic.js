@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { FaUserCircle, FaEdit } from 'react-icons/fa';
-import image2 from '../../assets/icon/mom_dog.svg';
+import image2 from '../../assets/icon/parent.svg';
 
 const ProfilePicture = () => {
     const [selectedFile, setSelectedFile] = useState(null);

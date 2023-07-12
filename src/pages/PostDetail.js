@@ -24,24 +24,35 @@ export default function PostDetail() {
 
     const { data, error, isLoading } = useQuery(['post', post_id], () => apiPosts.getDetail(post_id));
 
-    const { category, title, content, image, nickname, created_at, like_num, scrap_num, user_type, user_id } =
-        data?.data.post || {};
+    const {
+        category,
+        title,
+        content,
+        image,
+        nickname,
+        created_at,
+        like_num,
+        scrap_num,
+        user_type,
+        user_id: userIdPost,
+    } = data?.data.post || {};
 
     const { mutate: updateLikeMutate } = useMutation({
-        mutationFn: apiPosts.updateLike,
+        mutationFn: apiPosts.updatePostLike,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post', post_id] });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
-        mutationFn: apiPosts.updateScrap,
+        mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['post', post_id] });
         },
     });
 
     const isDog = user_type === '강아지';
+    console.log('해당글data', data);
 
     return (
         <>
@@ -63,37 +74,35 @@ export default function PostDetail() {
             <div className="flex flex-col justify-center items-center mb-3">
                 <div className="w-[360px] bg-gray_05 rounded-lg">
                     <div className="mb-4 p-4">
-                        <div className="inline-flex text-white px-2 py-1 rounded-2xl bg-primary mb-2">{category}</div>
+                        <div className="inline-flex text-white text-[12px] px-2 py-1 rounded-2xl bg-primary mb-6">
+                            {category}
+                        </div>
 
-                        <h1 className="mb-4 font-bold">{title}</h1>
+                        <h1 className="mb-5">{title}</h1>
                         <pre className="whitespace-pre-wrap">{content}</pre>
                         <img src={image} alt="" />
                     </div>
                     <div className="p-4">
                         <div className="mb-4 text-gray_02">{formatAgo(created_at, 'ko')} </div>
                         <div className="flex gap-4">
-                            <div className="flex items-center gap-1">
-                                <img
-                                    onClick={() => {
-                                        setIsLike(!isLike);
-                                        updateLikeMutate({ user_id, post_id, cookies });
-                                    }}
-                                    className="w-5 h-5 cursor-pointer"
-                                    src={isLike ? likeActive : like}
-                                    alt=""
-                                />
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => {
+                                    setIsLike(!isLike);
+                                    updateLikeMutate({ userIdPost, post_id, cookies });
+                                }}
+                            >
+                                <img className="w-5 h-5" src={isLike ? likeActive : like} alt="" />
                                 {like_num}
                             </div>
-                            <div className="flex items-center gap-1">
-                                <img
-                                    onClick={() => {
-                                        setIsScrap(!isScrap);
-                                        updateScrapMutate({ user_id, post_id, cookies });
-                                    }}
-                                    className="w-5 h-5 cursor-pointer"
-                                    src={isScrap ? scrapActive : scrap}
-                                    alt=""
-                                />
+                            <div
+                                className="flex items-center gap-1 cursor-pointer"
+                                onClick={() => {
+                                    setIsScrap(!isScrap);
+                                    updateScrapMutate({ userIdPost, post_id, cookies });
+                                }}
+                            >
+                                <img className="w-5 h-5" src={isScrap ? scrapActive : scrap} alt="" />
                                 {scrap_num}
                             </div>
                             <div className="flex items-center gap-1">
@@ -109,7 +118,7 @@ export default function PostDetail() {
                     {data?.data.comments.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
-                                <CommentCard commentInfo={comment} post_id={post_id} />
+                                <CommentCard commentInfo={comment} post_id={post_id} userIdPost={userIdPost} />
                             </li>
                         );
                     })}

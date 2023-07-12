@@ -29,14 +29,17 @@ export const AuthApi = {
 };
 
 export const apiPosts = {
-    getTopFive: () => {
-        return api.get(`/api/topfive`);
+    getPopular: page => {
+        return api.get(`/api/topfive/${page}`);
     },
     getAll: () => {
         return api.get(`/api/post`);
     },
     getDetail: post_id => {
         return api.get(`api/post/${post_id}`);
+    },
+    getByFilterAndCategory: (filter, category, page) => {
+        return api.get(`api/list/${filter}/${category}/${page}`);
     },
     uploadImage: (payload, setValues, values, cookies) => {
         return api
@@ -105,7 +108,17 @@ export const apiPosts = {
                 alert('댓글이 수정되었습니다');
             });
     },
-    updateLike: args => {
+    updateCommentLike: args => {
+        const { payload, comment_id, cookies } = args;
+        return api
+            .post(`/api/commentlike/${comment_id}`, payload, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => console.log('likeComment', res));
+    },
+    updatePostLike: args => {
         const { payload, post_id, cookies } = args;
         return api
             .post(`/api/like/${post_id}`, payload, {
@@ -113,9 +126,9 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('like', res));
+            .then(res => console.log('likePost', res));
     },
-    updateScrap: args => {
+    updatePostScrap: args => {
         const { payload, post_id, cookies } = args;
         return api
             .post(`/api/scrap/${post_id}`, payload, {
@@ -123,9 +136,59 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('scrap', res));
+            .then(res => console.log('scrapPost', res));
+    },
+
+    chooseComment: args => {
+        const { post_id, comment_id, cookies } = args;
+        console.log('commentcookies', cookies);
+        return api
+            .post(
+                `/api/post/${post_id}/comment/${comment_id}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
+            .then(res => {
+                alert('답변이 채택되었습니다!');
+            });
     },
 };
+
+export const apiGet = {
+    getScrapFilterAndCategory: (filter, category, page, cookies) => {
+        return api
+            .get(
+                `/api/scrap/${filter}/${category}/${page}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
+
+            .then(res => {
+                return {
+                    data: res.data,
+                };
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+};
+
+// getScrapFilterAndCategory: (filter, category, page, cookies) => {
+//     return api.get(`api/scrap/${filter}/${category}/${page}`, {
+//         headers: {
+//             access: cookies.accessToken,
+//         },
+//     });
+// },
 
 export const apiMyPage = {
     getMyPage: () => {
