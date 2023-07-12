@@ -8,8 +8,7 @@ import MyPostButton from './MomsPost';
 import MyChosenButton from './MomsChosen';
 import MyCommentButton from './MomsComment';
 import PostListCard from '../../components/PostListCard';
-import CommentListCard from '../../components/CommentListCard';
-import { Bar } from 'react-chartjs-2';
+import CommentCard from '../../components/CommentCard';
 
 export default function MomsActivity() {
     const location = useLocation();
@@ -205,13 +204,15 @@ export default function MomsActivity() {
                             <div className="grid grid-cols-1 gap-4">
                                 {mycomments.map(mycomment => (
                                     <div key={mycomment.comment_id} className="bg-white p-4 rounded shadow">
-                                        <CommentListCard comment={mycomment} />
-                                        {/* <h3 className="border p-4 rounded-lg my-4">{mycomment.comment}</h3>
-                                        <p className="mb-2">User ID: {mycomment.user_id}</p>
-                                        <p>Category: {mycomment.category}</p>
-                                        <p>Chosen: {mycomment.chosen === 1 ? 'Yes' : 'No'}</p>
-                                        <p>Created At: {new Date(mycomment.created_at).toLocaleDateString()}</p>
-                                        <p>Updated At: {new Date(mycomment.updated_at).toLocaleDateString()}</p> */}
+                                        <div className="comment-box bg-gray-100 rounded-lg p-4 transition-colors duration-300 hover:bg-gray-100">
+                                            <h3>{mycomment.comment}</h3>
+                                            <p>Category: {mycomment.category}</p>
+                                            <p>Chosen: {mycomment.chosen === 1 ? 'Yes' : 'No'}</p>
+                                            <p>Created At: {new Date(mycomment.created_at).toLocaleDateString()}</p>
+                                            {/* <div className="text-[14px] text-gray_02">
+                                                {formatAgo(created_at, 'ko')}
+                                            </div> */}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

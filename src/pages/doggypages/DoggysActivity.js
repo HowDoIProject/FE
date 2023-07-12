@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useLocation } from 'react-router-dom';
-import MyPostListCard from '../../components/MyPostListCard';
-import CommentListCard from '../../components/CommentListCard';
+import PostListCard from '../../components/PostListCard';
 import EditDeleteSelectWindow from './EditDeleteSelection';
 import FilterButton from './FilteredButton';
 import ChosenListCard from '../../components/ChosenListCard';
 import CommentEditDeleteSelectWindow from './CommentEditDelete';
-import postcss from 'postcss';
+import MyComment from '../../components/MyComment';
 
 const DoggysActivity = () => {
     const location = useLocation();
@@ -16,6 +15,7 @@ const DoggysActivity = () => {
     const [postData, setPostData] = useState([]);
     // const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
+    const [filteredComments, setFilteredComments] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
     const [showMyPost, setShowMyPost] = useState(false);
     const [showMyComments, setShowMyComments] = useState(false);
@@ -30,6 +30,8 @@ const DoggysActivity = () => {
     const [comments, setComments] = useState([]);
     const [chosencomments, setChosenComments] = useState([]);
     const [post_id, setPostId] = useState();
+    const [category, setCategory] = useState();
+    const [comment_id, setCommentId] = useState();
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -44,7 +46,10 @@ const DoggysActivity = () => {
         // Handle edit action
         console.log('Edit option selected');
     };
-
+    const handleDeleteComment = () => {
+        // Handle edit action
+        console.log('Edit option selected');
+    };
     // 게시물 수정 요청 처리
     const handleUpdate = async (post_id, updatedData) => {
         try {
@@ -65,15 +70,15 @@ const DoggysActivity = () => {
         }
     };
 
-    const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
-        const updatedData = {
-            title: updatedTitle,
-            content: updatedContent,
-            image: updatedImage,
-        };
+    // const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
+    //     const updatedData = {
+    //         title: updatedTitle,
+    //         content: updatedContent,
+    //         image: updatedImage,
+    //     };
 
-        handleUpdate(post_id, updatedData);
-    };
+    //     handleUpdate(post_id, updatedData);
+    // };
 
     // 게시물 삭제 요청 처리
     const handleDelete = postId => {
@@ -133,6 +138,7 @@ const DoggysActivity = () => {
 
         setFilteredPosts(filteredData);
         setComments(filteredComments);
+        setChosenComments(filteredData);
         setSelectedOption(period);
     };
 
@@ -186,15 +192,12 @@ const DoggysActivity = () => {
 
             const { data } = response;
 
-            if (Array.isArray(data)) {
-                if (data.length > 0) {
-                    console.log('My Comments:', data);
-                    setComments(data);
-                } else {
-                    console.log('No comments found.');
-                }
+            if (Array.isArray(data.mycomment) && data.mycomment.length > 0) {
+                console.log('My Comments:', data.mycomment);
+                setComments(data.mycomment);
             } else {
-                console.log('Invalid data format for comments.');
+                console.log('No comments found.');
+                setComments([]);
             }
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -202,35 +205,43 @@ const DoggysActivity = () => {
     };
 
     useEffect(() => {
-        const handleShowMyComment = async () => {
-            setShowMyPost(false);
-            setShowMyComments(true);
-            setShowMyChosenComment(false);
-
-            try {
-                const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        access: cookies.accessToken,
-                    },
-                });
-
-                const { data } = response;
-
-                if (Array.isArray(data.mycomment) && data.mycomment.length > 0) {
-                    console.log('My Comments:', data.mycomment);
-                    setComments(data.mycomment);
-                } else {
-                    console.log('No comments found.');
-                    setComments([]);
-                }
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-            }
-        };
-
         handleShowMyComment();
     }, [cookies.accessToken]);
+    const handleEditComment = async (postId, commentId, updatedComment) => {
+        const updatedData = {
+            comment: updatedComment,
+            image: '',
+        };
+
+        try {
+            const response = await axios.put(
+                `https://howdoiapp.shop/api/post/${postId}/comment/${commentId}`,
+                updatedData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: `${cookies.accessToken}`,
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                // Update the comment data in the state
+                setFilteredComments(prevComments => {
+                    return prevComments.map(prevComment => {
+                        if (prevComment.comment_id === commentId) {
+                            return { ...prevComment, comment: updatedComment };
+                        }
+                        return prevComment;
+                    });
+                });
+            } else {
+                console.error('Failed to edit the comment. Response:', response);
+            }
+        } catch (error) {
+            console.error('An error occurred while updating the comment:', error);
+        }
+    };
 
     const handleShowMyChosen = async () => {
         setShowMyPost(false);
@@ -354,7 +365,7 @@ const DoggysActivity = () => {
                                         <div className="relative">
                                             <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
                                                 <div className="relative">
-                                                    <MyPostListCard
+                                                    <PostListCard
                                                         post={post}
                                                         post_id={post_id}
                                                         setFilteredPosts={setFilteredPosts}
@@ -390,16 +401,29 @@ const DoggysActivity = () => {
                                         <div className="relative">
                                             <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
                                                 <div className="relative">
-                                                    <CommentListCard comment={comment} />
+                                                    <MyComment
+                                                        comments={comment.comment}
+                                                        post={{ category, post }}
+                                                        post_id={post_id}
+                                                        setFilteredPosts={setFilteredPosts}
+                                                        setFilteredComments={setFilteredComments}
+                                                        comment={comment}
+                                                        comment_id={comment_id}
+                                                    />
+
                                                     <div className="absolute top-0 right-0">
                                                         {/* <CommentEditDeleteSelectWindow
-                                    Post_id={post.post_id}
-                                    comment_id={comment.comment_id}
-                                    onEdit={updatedData =>
-                                        handleEdit(comment.comment_id, updatedData)
-                                    }
-                                    onDelete={comment.comment_id}
-                                /> */}
+                                                            post_id={post.post_id}
+                                                            comment_id={comment.comment_id}
+                                                            setFilteredComments={setFilteredComments}
+                                                            comment={comment}
+                                                            handleEditComment={() =>
+                                                                handleEditComment(post_id, comment_id, cookies)
+                                                            }
+                                                            handleDeleteComment={() =>
+                                                                handleDeleteComment(post_id, comment_id, cookies)
+                                                            }
+                                                        /> */}
                                                     </div>
                                                 </div>
                                             </div>

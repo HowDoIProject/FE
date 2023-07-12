@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
-const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setCommentData, setFilteredComments }) => {
+const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setFilteredComments, comment }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [updatedComment, setUpdatedComment] = useState('');
+    const [updatedComment, setUpdatedComment] = useState(comment.comment);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [cookies] = useCookies(['accessToken']);
+
+    useEffect(() => {
+        setUpdatedComment('');
+    }, [comment]);
 
     const toggleOptions = () => {
         setShowOptions(!showOptions);
@@ -17,29 +22,47 @@ const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setCommentData, se
         setUpdatedComment('');
     };
 
+    const handleImageChange = event => {
+        const file = event.target.files[0]; // Get the first selected file
+
+        if (file) {
+            setSelectedImage(file);
+        }
+    };
+
     const handleEditComment = async () => {
-        const updatedData = {
-            comment: updatedComment,
-        };
+        const formData = new FormData();
+        formData.append('comment', updatedComment);
+        if (selectedImage) {
+            formData.append('image', selectedImage);
+        }
 
         try {
-            await axios.put(`https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`, updatedData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    access: `${cookies.accessToken}`,
-                },
-            });
+            const response = await axios.put(
+                `https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        access: `${cookies.accessToken}`,
+                    },
+                }
+            );
 
-            toggleEditMode();
-            // Update the comment data in the parent component
-            setCommentData(prevData => {
-                return prevData.map(comment => {
-                    if (comment.comment_id === comment_id) {
-                        return { ...comment, comment: updatedData.comment };
-                    }
-                    return comment;
+            if (response.status === 200) {
+                // Update the comment data in the state
+                setFilteredComments(prevComments => {
+                    return prevComments.map(prevComment => {
+                        if (prevComment.comment_id === comment_id) {
+                            return { ...prevComment, comment: updatedComment };
+                        }
+                        return prevComment;
+                    });
                 });
-            });
+                toggleEditMode();
+            } else {
+                console.error('Failed to edit the comment. Response:', response);
+            }
         } catch (error) {
             console.error('An error occurred while updating the comment:', error);
         }
@@ -54,11 +77,17 @@ const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setCommentData, se
                 },
             })
             .then(response => {
-                console.log('Comment successfully deleted');
-                setFilteredComments(prevComments => prevComments.filter(comment => comment.comment_id !== comment_id));
+                if (response.status === 200) {
+                    console.log('Comment successfully deleted');
+                    setFilteredComments(prevComments =>
+                        prevComments.filter(prevComment => prevComment.comment_id !== comment_id)
+                    );
+                } else {
+                    console.error('Failed to delete the comment. Response:', response);
+                }
             })
             .catch(error => {
-                console.error('Failed to delete the comment:', error);
+                console.error('An error occurred while deleting the comment:', error);
             });
     };
 
@@ -114,9 +143,10 @@ const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setCommentData, se
                     <textarea
                         value={updatedComment}
                         onChange={e => setUpdatedComment(e.target.value)}
-                        placeholder="Edit your comment..."
+                        placeholder="Please enter a comment."
                         className="border border-gray-300 rounded-md px-2 py-1 mt-2"
                     ></textarea>
+                    <input type="file" onChange={handleImageChange} />
                     <button
                         onClick={handleEditComment}
                         className="bg-green-500 text-white font-bold py-2 px-4 rounded mt-2"
