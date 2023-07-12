@@ -5,6 +5,7 @@ import { apiPosts } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalPosts from '../components/TotalPosts';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 export default function PostList() {
     const [filter, setFilter] = useState(0);
@@ -14,6 +15,7 @@ export default function PostList() {
         threshold: 1,
     });
     const navigate = useNavigate();
+    const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
 
@@ -23,7 +25,7 @@ export default function PostList() {
             if (lastPage.data.total_page == lastPage.data.page) return false;
             return lastPage.data.page + 1;
         },
-        queryFn: ({ pageParam = 1 }) => apiPosts.getByFilterAndCategory(filter, category, pageParam),
+        queryFn: ({ pageParam = 1 }) => apiPosts.getByFilterAndCategory(filter, category, pageParam, cookies),
     });
 
     console.log('data', data);
