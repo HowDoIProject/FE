@@ -3,6 +3,7 @@ import home from '../assets/icon/home.svg';
 import post from '../assets/icon/post.svg';
 import feed from '../assets/icon/feed.svg';
 import mypage from '../assets/icon/mypage.svg';
+import scrap from '../assets/icon/scrap.svg';
 
 export default function Footer() {
     return (
@@ -24,6 +25,12 @@ export default function Footer() {
                     <div className="flex flex-col min-w-[94px] items-center justify-center gap-1">
                         <img src={post} alt={post} />
                         <h1>글 올리기</h1>
+                    </div>
+                </a>
+                <a href="/scrap" className="no-underline hover:text-decoration-underline">
+                    <div className="flex flex-col min-w-[94px] items-center justify-center gap-1">
+                        <img src={scrap} alt={scrap} />
+                        <h1>스크랩</h1>
                     </div>
                 </a>
                 <a href="/mypage" className="no-underline hover:text-decoration-underline">
