@@ -11,23 +11,34 @@ import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
 
 export default function PostListCard({ post }) {
-    const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = post;
+    const {
+        category,
+        title,
+        like_num,
+        scrap_num,
+        post_id,
+        user_type,
+        comment_num,
+        created_at,
+        user_id,
+        like_check,
+        scrap_check,
+    } = post;
+
     const [cookies] = useCookies(['accessToken']);
-    const [isLike, setIsLike] = useState(false);
-    const [isScrap, setIsScrap] = useState(false);
 
     const queryClient = useQueryClient();
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updatePostLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['posts'], post_id });
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['posts'], post_id });
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
         },
     });
 
@@ -55,22 +66,20 @@ export default function PostListCard({ post }) {
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsLike(!isLike);
                                 updateLikeMutate({ user_id, post_id, cookies });
                             }}
                         >
-                            <img className="w-4 h-4" src={isLike ? likeActive : like} alt="" />
+                            <img className="w-4 h-4" src={like_check ? likeActive : like} alt="" />
                             {like_num}
                         </div>
                         <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsScrap(!isScrap);
                                 updateScrapMutate({ user_id, post_id, cookies });
                             }}
                         >
-                            <img className="w-4 h-4" src={isScrap ? scrapActive : scrap} alt="" />
+                            <img className="w-4 h-4" src={scrap_check ? scrapActive : scrap} alt="" />
                             {scrap_num}
                         </div>
                         <div className="flex items-center gap-1">

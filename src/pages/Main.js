@@ -8,21 +8,19 @@ import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import WelcomeCardNotLoggedIn from '../components/WelcomeCardNotLoggedIn';
 import { Link } from 'react-router-dom';
 import WelcomeCardLoggedIn from '../components/WelcomeCardLoggedIn';
+import SearchBar from '../components/SearchBar';
 
 export default function Main() {
     const queryClient = useQueryClient();
+    const [cookies] = useCookies(['accessToken']);
 
     const {
         data: topFive,
         errorTopfive,
         isLoadingTopfive,
-    } = useQuery(['posts', 'topFive'], () => apiPosts.getPopular(1)); //맨 위 5글만 알면 되므로 첫 페이지만 호출
-
-    console.log('topFive', topFive);
+    } = useQuery(['posts', 'topFive'], () => apiPosts.getPopular(1, cookies)); //맨 위 5글만 알면 되므로 첫 페이지만 호출
 
     const { data, error, isLoading } = useQuery(['posts'], () => apiPosts.getAll());
-
-    const [cookies] = useCookies(['accessToken']);
 
     const slider1 = useRef(null);
     const slider2 = useRef(null);
@@ -37,7 +35,8 @@ export default function Main() {
 
     return (
         <>
-            <div className="flex justify-center mx-5 my-9">
+            <SearchBar />
+            <div className="flex justify-center mx-5 mb-6">
                 {cookies.accessToken ? <WelcomeCardLoggedIn /> : <WelcomeCardNotLoggedIn />}
             </div>
             <section className="mb-6">

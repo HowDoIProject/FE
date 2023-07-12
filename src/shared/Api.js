@@ -29,8 +29,12 @@ export const AuthApi = {
 };
 
 export const apiPosts = {
-    getPopular: page => {
-        return api.get(`/api/topfive/${page}`);
+    getPopular: (page, cookies) => {
+        return api.get(`/api/topfive/${page}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
     },
     getAll: () => {
         return api.get(`/api/post`);
@@ -38,8 +42,12 @@ export const apiPosts = {
     getDetail: post_id => {
         return api.get(`api/post/${post_id}`);
     },
-    getByFilterAndCategory: (filter, category, page) => {
-        return api.get(`api/list/${filter}/${category}/${page}`);
+    getByFilterAndCategory: (filter, category, page, cookies) => {
+        return api.get(`api/list/${filter}/${category}/${page}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
     },
     uploadImage: (payload, setValues, values, cookies) => {
         return api
@@ -154,6 +162,22 @@ export const apiPosts = {
             )
             .then(res => {
                 alert('답변이 채택되었습니다!');
+            });
+    },
+    search: args => {
+        const { keyword, page, cookies } = args;
+        return api
+            .post(
+                `/api/search/${keyword}/${page}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
+            .then(res => {
+                console.log('검색완료!', res);
             });
     },
 };
