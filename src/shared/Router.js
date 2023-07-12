@@ -27,7 +27,7 @@ const Router = () => {
                     <Route path="/login" element={<Login />} />
                     {/* 메인 화면 관련 */}
                     <Route path="/" element={<Main />} />
-                    <Route path="/posts/:searchword" element={<SearchList />} />
+                    <Route path="/posts/:keyword" element={<SearchList />} />
                     {/* 게시판 화면 관련 */}
                     <Route path="/posts" element={<PostList />} />
                     <Route path="/posts/popular" element={<PopularPosts />} />
