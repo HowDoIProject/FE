@@ -6,32 +6,32 @@ const MyCommentButton = ({ showMyComment, handleShowMyComment }) => {
     const [comments, setComments] = useState([]);
     const [cookies] = useCookies(['accessToken']);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     access: cookies.accessToken,
-    //                 },
-    //             });
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: cookies.accessToken,
+                    },
+                });
 
-    //             const { data } = response;
+                const { data } = response;
 
-    //             if (Array.isArray(data.mycomment) && data.mycomment.length > 0) {
-    //                 console.log('My Comments:', data.mycomment);
-    //                 setComments(data.mycomment);
-    //             } else {
-    //                 console.log('No comments found.');
-    //                 setComments([]);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching comments:', error);
-    //         }
-    //     };
+                if (Array.isArray(data.mycomment) && data.mycomment.length > 0) {
+                    console.log('My Comments:', data.mycomment);
+                    setComments(data.mycomment);
+                } else {
+                    console.log('No comments found.');
+                    setComments([]);
+                }
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
 
-    //     fetchData();
-    // }, [cookies.accessToken]);
+        fetchData();
+    }, [cookies.accessToken]);
 
     return (
         <button

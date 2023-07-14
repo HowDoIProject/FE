@@ -157,7 +157,7 @@ export const apiPosts = {
         return api
             .post(
                 `/api/post/${post_id}/comment/${comment_id}`,
-                {},
+
                 {
                     headers: {
                         access: cookies.accessToken,

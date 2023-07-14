@@ -5,7 +5,7 @@ import axios from 'axios';
 import image1 from '../../assets/icon/camera.svg';
 import image2 from '../../assets/icon/delete.svg';
 
-const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
+const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     // const [data, setData] = useState();
@@ -216,4 +216,4 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
         </div>
     );
 };
-export default EditDeleteSelectWindow;
+export default MomsPostEditDelteWindow;
