@@ -48,7 +48,9 @@ export default function PostListCard({ post }) {
     return (
         <>
             <div
-                onClick={() => navigate(`/post/${post_id}`, { state: { like_check, scrap_check } })}
+                onClick={() => {
+                    cookies.accessToken ? navigate(`/post/${post_id}`) : navigate('/login');
+                }}
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
