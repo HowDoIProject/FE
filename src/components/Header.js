@@ -4,26 +4,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/icon/logo.svg';
 
 export default function Header() {
-    const [cookies, setCookie, removeCookie] = useCookies(['verification']);
+    const [cookies, _, removeCookie] = useCookies(['accessToken']);
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        // 토큰 쿠키 제거
-        removeCookie('verification');
-
-        // 페이지 새로고침하여 제거된 것을 적용
-        window.location.reload();
-
-        // 추가적인 로그아웃 로직...
-    };
-
-    useEffect(() => {
-        // ... 다른 useEffect 코드 ...
-    }, [setCookie]);
-
-    const handleLogin = () => {
-        // 로그인 처리를 위한 로직
-        navigate('/login');
+    const logout = () => {
+        const result = confirm('정말 로그아웃 하시겠습니까?');
+        if (result) {
+            removeCookie('accessToken', { path: '/' }); //path넣어줘야 삭제가 바로 됨.
+            alert('로그아웃 되었습니다!');
+            navigate('/');
+        }
     };
 
     return (
@@ -32,22 +21,24 @@ export default function Header() {
                 <Link to={'/'}>
                     <img className="h-10" src={logo} alt="" />
                 </Link>
-                {cookies['verification-token'] ? (
-                    // 토큰 쿠키가 존재하면 로그아웃 버튼 표시
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onClick={handleLogout}
+                {cookies.accessToken ? (
+                    <div
+                        className="px-3 py-1 rounded-3xl bg-gray_03 text-white text-[14px] cursor-pointer"
+                        onClick={logout}
                     >
                         로그아웃
-                    </button>
+                    </div>
                 ) : (
-                    // 토큰 쿠키가 존재하지 않으면 로그인 버튼 표시
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onClick={handleLogin}
+                    <div
+                        className="px-3 py-2 rounded-3xl bg-primary text-white text-[14px] cursor-pointer"
+                        onClick={() => navigate('/login')}
                     >
                         로그인
+
                     </button>
+
+                    </div>
+
                 )}
             </div>
         </div>

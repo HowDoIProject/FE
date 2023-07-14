@@ -29,17 +29,29 @@ export const AuthApi = {
 };
 
 export const apiPosts = {
-    getPopular: page => {
-        return api.get(`/api/topfive/${page}`);
+    getPopular: (page, cookies) => {
+        return api.get(`/api/topfive/${page}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
     },
     getAll: () => {
         return api.get(`/api/post`);
     },
-    getDetail: post_id => {
-        return api.get(`api/post/${post_id}`);
+    getDetail: (post_id, cookies) => {
+        return api.get(`api/post/${post_id}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
     },
-    getByFilterAndCategory: (filter, category, page) => {
-        return api.get(`api/list/${filter}/${category}/${page}`);
+    getByFilterAndCategory: (filter, category, page, cookies) => {
+        return api.get(`api/list/${filter}/${category}/${page}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
     },
     uploadImage: (payload, setValues, values, cookies) => {
         return api
@@ -81,7 +93,7 @@ export const apiPosts = {
             .then(res => {
                 setValues({ comment: '', image: '' });
                 setFile('');
-                alert('댓글이 등록되었습니다');
+                alert('댓글이 등록되었습니다🤗');
             });
     },
     deleteComment: (post_id, comment_id, cookies) => {
@@ -116,7 +128,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('likeComment', res));
+            .then(res => console.log('likeCommentUpdate', res));
     },
     updatePostLike: args => {
         const { payload, post_id, cookies } = args;
@@ -126,7 +138,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => console.log('likePost', res));
+            .then(res => console.log('likePostUpdate', res));
     },
     updatePostScrap: args => {
         const { payload, post_id, cookies } = args;
@@ -154,6 +166,22 @@ export const apiPosts = {
             )
             .then(res => {
                 alert('답변이 채택되었습니다!');
+            });
+    },
+    search: args => {
+        const { keyword, page, cookies } = args;
+        return api
+            .post(
+                `/api/search/${keyword}/${page}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
+            .then(res => {
+                console.log('검색완료!', res);
             });
     },
 };

@@ -5,6 +5,7 @@ import { apiPosts } from '../shared/Api';
 import { v4 as uuidv4 } from 'uuid';
 import PostListCard from './PostListCard';
 import { useInView } from 'react-intersection-observer';
+import { useCookies } from 'react-cookie';
 
 export default function PopularPosts() {
     const [page, setPage] = useState(1);
@@ -13,13 +14,15 @@ export default function PopularPosts() {
     });
     const queryClient = useQueryClient();
 
+    const [cookies] = useCookies(['accessToken']);
+
     const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
         queryKey: ['posts', 'popular'],
         getNextPageParam: lastPage => {
             if (lastPage.data.total_page == lastPage.data.page) return false;
             return lastPage.data.page + 1;
         },
-        queryFn: ({ pageParam = 1 }) => apiPosts.getPopular(pageParam),
+        queryFn: ({ pageParam = 1 }) => apiPosts.getPopular(pageParam, cookies),
     });
 
     const navigate = useNavigate();

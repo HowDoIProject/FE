@@ -9,18 +9,17 @@ export default function WelcomeCardLoggedIn() {
     const navigate = useNavigate();
 
     const [cookies] = useCookies(['accessToken']);
-    // const jwtToken = cookies.accessToken;
-    // const decodedToken = jwtDecode(jwtToken);
-    // const {
-    //     nickname: { nickname: loggedNickname },
-    //     user_id: { user_id: loggedUserId },
-    //     user_type: { user_type: loggedUserType },
-    // } = decodedToken;
+    const jwtToken = cookies.accessToken;
+    const decodedToken = jwtDecode(jwtToken);
+    const {
+        nickname: { nickname: loggedNickname },
+        user_id: { user_id: loggedUserId },
+        user_type: { user_type: loggedUserType },
+    } = decodedToken;
 
     return (
         <>
-            <div>welcomecardloggedin</div>
-            {/* {decodedToken && loggedUserType == '강아지' ? (
+            {decodedToken && loggedUserType == '강아지' ? (
                 <div className="w-full h-[146px] inline-flex px-6 py-4 justify-between items-center rounded-xl bg-bgcard shadow-mainbox">
                     <div className="flex flex-col items-start">
                         <h1 className="font-['Pretendard-Bold']">안녕하세요!</h1>
@@ -38,7 +37,7 @@ export default function WelcomeCardLoggedIn() {
                     </div>
                     <img src={parents} alt="" />
                 </div>
-            )} */}
+            )}
         </>
     );
 }
