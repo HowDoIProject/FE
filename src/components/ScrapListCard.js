@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import like from '../assets/icon/like.svg';
-import scrap from '../assets/icon/scrap.svg';
+import React from 'react';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+// import likeActive from '../assets/icon/likeActive.svg';
+// import scrapActive from '../assets/icon/scrapActive.svg';
 import comment from '../assets/icon/comment.svg';
 import { formatAgo } from '../util/date';
 import { useCookies } from 'react-cookie';
@@ -10,47 +10,31 @@ import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
 
-export default function PostListCard({ post }) {
-    const {
-        category,
-        title,
-        like_num,
-        scrap_num,
-        post_id,
-        user_type,
-        comment_num,
-        created_at,
-        user_id,
-        like_check,
-        scrap_check,
-    } = post;
-
+export default function ScrapListCard({ scrap }) {
+    const { scrap_check, category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } =
+        scrap;
     const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updatePostLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['posts'] });
+            queryClient.invalidateQueries({ queryKey: ['Posts'], post_id });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['posts'] });
+            queryClient.invalidateQueries({ queryKey: ['Posts'], post_id, scrap_check });
         },
     });
 
     const isDog = user_type === '강아지';
-    const navigate = useNavigate();
 
     return (
         <>
-            <div
-                onClick={() => navigate(`/post/${post_id}`, { state: { like_check, scrap_check } })}
-                className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
-            >
+            <div className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button">
                 <div className="flex mb-4">
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
                         {category}
@@ -69,17 +53,17 @@ export default function PostListCard({ post }) {
                                 updateLikeMutate({ user_id, post_id, cookies });
                             }}
                         >
-                            <img className="w-4 h-4" src={like_check ? likeActive : like} alt="" />
+                            <img className="w-4 h-4" src={likeActive} alt="" />
                             {like_num}
                         </div>
                         <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                updateScrapMutate({ user_id, post_id, cookies });
+                                updateScrapMutate({ user_id, post_id, cookies, scrap_check: true });
                             }}
                         >
-                            <img className="w-4 h-4" src={scrap_check ? scrapActive : scrap} alt="" />
+                            <img className="w-4 h-4" src={scrapActive} alt="" />
                             {scrap_num}
                         </div>
                         <div className="flex items-center gap-1">

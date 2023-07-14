@@ -14,11 +14,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <CookiesProvider>
         <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <HelmetProvider>
+            <HelmetProvider>
+                <QueryClientProvider client={queryClient}>
                     <App />
-                </HelmetProvider>
-            </QueryClientProvider>
+                </QueryClientProvider>
+            </HelmetProvider>
         </Provider>
     </CookiesProvider>
 );

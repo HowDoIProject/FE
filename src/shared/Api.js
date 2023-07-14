@@ -150,6 +150,7 @@ export const apiPosts = {
             })
             .then(res => console.log('scrapPost', res));
     },
+
     chooseComment: args => {
         const { post_id, comment_id, cookies } = args;
         console.log('commentcookies', cookies);
@@ -184,6 +185,38 @@ export const apiPosts = {
             });
     },
 };
+
+export const apiGet = {
+    getScrapFilterAndCategory: (filter, category, page, cookies) => {
+        return api
+            .get(
+                `/api/scrap/${filter}/${category}/${page}`,
+                {},
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            )
+
+            .then(res => {
+                return {
+                    data: res.data,
+                };
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
+};
+
+// getScrapFilterAndCategory: (filter, category, page, cookies) => {
+//     return api.get(`api/scrap/${filter}/${category}/${page}`, {
+//         headers: {
+//             access: cookies.accessToken,
+//         },
+//     });
+// },
 
 export const apiMyPage = {
     getMyPage: () => {

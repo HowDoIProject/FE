@@ -143,12 +143,10 @@ const Interest = () => {
     const [selectedAge, setSelectedAge] = useState('');
 
     const handleInterestSelection = category => {
-        const categoryInt = parseInt(category, 10);
-
-        if (selectedCategories.includes(categoryInt)) {
-            setSelectedCategories(prevCategories => prevCategories.filter(item => item !== categoryInt));
+        if (selectedCategories.includes(category)) {
+            setSelectedCategories(prevCategories => prevCategories.filter(item => item !== category));
         } else {
-            setSelectedCategories(prevCategories => [...prevCategories, categoryInt]);
+            setSelectedCategories(prevCategories => [...prevCategories, category]);
         }
     };
 
@@ -157,17 +155,14 @@ const Interest = () => {
     };
 
     const handleAgeSelection = age => {
-        setSelectedAge(parseInt(age, 10));
+        setSelectedAge(age);
     };
 
     const isInterestSelected = category => {
-        const categoryInt = parseInt(category, 10);
-        return selectedCategories.includes(categoryInt);
+        return selectedCategories.includes(category);
     };
 
     const handleConfirm = () => {
-        const selectedCategoriesString = selectedCategories.toString();
-
         console.log('State:', {
             user_type,
             nickname,
@@ -179,7 +174,6 @@ const Interest = () => {
             age: selectedAge,
         });
     };
-    console.log(selectedCategories.toString());
 
     const handlePrevious = event => {
         event.preventDefault();
@@ -199,42 +193,43 @@ const Interest = () => {
                 password,
                 password_confirm,
                 user_number,
-                category: selectedCategories.map(String), // Convert categories to strings
+                category: selectedCategories.map(String),
                 gender: selectedGender,
-                age: selectedAge.toString(),
+                age: selectedAge,
             },
         });
     };
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-3xl font-bold mb-8">관심사를 정해주세요</h1>
+            <h1 className="text-3xl font-bold mb-8">관심사를 선택해보세요</h1>
             <div className="grid grid-cols-3 gap-4">
                 <button
                     className={`p-4 rounded-lg ${
-                        isInterestSelected('1') ? 'bg-blue-500' : 'bg-gray-200 hover:bg-blue-600'
+                        isInterestSelected('자취끼니') ? 'bg-blue-500' : 'bg-gray-200 hover:bg-blue-600'
                     }`}
-                    onClick={() => handleInterestSelection('1')}
+                    onClick={() => handleInterestSelection('자취끼니')}
                 >
-                    Human Relationship
+                    자취끼니
                 </button>
                 <button
                     className={`p-4 rounded-lg ${
-                        isInterestSelected('2') ? 'bg-green-500' : 'bg-gray-200 hover:bg-green-600'
+                        isInterestSelected('생활비') ? 'bg-green-500' : 'bg-gray-200 hover:bg-green-600'
                     }`}
-                    onClick={() => handleInterestSelection('2')}
+                    onClick={() => handleInterestSelection('생활비')}
                 >
-                    Life and Cooking
+                    생활비
                 </button>
                 <button
                     className={`p-4 rounded-lg ${
-                        isInterestSelected('3') ? 'bg-yellow-500' : 'bg-gray-200 hover:bg-yellow-600'
+                        isInterestSelected('집안일') ? 'bg-yellow-500' : 'bg-gray-200 hover:bg-yellow-600'
                     }`}
-                    onClick={() => handleInterestSelection('3')}
+                    onClick={() => handleInterestSelection('집안일')}
                 >
-                    Rent and Finance
+                    집안일
                 </button>
             </div>
+
             <div className="grid grid-cols-2 gap-4 mt-4">
                 <button
                     className={`p-4 rounded-lg ${

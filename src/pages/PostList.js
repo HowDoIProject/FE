@@ -1,6 +1,8 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useRef, useEffect, useState } from 'react';
+import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import PostListCard from '../components/PostListCard';
+import { v4 as uuidv4 } from 'uuid';
 import { apiPosts } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalPosts from '../components/TotalPosts';

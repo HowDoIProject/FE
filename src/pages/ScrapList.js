@@ -1,65 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { v4 as uuidv4 } from 'uuid';
+import { apiPosts } from '../shared/Api';
+import { useInView } from 'react-intersection-observer';
+import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
-const ScrapScreen = () => {
-    const [scrapList, setScrapList] = useState([]);
+export default function PostList() {
+    const [filter, setFilter] = useState(0);
+    const [category, setCategory] = useState(0);
+    const [page, setPage] = useState(1);
+    const [targetRef, inView] = useInView({
+        threshold: 1,
+    });
+
+    const queryClient = useQueryClient();
     const [cookies] = useCookies(['accessToken']);
+    const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['posts', filter, category],
+        getNextPageParam: lastPage => {
+            if (lastPage.data.total_page === lastPage.data.page) return false;
+            return lastPage.data.page + 1;
+        },
+        queryFn: ({ pageParam = 1 }) => apiPosts.getByFilterAndCategory(filter, category, pageParam, { cookies: true }),
+        filterFn: pages => {
+            // Filter the posts based on scrap_check
+            return pages.flatMap(page => page.data.mypage.filter(post => post.scrap_check));
+        },
+    });
+
+    console.log('data', data);
 
     useEffect(() => {
-        const fetchScrapList = async () => {
-            try {
-                const response = await axios.get('https://howdoiapp.shop/api/scrap', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        access: `${cookies.accessToken}`,
-                    },
-                });
-
-                const { scrap } = response.data;
-
-                if (scrap.length === 0) {
-                    console.log('No posts found.');
-                } else {
-                    console.log('Scrap List:', scrap);
-                    setScrapList(scrap);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchScrapList();
-    }, [cookies.accessToken]);
-
-    // Hardcoded categories
-    const categories = ['Category 1', 'Category 2', 'Category 3'];
+        if (inView && hasNextPage) fetchNextPage();
+    }, [inView, cookies]);
 
     return (
-        <div className="p-4">
-            <div className="flex mb-4">
-                {categories.map((category, index) => (
-                    <div className="bg-gray-300 rounded-full px-3 py-1 mr-2 text-xs" key={index}>
-                        {category}
-                    </div>
-                ))}
-            </div>
-            <div className="p-4">
-                <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    {scrapList.map(scrap => (
-                        <div className="bg-white rounded shadow p-4" key={scrap.post_id}>
-                            <h3 className="text-xl font-semibold mb-2">{scrap.title}</h3>
-                            <p>{scrap.content}</p>
-                            <p>By: {scrap.nickname}</p>
-                            <img src={scrap.image} alt={scrap.title} />
-                            <p>Likes: {scrap.like}</p>
-                            <p>Scraps: {scrap.scrap}</p>
-                        </div>
-                    ))}
-                </div>
+        <div className="mx-5">
+            <div className="flex w-full mt-4"></div>
+            <TotalScraps
+                data={data}
+                category={category}
+                setCategory={setCategory}
+                filter={filter}
+                setFilter={setFilter}
+                page={page}
+            />
+            <div ref={targetRef}>
+                <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
             </div>
         </div>
     );
-};
-
-export default ScrapScreen;
+}
