@@ -2,11 +2,11 @@ import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
-import { apiPosts } from '../shared/Api';
+import { apiGet } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export default function PostList() {
     const [filter, setFilter] = useState(0);
@@ -24,7 +24,8 @@ export default function PostList() {
             if (lastPage.data.total_page === lastPage.data.page) return false;
             return lastPage.data.page + 1;
         },
-        queryFn: ({ pageParam = 1 }) => apiPosts.getByFilterAndCategory(filter, category, pageParam, { cookies: true }),
+        queryFn: ({ pageParam = 1 }) =>
+            apiGet.getScrapFilterAndCategory(filter, category, pageParam, cookies, { scrap_check: true }),
         filterFn: pages => {
             // Filter the posts based on scrap_check
             return pages.flatMap(page => page.data.mypage.filter(post => post.scrap_check));
