@@ -24,8 +24,6 @@ export default function CommentCard({ commentInfo, post_id, userIdPost }) {
         user_id: { user_id: loggedUserId },
     } = decodedToken;
 
-    console.log('commentInfo', commentInfo);
-
     const [modalOpen, setModalOpen] = useState(false);
 
     const queryClient = useQueryClient();
