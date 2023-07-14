@@ -13,6 +13,8 @@ import SearchBar from '../components/SearchBar';
 export default function Main() {
     const queryClient = useQueryClient();
     const [cookies] = useCookies(['accessToken']);
+    const [filter, setFilter] = useState(0);
+    const [category, setCategory] = useState(0);
 
     const {
         data: topFive,
@@ -20,7 +22,9 @@ export default function Main() {
         isLoadingTopfive,
     } = useQuery(['posts', 'topFive'], () => apiPosts.getPopular(1, cookies)); //맨 위 5글만 알면 되므로 첫 페이지만 호출
 
-    const { data, error, isLoading } = useQuery(['posts'], () => apiPosts.getAll());
+    const { data, error, isLoading } = useQuery(['posts', 'main'], () =>
+        apiPosts.getByFilterAndCategory(0, 0, 1, cookies)
+    );
 
     const slider1 = useRef(null);
     const slider2 = useRef(null);
@@ -76,7 +80,7 @@ export default function Main() {
                     <h1 className="font-['Pretendard-Bold']">실시간 글보기</h1>
                     <Link to={`/posts`}>
                         <div className="flex items-center">
-                            <h1 className="text-sm text-gray_02">전체보기</h1>
+                            <h1 className="text-sm text-gray_02 text-[14px]">전체보기</h1>
                             <MdChevronRight className="text-gray_02" size={20} />
                         </div>
                     </Link>
@@ -91,7 +95,7 @@ export default function Main() {
                         ref={slider2}
                         className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
                     >
-                        {data?.data.posts.map(post => {
+                        {data?.data.mypage.map(post => {
                             return (
                                 <div
                                     key={post.post_id}
