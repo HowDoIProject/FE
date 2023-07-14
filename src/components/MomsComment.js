@@ -9,7 +9,7 @@ import { useCookies } from 'react-cookie';
 import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
-import moment from 'moment';
+// import moment from 'moment';
 
 export default function CommentListCard({ post, comment, comment_id, user_id }) {
     const { like_num, scrap_num, user_type, comment_num, created_at, post_id } = post;
@@ -33,14 +33,14 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
     });
 
     const isDog = user_type === '강아지';
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const parsedCreatedAt = moment(created_at);
     // const formattedCreatedAt = parsedCreatedAt.fromNow();
 
     return (
         <>
             <div
-                // onClick={() => navigate(`/post/${post_id}`)}
+                onClick={() => navigate(`/post/${post_id}`)}
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
@@ -49,7 +49,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                         {isDog ? '질문글' : '꿀팁글'}
                     </div>
                 </div>
-                <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{comment.comment}</h1>
+                <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{comment}</h1>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-row gap-6 text-[14px] items-center">
                         <div
@@ -79,7 +79,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                             {comment_num}
                         </div>
                     </div>
-                    <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
+                    {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
                 </div>
             </div>
         </>
