@@ -9,7 +9,7 @@ export default function Header() {
     const logout = () => {
         const result = confirm('정말 로그아웃 하시겠습니까?');
         if (result) {
-            removeCookie('accessToken');
+            removeCookie('accessToken', { path: '/' }); //path넣어줘야 삭제가 바로 됨.
             alert('로그아웃 되었습니다!');
             navigate('/');
         }
@@ -34,7 +34,11 @@ export default function Header() {
                         onClick={() => navigate('/login')}
                     >
                         로그인
+
+                    </button>
+
                     </div>
+
                 )}
             </div>
         </div>

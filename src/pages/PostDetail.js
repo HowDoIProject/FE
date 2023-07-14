@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import { apiPosts } from '../shared/Api';
@@ -16,13 +16,16 @@ import AddCommentForm from '../components/AddCommentForm';
 
 export default function PostDetail() {
     const { post_id } = useParams();
+
+    const {
+        state: { like_check, scrap_check },
+    } = useLocation();
+
     const [cookies] = useCookies(['accessToken']);
-    const [isLike, setIsLike] = useState(false);
-    const [isScrap, setIsScrap] = useState(false);
 
     const queryClient = useQueryClient();
 
-    const { data, error, isLoading } = useQuery(['post', post_id], () => apiPosts.getDetail(post_id));
+    const { data, error, isLoading } = useQuery(['post', post_id], () => apiPosts.getDetail(post_id, cookies));
 
     const {
         category,
@@ -36,6 +39,8 @@ export default function PostDetail() {
         user_type,
         user_id: userIdPost,
     } = data?.data.post || {};
+
+    console.log('postdetail', data);
 
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updatePostLike,
@@ -52,12 +57,11 @@ export default function PostDetail() {
     });
 
     const isDog = user_type === '강아지';
-    console.log('해당글data', data);
 
     return (
         <>
-            <div className="flex flex-col mb-1 mt-4 justify-center items-center">
-                <div className="w-[360px] flex-start flex gap-3 mb-2">
+            <div className="flex flex-col mb-2 mt-4 justify-center items-center">
+                <div className="w-[360px] flex-start flex gap-3 items-center">
                     <div>
                         {isDog ? (
                             <img className="w-12 h-12 rounded-full border border-gray_04 " src={dog} alt="" />
@@ -66,56 +70,58 @@ export default function PostDetail() {
                         )}
                     </div>
                     <div>
-                        <h2>{nickname}</h2>
-                        <div className="text-gray_02">{isDog ? '강아지회원' : '엄빠회원'}</div>
+                        <div className="font-['Pretendard-Medium'] text-[14px]">{nickname}</div>
+                        <div className="text-[13px] text-gray_02">{isDog ? '강아지회원' : '엄빠회원'}</div>
                     </div>
                 </div>
             </div>
             <div className="flex flex-col justify-center items-center mb-3">
-                <div className="w-[360px] bg-gray_05 rounded-lg">
-                    <div className="mb-4 p-4">
-                        <div className="inline-flex text-white text-[12px] px-2 py-1 rounded-2xl bg-primary mb-6">
-                            {category}
+                <div className="w-[360px] bg-gray_05 rounded-xl shadow-button">
+                    <div className="p-4">
+                        <div className="flex mb-5">
+                            <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
+                                {category}
+                            </div>
+                            <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02">
+                                {isDog ? '질문글' : '꿀팁글'}
+                            </div>
                         </div>
 
-                        <h1 className="mb-5">{title}</h1>
-                        <pre className="whitespace-pre-wrap">{content}</pre>
-                        <img src={image} alt="" />
+                        <h1 className="mb-5 font-['Pretendard-Bold']">{title}</h1>
+                        <div className="whitespace-pre-wrap text-[15px]">{content}</div>
                     </div>
                     <div className="p-4">
-                        <div className="mb-4 text-gray_02">{formatAgo(created_at, 'ko')} </div>
+                        <div className="mb-4 text-gray_02 text-[14px]">{formatAgo(created_at, 'ko')} </div>
                         <div className="flex gap-4">
                             <div
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => {
-                                    setIsLike(!isLike);
                                     updateLikeMutate({ userIdPost, post_id, cookies });
                                 }}
                             >
-                                <img className="w-5 h-5" src={isLike ? likeActive : like} alt="" />
+                                <img className="w-4 h-4" src={like_check ? likeActive : like} alt="" />
                                 {like_num}
                             </div>
                             <div
                                 className="flex items-center gap-1 cursor-pointer"
                                 onClick={() => {
-                                    setIsScrap(!isScrap);
                                     updateScrapMutate({ userIdPost, post_id, cookies });
                                 }}
                             >
-                                <img className="w-5 h-5" src={isScrap ? scrapActive : scrap} alt="" />
+                                <img className="w-4 h-4" src={scrap_check ? scrapActive : scrap} alt="" />
                                 {scrap_num}
                             </div>
                             <div className="flex items-center gap-1">
-                                <img className="w-5 h-5" src={comment} alt="" />
-                                {data?.data.comments.length}
+                                <img className="w-4 h-4" src={comment} alt="" />
+                                {data?.data.result.length}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center mb-3">
-                <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-gray_03 ">
-                    {data?.data.comments.map(comment => {
+            <div className="flex justify-center mb-3 mt-6">
+                <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-gray_04 shadow-button">
+                    {data?.data.result.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
                                 <CommentCard commentInfo={comment} post_id={post_id} userIdPost={userIdPost} />
