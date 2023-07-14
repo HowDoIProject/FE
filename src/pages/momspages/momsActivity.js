@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import image2 from '../../assets/icon/mom_dog.svg';
+import parent from '../../assets/icon/parent.svg';
 import question from '../../assets/icon/question.svg';
 import { useCookies } from 'react-cookie';
 import MyPostButton from './MomsPost';
 import MyChosenButton from './MomsChosen';
 import MyCommentButton from './MomsComment';
+import PostListCard from '../../components/PostListCard';
+import CommentCard from '../../components/CommentCard';
 
 export default function MomsActivity() {
     const location = useLocation();
@@ -116,15 +118,14 @@ export default function MomsActivity() {
 
     return (
         <>
-            <div className="bg-gray-100 p-4 rounded-lg mb-4 mt-8">
+            <div className="bg-white-100 p-4 rounded-lg mb-4 mt-8">
                 <div className="flex flex-col items-start p-10">
                     <div className="ml-60 w-16 h-16 bg-white rounded-md shadow-md">
-                        <div>
-                            <img src={image2} alt="Dog Icon" />
+                        <div className="text-2xl font-bold">
+                            <img src={parent} alt="Dog Icon" />
                         </div>
                     </div>
                     <div className="mt-2">
-                        <h1>Love it!</h1>
                         <h1>
                             {nickname && nickname.nickname}
                             {user_type && ` ${user_type.user_type}`}님
@@ -179,13 +180,14 @@ export default function MomsActivity() {
                             <div className="grid grid-cols-1 gap-4">
                                 {posts.map(post => (
                                     <div key={post.post_id} className="bg-white p-4 rounded shadow">
-                                        <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                                        <PostListCard post={post} />
+                                        {/* <h3 className="text-xl font-bold mb-2">{post.title}</h3>
                                         <p className="mb-2">{post.content}</p>
                                         <p>By: {post.nickname}</p>
                                         <p>Likes: {post.like}</p>
                                         <p>Scraps: {post.scrap}</p>
                                         <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
-                                        <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p>
+                                        <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p> */}
                                     </div>
                                 ))}
                             </div>
@@ -202,12 +204,15 @@ export default function MomsActivity() {
                             <div className="grid grid-cols-1 gap-4">
                                 {mycomments.map(mycomment => (
                                     <div key={mycomment.comment_id} className="bg-white p-4 rounded shadow">
-                                        <h3 className="border p-4 rounded-lg my-4">{mycomment.comment}</h3>
-                                        <p className="mb-2">User ID: {mycomment.user_id}</p>
-                                        <p>Category: {mycomment.category}</p>
-                                        <p>Chosen: {mycomment.chosen === 1 ? 'Yes' : 'No'}</p>
-                                        <p>Created At: {new Date(mycomment.created_at).toLocaleDateString()}</p>
-                                        <p>Updated At: {new Date(mycomment.updated_at).toLocaleDateString()}</p>
+                                        <div className="comment-box bg-gray-100 rounded-lg p-4 transition-colors duration-300 hover:bg-gray-100">
+                                            <h3>{mycomment.comment}</h3>
+                                            <p>Category: {mycomment.category}</p>
+                                            <p>Chosen: {mycomment.chosen === 1 ? 'Yes' : 'No'}</p>
+                                            <p>Created At: {new Date(mycomment.created_at).toLocaleDateString()}</p>
+                                            {/* <div className="text-[14px] text-gray_02">
+                                                {formatAgo(created_at, 'ko')}
+                                            </div> */}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
