@@ -1,14 +1,15 @@
-import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
-import { apiGet } from '../shared/Api';
+import { apiPosts } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
-// import { useNavigate } from 'react-router-dom';
+import DeleteScrapButton from '../components/DeleteScrapButton';
 
-export default function PostList() {
+export default function ScrapList() {
+    const [cookies] = useCookies(['accessToken']);
+    const [scrap_check, setScrapCheck] = useState(false);
     const [filter, setFilter] = useState(0);
     const [category, setCategory] = useState(0);
     const [page, setPage] = useState(1);
@@ -17,30 +18,36 @@ export default function PostList() {
     });
 
     const queryClient = useQueryClient();
-    const [cookies] = useCookies(['accessToken']);
+    const accessToken = cookies.accessToken;
+
     const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-        queryKey: ['posts', filter, category],
+        queryKey: ['scrap', filter, category],
         getNextPageParam: lastPage => {
-            if (lastPage.data.total_page === lastPage.data.page) return false;
+            if (lastPage.data.total_page == lastPage.data.page) return false;
             return lastPage.data.page + 1;
         },
-        queryFn: ({ pageParam = 1 }) =>
-            apiGet.getScrapFilterAndCategory(filter, category, pageParam, cookies, { scrap_check: true }),
-        filterFn: pages => {
-            // Filter the posts based on scrap_check
-            return pages.flatMap(page => page.data.mypage.filter(post => post.scrap_check));
-        },
+        queryFn: ({ pageParam = 1 }) => apiPosts.getScrap(filter, category, pageParam, cookies),
     });
 
     console.log('data', data);
 
     useEffect(() => {
         if (inView && hasNextPage) fetchNextPage();
-    }, [inView, cookies]);
+    }, [inView]);
+
+    console.log('data', data);
+
+    useEffect(() => {
+        if (inView && hasNextPage) fetchNextPage();
+    }, [inView, accessToken, scrap_check]);
 
     return (
-        <div className="mx-5">
-            <div className="flex w-full mt-4"></div>
+        <div className="mx-5 item-align flex flex-col">
+            {/* Move the "삭제하기" section to the right side */}
+            <div className="self-end mt-4">
+                <DeleteScrapButton filter={filter} category={category} accessToken={cookies.accessToken} />
+            </div>
+
             <TotalScraps
                 data={data}
                 category={category}
@@ -48,7 +55,9 @@ export default function PostList() {
                 filter={filter}
                 setFilter={setFilter}
                 page={page}
+                cookies={cookies}
             />
+
             <div ref={targetRef}>
                 <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
             </div>

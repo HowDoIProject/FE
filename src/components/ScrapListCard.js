@@ -10,23 +10,22 @@ import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
 
-export default function ScrapListCard({ scrap }) {
-    const { scrap_check, category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } =
-        scrap;
+export default function ScrapListCard({ post }) {
+    const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = post;
     const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updatePostLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['Posts'], post_id });
+            queryClient.invalidateQueries({ queryKey: ['post'], post_id });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['Posts'], post_id, scrap_check });
+            queryClient.invalidateQueries({ queryKey: ['post'], post_id });
         },
     });
 

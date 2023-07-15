@@ -53,6 +53,13 @@ export const apiPosts = {
             },
         });
     },
+    getScrap: (filter, category, page, cookies) => {
+        return api.get(`api/scrap/${filter}/${category}/${page}`, {
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
+    },
     uploadImage: (payload, setValues, values, cookies) => {
         return api
             .post(`/api/uploads`, payload, {
