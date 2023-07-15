@@ -189,6 +189,7 @@ export const apiPosts = {
             )
             .then(res => {
                 console.log('검색완료!', res);
+                return res;
             });
     },
 };
