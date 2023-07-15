@@ -5,7 +5,7 @@ import axios from 'axios';
 import image1 from '../../assets/icon/camera.svg';
 import image2 from '../../assets/icon/delete.svg';
 
-const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
+const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     // const [data, setData] = useState();
@@ -23,11 +23,11 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
         image: '',
     });
     const [file, setFile] = useState('');
-    const onDeleteFileHandler = () => {
-        setValues({ ...values, image: '' });
-        setFile('');
-        console.log('삭제', values);
-    };
+    // const onDeleteFileHandler = () => {
+    //     setValues({ ...values, image: '' });
+    //     setFile('');
+    //     console.log('삭제', values);
+    // };
     const toggleOptions = () => {
         setShowOptions(!showOptions);
     };
@@ -94,15 +94,15 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
             console.error('Failed to delete the post:', error);
         }
     };
-    const onChangeFileHandler = e => {
-        const { name } = e.target;
-        const imgFormData = new FormData();
-        const file = e.target.files[0];
-        imgFormData.append(name, file);
-        apiPosts.uploadImage(imgFormData, setValues, values, cookies);
-        setFile(URL.createObjectURL(file));
-        e.target.value = ''; //이걸 해야지 이미지 삭제 후 같은 이미지 업로드가 가능함
-    };
+    // const onChangeFileHandler = e => {
+    //     const { name } = e.target;
+    //     const imgFormData = new FormData();
+    //     const file = e.target.files[0];
+    //     imgFormData.append(name, file);
+    //     apiPosts.uploadImage(imgFormData, setValues, values, cookies);
+    //     setFile(URL.createObjectURL(file));
+    //     e.target.value = ''; //이걸 해야지 이미지 삭제 후 같은 이미지 업로드가 가능함
+    // };
     return (
         <div>
             {!editMode && (
@@ -133,7 +133,7 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                                         className="block px-4 py-2 hover:bg-gray-100"
                                         onClick={toggleEditMode}
                                     >
-                                        Edit
+                                        수정
                                     </button>
                                 </li>
                                 <li>
@@ -142,7 +142,7 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                                         className="block px-4 py-2 hover:bg-gray-100"
                                         onClick={handleDelete}
                                     >
-                                        Delete
+                                        삭제
                                     </button>
                                 </li>
                             </ul>
@@ -166,9 +166,9 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                         placeholder="내용"
                         className="border border-gray-300 rounded-md px-2 py-1 mt-1"
                     ></textarea>
-                    <div className="mb-8">
-                        <div className="mb-2">사진첨부</div>
-                        <div className="flex gap-2">
+                    {/* <div className="mb-8"> */}
+                    {/* <div className="mb-2">사진첨부</div> */}
+                    {/* <div className="flex gap-2">
                             <label
                                 className="w-20 h-20 flex justify-center items-center cursor-pointer bg-gray_04 rounded-lg"
                                 htmlFor="image"
@@ -194,26 +194,22 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                                             alt=""
                                         />
                                     </div>
-                                )}
-                                <button
-                                    onClick={handleEdit}
-                                    className="bg-green-500 text-white font-bold py-2 px-1 rounded mt-1"
-                                >
-                                    저장
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* <button
+                                )} */}
+                    <button onClick={handleEdit} className="bg-green-500 text-white font-bold py-2 px-1 rounded mt-1">
+                        저장
+                    </button>
+                    <button
                         onClick={handleGoBack}
-                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-2 ml-2"
+                        className="bg-blue-500 text-white font-bold py-2 px-1 rounded mt-2 ml-2"
                     >
                         취소
-                    </button> */}
+                    </button>
                 </div>
+                //         </div>
+                //     </div>
+                // </div>
             )}
         </div>
     );
 };
-export default EditDeleteSelectWindow;
+export default MomsPostEditDelteWindow;

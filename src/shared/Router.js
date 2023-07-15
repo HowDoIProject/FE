@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../pages/Layout';
 import Login from '../pages/Login';
@@ -17,7 +17,7 @@ import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
 import PopularPosts from '../components/PopularPosts';
 
-const Router = () => {
+const Router = user_type => {
     return (
         <BrowserRouter>
             <Routes>
@@ -44,9 +44,9 @@ const Router = () => {
                     {/* 스크랩 화면 관련 */}
                     <Route path="/scrap" element={<ScrapList />} />
                     {/* 마이페이지 */}
+                    <Route path="/momsactivity" element={<MomsActivity />} />
                     <Route path="/mypage" element={<MyPage />} />
                     <Route path="/activity" element={<DoggysActivity />} />
-                    <Route path="/momactivity" element={<MomsActivity />} />
                 </Route>
             </Routes>
         </BrowserRouter>
