@@ -122,13 +122,18 @@ export default function PostDetail() {
                     {data?.data.comment.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
-                                <CommentCard commentInfo={comment} post_id={post_id} userIdPost={userIdPost} />
+                                <CommentCard
+                                    postDetailData={data}
+                                    commentInfo={comment}
+                                    post_id={post_id}
+                                    userIdPost={userIdPost}
+                                />
                             </li>
                         );
                     })}
                 </ul>
             </div>
-            <div className="flex justify-center bottom-[80px] fixed ml-7">
+            <div className="flex justify-center bottom-[80px] fixed ml-[30px]">
                 <AddCommentForm post_id={post_id} />
             </div>
         </>
