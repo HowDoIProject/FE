@@ -6,6 +6,7 @@ import mypage from '../assets/icon/mypage.svg';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 
+
 export default function Footer() {
     const [cookies] = useCookies(['accessToken']);
     return (

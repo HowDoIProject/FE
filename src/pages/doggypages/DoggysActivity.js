@@ -6,14 +6,13 @@ import PostListCard from '../../components/PostListCard';
 import EditDeleteSelectWindow from './EditDeleteSelection';
 import FilterButton from './FilteredButton';
 import ChosenListCard from '../../components/ChosenListCard';
-import CommentEditDeleteSelectWindow from './CommentEditDelete';
 import MyComment from '../../components/MyComment';
 
 const DoggysActivity = () => {
     const location = useLocation();
     const { user_type, nickname, user_id } = location.state || {};
     const [postData, setPostData] = useState([]);
-    // const [mycomments, setMyComments] = useState([]);
+    const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [filteredComments, setFilteredComments] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
@@ -69,7 +68,9 @@ const DoggysActivity = () => {
             console.error('게시물 수정 중 오류가 발생했습니다:', error);
         }
     };
-
+    console.log(user_type);
+    console.log('user_id', user_id);
+    console.log(nickname);
     // const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
     //     const updatedData = {
     //         title: updatedTitle,
@@ -356,6 +357,7 @@ const DoggysActivity = () => {
                 {showMyPost && (
                     <div>
                         <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
+                        <h4 className="text-lg font-bold">내 작성글</h4>
                         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
                             filteredPosts.map(post => (
                                 <div key={post.post_id} className="rounded-lg mb-4 bg-white-100">
@@ -391,7 +393,7 @@ const DoggysActivity = () => {
                 {/* 내 댓글 보기 */}
                 {showMyComments && (
                     <div>
-                        <h4 className="text-lg font-bold">My Comment</h4>
+                        <h4 className="text-lg font-bold">내 댓글</h4>
                         {Array.isArray(comments) && comments.length > 0 ? (
                             comments.map(comment => (
                                 <div key={comment.comment_id} className="rounded-lg mb-4 bg-white-100">
@@ -439,7 +441,7 @@ const DoggysActivity = () => {
 
                 {ShowMyChosenComment && (
                     <div>
-                        <h4 className="text-lg font-bold">My Chosen Comments</h4>
+                        <h4 className="text-lg font-bold">내 채택</h4>
                         {Array.isArray(mychosen) && mychosen.length > 0 ? (
                             mychosen.map(chosencomment => (
                                 <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">

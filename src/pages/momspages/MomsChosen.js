@@ -3,29 +3,39 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 
 const MomsChosen = ({ showMyChosenComments, handleShowMyChosen }) => {
+    // Component state and cookies
     const [myChosen, setMyChosen] = useState([]);
     const [cookies] = useCookies(['accessToken']);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get('https://howdoiapp.shop/api/mychosencomment', {
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     access: cookies.accessToken,
-    //                 },
-    //             });
+    // Fetch data from API when the component mounts or when `cookies.accessToken` changes
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://howdoiapp.shop/api/mychosencomment', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        access: cookies.accessToken,
+                    },
+                });
 
-    //             const { data } = response;
-    //             setMyChosen(data);
-    //         } catch (error) {
-    //             console.error('Error fetching chosen comments:', error);
-    //         }
-    //     };
+                const { data } = response;
+                if (Array.isArray(data.mychosencomment) && data.mychosencomment.length > 0) {
+                    console.log('.mychosencomment:', data.mychosencomment);
+                    setMyChosen(data.mychosencomment);
+                } else {
+                    console.log('No comments found.');
+                    setMyChosen([]);
+                }
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
 
-    //     handleShowMyChosen();
-    // }, [cookies.accessToken]);
+        fetchData(); // Call the fetchData function
+        handleShowMyChosen(); // Call the handleShowMyChosen function
+    }, [cookies.accessToken]);
 
+    // Render the component
     return (
         <button
             onClick={handleShowMyChosen}
@@ -33,7 +43,7 @@ const MomsChosen = ({ showMyChosenComments, handleShowMyChosen }) => {
                 showMyChosenComments ? 'bg-white-500 text-black border-b-2 border-black' : 'bg-white-200 text-black-800'
             }`}
         >
-            채택 & Top 5
+            내 채택 & TOP내역
         </button>
     );
 };
