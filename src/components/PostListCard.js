@@ -48,7 +48,9 @@ export default function PostListCard({ post }) {
     return (
         <>
             <div
-                onClick={() => navigate(`/post/${post_id}`, { state: { like_check, scrap_check } })}
+                onClick={() => {
+                    cookies.accessToken ? navigate(`/post/${post_id}`) : navigate('/login');
+                }}
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
@@ -87,7 +89,7 @@ export default function PostListCard({ post }) {
                             {comment_num}
                         </div>
                     </div>
-                    <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
+                    <div className="text-[13px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
                 </div>
             </div>
         </>

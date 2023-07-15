@@ -17,10 +17,6 @@ import AddCommentForm from '../components/AddCommentForm';
 export default function PostDetail() {
     const { post_id } = useParams();
 
-    const {
-        state: { like_check, scrap_check },
-    } = useLocation();
-
     const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
@@ -38,7 +34,9 @@ export default function PostDetail() {
         scrap_num,
         user_type,
         user_id: userIdPost,
-    } = data?.data.post || {};
+        like_check,
+        scrap_check,
+    } = data?.data.post[0] || {};
 
     console.log('postdetail', data);
 
@@ -119,19 +117,25 @@ export default function PostDetail() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center mb-3 mt-6">
-                <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-gray_04 shadow-button">
+
+            <div className="flex justify-center mb-[144px] mt-6">
+                <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-y-reverse divide-gray_04 shadow-button flex flex-col-reverse">
+
                     {data?.data.comment.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
-                                <CommentCard commentInfo={comment} post_id={post_id} userIdPost={userIdPost} />
+                                <CommentCard
+                                    postDetailData={data}
+                                    commentInfo={comment}
+                                    post_id={post_id}
+                                    userIdPost={userIdPost}
+                                />
                             </li>
                         );
                     })}
                 </ul>
             </div>
-
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center bottom-[80px] fixed ml-[30px]">
                 <AddCommentForm post_id={post_id} />
             </div>
         </>
