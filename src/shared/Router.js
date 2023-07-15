@@ -23,6 +23,11 @@ const Router = () => {
             <Routes>
                 {/* 회원 관련 */}
                 <Route path="/login" element={<Login />} />
+                {/* 멤버십 등록 단계 */}
+                <Route path="/interest" element={<Interest />} />
+                <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/confirm" element={<Confirm />} />
+                <Route path="/signup" element={<SignUp />} />
 
                 {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
                 <Route element={<Layout />}>
@@ -42,12 +47,6 @@ const Router = () => {
                     <Route path="/mypage" element={<MyPage />} />
                     <Route path="/activity" element={<DoggysActivity />} />
                     <Route path="/momactivity" element={<MomsActivity />} />
-
-                    {/* 멤버십 등록 단계 */}
-                    <Route path="/interest" element={<Interest />} />
-                    <Route path="/userinfo" element={<UserInfo />} />
-                    <Route path="/confirm" element={<Confirm />} />
-                    <Route path="/signup" element={<SignUp />} />
                 </Route>
             </Routes>
         </BrowserRouter>
