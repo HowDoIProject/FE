@@ -8,7 +8,7 @@ function LogoutModal() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        removeCookie('accessToken');
+        removeCookie('accessToken', { path: '/' });
         setShowModal(false);
         navigate('/');
     };

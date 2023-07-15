@@ -113,7 +113,7 @@ export default function PostDetail() {
                             </div>
                             <div className="flex items-center gap-1">
                                 <img className="w-4 h-4" src={comment} alt="" />
-                                {data?.data.result.length}
+                                {data?.data.comment.length}
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ export default function PostDetail() {
             </div>
             <div className="flex justify-center mb-3 mt-6">
                 <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-gray_04 shadow-button">
-                    {data?.data.result.map(comment => {
+                    {data?.data.comment.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
                                 <CommentCard commentInfo={comment} post_id={post_id} userIdPost={userIdPost} />
