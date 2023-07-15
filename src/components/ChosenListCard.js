@@ -9,10 +9,9 @@ import { useCookies } from 'react-cookie';
 import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
-import moment from 'moment';
 
 export default function ChosenListCard({ post, chosencomment, comment_id, user_id }) {
-    const { like_num, scrap_num, user_type, comment_num, created_at, post_id, category } = post;
+    const { like_num, scrap_num, user_type, comment_num, post_id } = post || {};
 
     // if (!chosencomment || !chosencomment.comment) {
     //     // Handle case when chosencomment is undefined or comment property is missing
@@ -20,6 +19,7 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
     // }
 
     const { comment } = chosencomment;
+    const { category, setCategory } = useState(['자취끼니', '생활비', '집안일']);
     const [cookies] = useCookies(['accessToken']);
     const [isLike, setIsLike] = useState(false);
     const [isScrap, setIsScrap] = useState(false);
@@ -28,14 +28,14 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updateCommentLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id });
+            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id, category });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id });
+            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id, category });
         },
     });
 
@@ -43,7 +43,7 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
     // const navigate = useNavigate();
     // const parsedCreatedAt = moment(created_at);
     // const formattedCreatedAt = parsedCreatedAt.fromNow();
-
+    console.log('catergory', category);
     return (
         <>
             <div
@@ -51,9 +51,9 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
-                    {/* <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
+                    <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
                         {category}
-                    </div> */}
+                    </div>
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02">
                         {isDog ? '질문글' : '꿀팁글'}
                     </div>
@@ -65,8 +65,8 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsLike(!isLike);
-                                updateLikeMutate({ user_id, comment_id, cookies });
+                                setIsLike(!isLike);
+                                updateLikeMutate({ user_id, comment_id, cookies, category });
                             }}
                         >
                             <img className="w-4 h-4" src={isLike ? likeActive : like} alt="" />
@@ -76,8 +76,8 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsScrap(!isScrap);
-                                updateScrapMutate({ user_id, comment_id, cookies });
+                                setIsScrap(!isScrap);
+                                updateScrapMutate({ user_id, comment_id, cookies, category });
                             }}
                         >
                             <img className="w-4 h-4" src={isScrap ? scrapActive : scrap} alt="" />
@@ -88,7 +88,7 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
                             {comment_num}
                         </div>
                     </div>
-                    <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
+                    {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
                 </div>
             </div>
         </>

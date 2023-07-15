@@ -194,27 +194,45 @@ export default function MomsActivity() {
 
     return (
         <>
-            <div className="bg-white-100 p-4 rounded-lg mb-4 mt-8">
-                <div className="flex flex-col items-start p-10">
-                    <div className="ml-60 w-16 h-16 bg-white rounded-md shadow-md">
-                        <div className="text-2xl font-bold">
-                            <img src={parent} alt="Dog Icon" />
+            <div className="bg-orange-100 p-2 rounded-lg mb-4 mt-4">
+                <div className="flex flex-col items-start p-1">
+                    {/* <div className="flex justify-start mt-4"></div> */}
+                    {/* <div className="ml-60 w-50 h-50 rounded-md"> */}
+                    <div className="text-2xl font-bold">
+                        <div className="flex justify-end">
+                            <div className="flex justify-start mt-20 ml-50 p-6">
+                                <p className="p-2">
+                                    안녕하세요!
+                                    {nickname && nickname.nickname}
+                                    {user_type && ` ${user_type.user_type}`}
+                                    <br></br>회원님
+                                </p>
+                            </div>
+                            <img src={parent} alt="Dog Icon" className="w-full h-full p-6" />
                         </div>
-                    </div>
-                    <div className="mt-2">
-                        <h1>
-                            {nickname && nickname.nickname}
-                            {user_type && ` ${user_type.user_type}`}님
-                        </h1>
+                        {/* </div> */}
                     </div>
 
-                    <div className="mt-4 w-full">
-                        <div className="graph">
-                            <HorizontalBarGraph />
+                    {/* <p>
+                        안녕하세요!
+                        <br></br>
+                        {nickname && nickname.nickname}
+                        {user_type && ` ${user_type.user_type}`}회원님
+                    </p> */}
+                    <div className="mt-2 w-full">
+                        {/* <div className="bg-orange-200 p-4 rounded-lg mb-4 mt-4"> */}
+                        <div className="flex flex-col items-start">
+                            <div className="mt-4 w-full">
+                                <div className="graph">
+                                    <HorizontalBarGraph /> {/* 그래프 */}
+                                </div>
+                            </div>
                         </div>
+                        {/* </div> */}
                     </div>
                 </div>
             </div>
+
             {/* <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
                                 <div className="graph-label">My answer</div>
                             </div>
@@ -225,9 +243,9 @@ export default function MomsActivity() {
                                 <div className="graph-label">Post</div>
                             </div> */}
 
-            <div className="flex items-center">
-                <img src={question} alt="Question Icon" className="mr-2" />
-                <h1 className="m-4 mt-3">레벨제도란 무엇인가요?</h1>
+            <div className="flex items-center mt-7">
+                {/* <img src={question} alt="Question Icon" className="mr-2" />
+                <h1 className="m-4 mt-3">레벨제도란 무엇인가요?</h1> */}
             </div>
             {/* 기간별 필터 버튼 */}
             <div className="flex justify-left mb-7">
@@ -296,6 +314,7 @@ export default function MomsActivity() {
                                                             post={post}
                                                             post_id={post_id}
                                                             setFilteredPosts={setFilteredPosts}
+                                                            category={setCategory}
                                                         />
                                                         <div className="absolute top-0 right-0">
                                                             <MomsPostEditDelteWindow
@@ -311,7 +330,7 @@ export default function MomsActivity() {
                                 ))}
                             </div>
                         ) : (
-                            <p>오늘의 게시글이 없습니다.</p>
+                            <p>게시글이 없습니다.</p>
                         )}
                     </div>
                 )}
@@ -340,10 +359,10 @@ export default function MomsActivity() {
                 )}
                 {showMyChosenComments && (
                     <div className="box">
-                        <h4 className="text-lg font-bold">내 채택내역 & 탑글내역 </h4>
+                        <h4 className="text-lg font-bold">내 채택 & TOP글내역 </h4>
                         {Array.isArray(filteredChosenComments) && filteredChosenComments.length > 0 ? (
                             filteredChosenComments.map(chosencomment => (
-                                <div key={chosencomment.comment_id} className="comment-box">
+                                <div key={chosencomment.comment_id} className="comment-box mt-5">
                                     <ChosenListCard
                                         post={post}
                                         chosencomment={chosencomment}
@@ -353,7 +372,7 @@ export default function MomsActivity() {
                                 </div>
                             ))
                         ) : (
-                            <p>No accepted articles found.</p>
+                            <p>글 내역이 없습니다.</p>
                         )}
                     </div>
                 )}

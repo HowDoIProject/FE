@@ -44,7 +44,7 @@ export default function PostListCard({ post }) {
 
     const isDog = user_type === '강아지';
     const navigate = useNavigate();
-
+    console.log(category);
     return (
         <>
             <div

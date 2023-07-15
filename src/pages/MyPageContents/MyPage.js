@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import DoggyProfilePicture from './DoggyProfilePic';
 import ProfilePicture from './MomProfilePic';
 import arrows from '../../assets/icon/arrow.svg';
 import mypages from '../../assets/icon/mypages.svg';
 import LogoutModal from './LogOutModal';
+import { MdPassword } from 'react-icons/md';
 
 export default function MyPage() {
     const navigate = useNavigate();
-
     const [cookies] = useCookies(['accessToken']);
     const jwtToken = cookies.accessToken;
-    const decodedToken = jwtDecode(jwtToken);
-    const [showModal, setShowModal] = useState(!decodedToken);
-    const user_type = decodedToken.user_type;
-    const nickname = decodedToken.nickname;
-    const user_id = decodedToken.user_id;
+    const decodedToken = jwtToken ? jwtDecode(jwtToken) : null;
+    const user_type = decodedToken?.user_type;
+    const nickname = decodedToken?.nickname;
+    const user_id = decodedToken?.user_id;
+    const [showModal, setShowModal] = useState(!jwtToken || !decodedToken);
 
     const handleShowActivity = () => {
         if (user_type.user_type === '엄빠') {
@@ -31,9 +31,18 @@ export default function MyPage() {
         }
     };
 
+    const handleViewDeleteInfo = () => {
+        // Perform any necessary actions before navigating to the "/change" path
+        // For example, you can check if the user is authenticated or authorized.
+
+        // Navigate to the "/change" path
+        navigate('/change');
+    };
+
     console.log(user_type);
     console.log(user_id);
     console.log(nickname);
+    // console.log(password);
     const closeModal = () => {
         setShowModal(false);
         navigate('/login');
@@ -79,11 +88,13 @@ export default function MyPage() {
                                     {user_type && ` ${user_type.user_type}`}님
                                 </h1>
                                 <div className="mb-2">
-                                    <h5>내 정보 보기/삭제</h5>
+                                    <Link to="/change" onClick={handleViewDeleteInfo}>
+                                        <h5>내 정보 보기/삭제</h5>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="p-2">
-                                {user_type === '강아지' ? <ProfilePicture /> : <DoggyProfilePicture />}
+                                {user_type === '엄빠' ? <ProfilePicture /> : <DoggyProfilePicture />}
                             </div>
                         </div>
                     </div>
@@ -98,9 +109,9 @@ export default function MyPage() {
                             </div>
                             <hr className="border-gray-300 my-4" />
                             <div className="flex items-center mb-6">
-                                <button onClick={handleShowActivity} className="mr-4">
-                                    고객센터
-                                </button>
+                                {/* <button onClick={handleShowActivity} className="mr-4"> */}
+                                고객센터(준비중)
+                                {/* </button> */}
                             </div>
                             <hr className="border-gray-300 my-4" />
                             <div className="flex items-center mb-6">
