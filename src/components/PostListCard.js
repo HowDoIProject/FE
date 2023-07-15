@@ -89,7 +89,7 @@ export default function PostListCard({ post }) {
                             {comment_num}
                         </div>
                     </div>
-                    <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
+                    <div className="text-[13px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
                 </div>
             </div>
         </>
