@@ -21,10 +21,11 @@ const Router = user_type => {
     return (
         <BrowserRouter>
             <Routes>
+                {/* 회원 관련 */}
+                <Route path="/login" element={<Login />} />
+
                 {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
                 <Route element={<Layout />}>
-                    {/* 회원 관련 */}
-                    <Route path="/login" element={<Login />} />
                     {/* 메인 화면 관련 */}
                     <Route path="/" element={<Main />} />
                     <Route path="/posts/:keyword" element={<SearchList />} />
