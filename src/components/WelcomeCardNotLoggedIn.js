@@ -11,7 +11,7 @@ export default function WelcomeCardNotLoggedIn() {
                 <div className="flex items-center justify-center">
                     <div
                         onClick={() => navigate('/login')}
-                        className="text-gray_02 border-b border-b-gray_02 mr-1 font-bold text-[14px]"
+                        className="text-gray_02 border-b border-b-gray_02 mr-1 font-bold text-[14px] cursor-pointer"
                     >
                         로그인
                     </div>

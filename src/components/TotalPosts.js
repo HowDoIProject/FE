@@ -1,4 +1,5 @@
 import React from 'react';
+import { Cookies, useCookies } from 'react-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import { apiPosts } from '../shared/Api';
 import PostListCard from './PostListCard';
@@ -13,6 +14,7 @@ export default function TotalPosts({ data, category, setCategory, filter, setFil
         { id: 2, name: '자취끼니' },
         { id: 3, name: '집안일' },
     ];
+    const [cookies] = useCookies(['accessToken']);
     return (
         <>
             <div className="flex mt-4">
@@ -20,7 +22,7 @@ export default function TotalPosts({ data, category, setCategory, filter, setFil
                     <div
                         onClick={() => {
                             setCategory(item.id);
-                            apiPosts.getByFilterAndCategory(filter, category, page);
+                            apiPosts.getByFilterAndCategory(filter, category, page, cookies);
                         }}
                         key={item.id}
                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1 cursor-pointer"
@@ -32,7 +34,7 @@ export default function TotalPosts({ data, category, setCategory, filter, setFil
                     <div
                         onClick={() => {
                             setFilter(item.id);
-                            apiPosts.getByFilterAndCategory(filter, category, page);
+                            apiPosts.getByFilterAndCategory(filter, category, page, cookies);
                         }}
                         key={item.id}
                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02 mr-1 cursor-pointer"

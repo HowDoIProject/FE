@@ -1,8 +1,11 @@
 import React from 'react';
+import { useCookies } from 'react-cookie';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function MainPageCard({ post }) {
     const { post_id, category, title, user_type, like_check, scrap_check } = post;
+
+    const [cookies] = useCookies(['accessToken']);
 
     const navigate = useNavigate();
 
@@ -10,7 +13,9 @@ export default function MainPageCard({ post }) {
 
     return (
         <div
-            onClick={() => navigate(`/post/${post_id}`, { state: { like_check, scrap_check } })}
+            onClick={() => {
+                cookies.accessToken ? navigate(`/post/${post_id}`) : navigate('/login');
+            }}
             className="w-full h-full p-3 rounded-xl bg-bgjoin shadow-mainbox"
         >
             <div className="flex mb-8">
