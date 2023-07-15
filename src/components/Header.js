@@ -34,11 +34,7 @@ export default function Header() {
                         onClick={() => navigate('/login')}
                     >
                         로그인
-
-                    </button>
-
                     </div>
-
                 )}
             </div>
         </div>

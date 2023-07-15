@@ -43,7 +43,7 @@ const MomsChosen = ({ showMyChosenComments, handleShowMyChosen }) => {
                 showMyChosenComments ? 'bg-white-500 text-black border-b-2 border-black' : 'bg-white-200 text-black-800'
             }`}
         >
-            채택 & Top 5
+            내 채택 & TOP내역
         </button>
     );
 };

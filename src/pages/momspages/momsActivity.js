@@ -4,12 +4,14 @@ import axios from 'axios';
 import parent from '../../assets/icon/parent.svg';
 import question from '../../assets/icon/question.svg';
 import { useCookies } from 'react-cookie';
+import HorizontalBarGraph from './HorizontalGraphBar';
 import MyPostButton from './MomsPost';
 import MyChosenButton from './MomsChosen';
 import FilterButton from './FilterButton';
 import PostListCard from '../../components/PostListCard';
 import MomsComment from '../../components/MomsComment';
 import MomsPostEditDelteWindow from './MomsPostEditDelete';
+import ChosenListCard from '../../components/ChosenListCard';
 
 export default function MomsActivity() {
     const location = useLocation();
@@ -208,19 +210,20 @@ export default function MomsActivity() {
 
                     <div className="mt-4 w-full">
                         <div className="graph">
-                            <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
-                                <div className="graph-label">내가 쓴 답 </div>
-                            </div>
-                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
-                                <div className="graph-label">도웁 됬어요 </div>
-                            </div>
-                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
-                                <div className="graph-label">게시글</div>
-                            </div>
+                            <HorizontalBarGraph />
                         </div>
                     </div>
                 </div>
             </div>
+            {/* <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
+                                <div className="graph-label">My answer</div>
+                            </div>
+                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
+                                <div className="graph-label">Help me</div>
+                            </div>
+                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
+                                <div className="graph-label">Post</div>
+                            </div> */}
 
             <div className="flex items-center">
                 <img src={question} alt="Question Icon" className="mr-2" />
@@ -275,20 +278,19 @@ export default function MomsActivity() {
                         handleShowMyChosen={handleShowMyChosen}
                     />
                 </div>
-
                 {showMyPosts && (
                     <div>
                         <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
                         <h4 className="text-lg font-bold">나의 게시글</h4>
                         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="grid grid-cols-1 gap-1">
                                 {filteredPosts.map(post => (
                                     <div key={post.post_id} className="bg-white p-4 rounded shadow">
                                         {post.post_id === selectedPostId ? (
                                             <div></div>
                                         ) : (
                                             <div className="relative">
-                                                <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                                <div className="w-full h-[160px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
                                                     <div className="relative">
                                                         <PostListCard
                                                             post={post}
@@ -313,7 +315,6 @@ export default function MomsActivity() {
                         )}
                     </div>
                 )}
-
                 {showMyComment && (
                     <div>
                         <h4 className="text-lg font-bold">나의 댓글</h4>
@@ -337,20 +338,22 @@ export default function MomsActivity() {
                         )}
                     </div>
                 )}
-
                 {showMyChosenComments && (
-                    <div>
-                        <h4 className="text-lg font-bold">나 채택 & Top 5 </h4>
+                    <div className="box">
+                        <h4 className="text-lg font-bold">내 채택내역 & 탑글내역 </h4>
                         {Array.isArray(filteredChosenComments) && filteredChosenComments.length > 0 ? (
                             filteredChosenComments.map(chosencomment => (
-                                <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
-                                    <p>Comment: {chosencomment.comment}</p>
-                                    <p>Category: {chosencomment.categoryy}</p>
-                                    <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p>
+                                <div key={chosencomment.comment_id} className="comment-box">
+                                    <ChosenListCard
+                                        post={post}
+                                        chosencomment={chosencomment}
+                                        comment_id={chosencomment.comment_id}
+                                        user_id={chosencomment.user_id}
+                                    />
                                 </div>
                             ))
                         ) : (
-                            <p>채택된 글을 찾을 수 없습니다.</p>
+                            <p>No accepted articles found.</p>
                         )}
                     </div>
                 )}

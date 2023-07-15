@@ -117,8 +117,10 @@ export default function PostDetail() {
                     </div>
                 </div>
             </div>
+
             <div className="flex justify-center mb-[144px] mt-6">
                 <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-y-reverse divide-gray_04 shadow-button flex flex-col-reverse">
+
                     {data?.data.comment.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>
