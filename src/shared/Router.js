@@ -10,14 +10,16 @@ import SignUp from '../pages/SignupPages/SignUp';
 import Confirm from '../pages/SignupPages/Confirm';
 import Interest from '../pages/SignupPages/Interest';
 import Main from '../pages/Main';
+import PasswordForm from '../pages/MyPageContents/ProfileChange';
 import DoggysActivity from '../pages/doggypages/DoggysActivity';
 import MomsActivity from '../pages/momspages/MomsActivity';
 import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
+import PhoneChange from '../pages/MyPageContents/PhoneChange';
 import PopularPosts from '../components/PopularPosts';
 
-const Router = user_type => {
+const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
@@ -46,6 +48,9 @@ const Router = user_type => {
                     <Route path="/userinfo" element={<UserInfo />} />
                     <Route path="/confirm" element={<Confirm />} />
                     <Route path="/signup" element={<SignUp />} />
+                    {/*멤버십 수정삭제 단계*/}
+                    <Route path="/change" element={<PasswordForm />} />
+                    <Route path="/phonenumberchange" element={<PhoneChange />} />
                 </Route>
             </Routes>
         </BrowserRouter>

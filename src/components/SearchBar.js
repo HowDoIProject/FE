@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import search from '../assets/icon/search.svg';
 import scrap from '../assets/icon/scrap.svg';
 import notif from '../assets/icon/notif.svg';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 export default function SearchBar() {
     const [text, setText] = useState('');
@@ -25,10 +25,14 @@ export default function SearchBar() {
                     onChange={e => setText(e.target.value)}
                 />
             </form>
+            {/*scrap 링크 추가 */}
             <div className="flex gap-3">
-                <img src={scrap} alt="" className="w-6 h-6" />
+                <Link to="/scrap" className="flex flex-col min-w-[40px] items-center justify-center gap-1">
+                    <img src={scrap} alt="" className="w-6 h-6" />
+                </Link>
                 <img src={notif} alt="" className="w-6 h-6" />
             </div>
+            <div></div>
         </div>
     );
 }
