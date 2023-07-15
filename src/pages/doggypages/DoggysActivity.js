@@ -6,14 +6,13 @@ import PostListCard from '../../components/PostListCard';
 import EditDeleteSelectWindow from './EditDeleteSelection';
 import FilterButton from './FilteredButton';
 import ChosenListCard from '../../components/ChosenListCard';
-import CommentEditDeleteSelectWindow from './CommentEditDelete';
 import MyComment from '../../components/MyComment';
 
 const DoggysActivity = () => {
     const location = useLocation();
     const { user_type, nickname, user_id } = location.state || {};
     const [postData, setPostData] = useState([]);
-    // const [mycomments, setMyComments] = useState([]);
+    const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [filteredComments, setFilteredComments] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
@@ -69,7 +68,9 @@ const DoggysActivity = () => {
             console.error('게시물 수정 중 오류가 발생했습니다:', error);
         }
     };
-
+    console.log(user_type);
+    console.log('user_id', user_id);
+    console.log(nickname);
     // const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
     //     const updatedData = {
     //         title: updatedTitle,
