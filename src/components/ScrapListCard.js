@@ -9,7 +9,9 @@ import { useCookies } from 'react-cookie';
 import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
-
+//scrap 으로 변경
+//삭제를 하면 모든 게시물이 삭제되는 점이 있음
+//개선 해야할 점
 export default function ScrapListCard({ post }) {
     const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = post;
     const [cookies] = useCookies(['accessToken']);
