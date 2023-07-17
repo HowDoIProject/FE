@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faUtensils, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 
 const Interest = () => {
     const location = useLocation();
@@ -9,7 +7,7 @@ const Interest = () => {
     const navigate = useNavigate();
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedGender, setSelectedGender] = useState('');
-    const [selectedAge, setSelectedAge] = useState('');
+    const [selectedAge, setselectedAge] = useState('');
     const [submitBtnActive, setSubmitBtnActive] = useState(false);
 
     const handleInterestSelection = category => {
@@ -25,7 +23,7 @@ const Interest = () => {
     };
 
     const handleAgeSelection = age => {
-        setSelectedAge(age);
+        setselectedAge(age);
     };
 
     const isInterestSelected = category => {
@@ -51,17 +49,13 @@ const Interest = () => {
             },
         });
     };
+
     const submitBtnActiveCheck = () => {
         if (selectedAge && selectedGender && selectedCategories.length > 0) {
             setSubmitBtnActive(true);
             console.log('submitBtnActive', submitBtnActive);
         }
     };
-
-    console.log('selectedCategories', selectedCategories);
-    console.log('selectedCategorieslength', selectedCategories.length);
-    console.log('selectedGender', selectedGender);
-    console.log('selectedAge', selectedAge);
 
     const genders = [
         { id: 1, name: '여성' },
@@ -188,7 +182,7 @@ const Interest = () => {
                                 : `flex w-[320px] h-[44px] text-white bg-gray_03 rounded-xl justify-center items-center mb-4`
                         }
                     >
-                        가입완료
+                        다음으로
                     </button>
                 </div>
             </div>

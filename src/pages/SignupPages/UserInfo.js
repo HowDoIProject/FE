@@ -84,16 +84,12 @@ const UserInfo = () => {
 
             //API 인증코드
             axios
-                .post('https://howdoiapp.shop/api/verify', payload, {
-                    // headers: {
-                    //     Verification: user_number,
-                    // },
-                })
+                .post('https://howdoiapp.shop/api/verify', payload)
                 .then(response => {
                     const success = response.data;
                     if (success) {
                         const verification = user_number.toString();
-                        setCookie('accessToken', verification, {
+                        setCookie('verification', verification, {
                             path: '/',
                             sameSite: 'none',
                             secure: true,
