@@ -128,22 +128,24 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                         <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg">
                             <ul>
                                 <li>
-                                    <button
-                                        type="button"
-                                        className="block px-4 py-2 hover:bg-gray-100"
-                                        onClick={toggleEditMode}
-                                    >
-                                        Edit
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        type="button"
-                                        className="block px-4 py-2 hover:bg-gray-100"
-                                        onClick={handleDelete}
-                                    >
-                                        Delete
-                                    </button>
+                                    <li>
+                                        <button
+                                            type="button"
+                                            className="block px-1 hover:bg-gray-100"
+                                            onClick={toggleEditMode}
+                                        >
+                                            수정
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            type="button"
+                                            className="block px-1  hover:bg-gray-100"
+                                            onClick={handleDelete}
+                                        >
+                                            삭제
+                                        </button>
+                                    </li>
                                 </li>
                             </ul>
                         </div>
@@ -167,9 +169,9 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                         className="border border-gray-300 rounded-md px-2 py-1 mt-1"
                     ></textarea>
                     <div className="mb-8">
-                        <div className="mb-2">사진첨부</div>
-                        <div className="flex gap-2">
-                            <label
+                        {/* <div className="mb-2">사진첨부</div> */}
+                        {/* <div className="flex gap-2"> */}
+                        {/* <label
                                 className="w-20 h-20 flex justify-center items-center cursor-pointer bg-gray_04 rounded-lg"
                                 htmlFor="image"
                             >
@@ -182,8 +184,8 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                                 name="image"
                                 id="image"
                                 onChange={onChangeFileHandler}
-                            />
-                            <div>
+                            /> */}
+                        {/* <div>
                                 {file && (
                                     <div className="relative">
                                         <img className="w-20 h-20 rounded-lg object-cover" src={file} alt={file} />
@@ -194,15 +196,15 @@ const EditDeleteSelectWindow = ({ post_id, setFilteredPosts, goBack }) => {
                                             alt=""
                                         />
                                     </div>
-                                )}
-                                <button
-                                    onClick={handleEdit}
-                                    className="bg-green-500 text-white font-bold py-2 px-1 rounded mt-1"
-                                >
-                                    저장
-                                </button>
-                            </div>
-                        </div>
+                                )} */}
+                        <button
+                            onClick={handleEdit}
+                            className="bg-green-500 text-white font-bold py-2 px-1 rounded mt-1"
+                        >
+                            저장
+                        </button>
+                        {/* </div> */}
+                        {/* </div> */}
                     </div>
 
                     {/* <button

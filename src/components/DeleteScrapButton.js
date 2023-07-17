@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function DeleteScrapButton({ filter, category, accessToken }) {
+export default function DeleteScrapButton({ filter, category, cookies }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const handleDeleteScrap = async () => {
-        setIsModalVisible(false);
+    // const handleDeleteScrap = async () => {
+    //     setIsModalVisible(false);
 
-        try {
-            await axios.delete(`https://howdoiapp.shop/api/scrap/${filter}/${category}`, {
-                headers: {
-                    access: accessToken,
-                },
-            });
+    //     try {
+    //         await axios.delete(`https://howdoiapp.shop/api/scrap/${filter}/${category}`, {
+    //             params: { filter, category },
+    //             headers: {
+    //                 access: cookies.accessToken,
+    //             },
+    //         });
 
-            console.log('Scrap deleted successfully');
-        } catch (error) {
-            console.error('Error deleting scrap:', error);
-        }
-    };
+    //         console.log('Scrap deleted successfully');
+    //     } catch (error) {
+    //         console.error('Error deleting scrap:', error);
+    //     }
+    // };
 
     const handleModalToggle = () => {
         setIsModalVisible(!isModalVisible);
@@ -26,12 +27,12 @@ export default function DeleteScrapButton({ filter, category, accessToken }) {
 
     return (
         <div>
-            <button
+            {/* <button
                 onClick={handleModalToggle}
                 className="bg-red-500 hover:bg-red-600 text-black font-bold py-2 px-4 rounded"
             >
                 삭제하기
-            </button>
+            </button> */}
             {isModalVisible && (
                 <div className="fixed inset-0 flex items-center justify-center z-10">
                     <div className="bg-white rounded shadow-lg p-8 max-w-sm mx-auto">

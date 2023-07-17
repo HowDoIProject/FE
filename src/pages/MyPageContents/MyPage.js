@@ -88,9 +88,9 @@ export default function MyPage() {
                                     {user_type && ` ${user_type.user_type}`}님
                                 </h1>
                                 <div className="mb-2">
-                                    <Link to="/change" onClick={handleViewDeleteInfo}>
+                                    {/* <Link to="/change" onClick={handleViewDeleteInfo}>
                                         <h5>내 정보 보기/삭제</h5>
-                                    </Link>
+                                    </Link> */}
                                 </div>
                             </div>
                             <div className="p-2">

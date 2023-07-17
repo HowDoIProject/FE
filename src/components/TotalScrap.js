@@ -2,8 +2,11 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { apiPosts } from '../shared/Api';
 import ScrapListCard from './ScrapListCard';
+import { useCookies } from 'react-cookie';
 
-export default function TotalScraps({ data, category, setCategory, filter, setFilter, page, scrap_check }) {
+export default function TotalScraps({ data, category, setCategory, filter, setFilter }) {
+    const [cookies] = useCookies(['accessToken']);
+
     const filterList = [
         { id: 1, name: '질문글' },
         { id: 2, name: '꿀팁글' },
@@ -13,9 +16,21 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
         { id: 2, name: '자취끼니' },
         { id: 3, name: '집안일' },
     ];
-    // const scrap_check = true || false; // Initialize the variable with an appropriate value
 
-    // // Rest of the code that uses scrapObject
+    // const handleDeleteScrap = async scrap => {
+    //     try {
+    //         if (cookies && cookies.accessToken) {
+    //             await apiPosts.DeleteScrap(scrap.filter, scrap.category, scrap.page, cookies);
+    //             // Handle any necessary actions after deleting the scrap post
+    //         } else {
+    //             // Handle the case when accessToken is not available in cookies
+    //             console.error('Access token not found in cookies');
+    //         }
+    //     } catch (error) {
+    //         // Handle the error
+    //         console.error('Error deleting scrap:', error);
+    //     }
+    // };
 
     const renderPosts = () => {
         if (!data || data.pages.length === 0) {
@@ -24,9 +39,14 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
 
         return data.pages.map(page => (
             <div key={uuidv4()}>
-                {page.data.mypage.map(post => (
+                {page.data.mypage.map(scrap => (
                     <div key={uuidv4()} className="w-full h-auto my-4 cursor-pointer">
-                        <ScrapListCard post={post} scrap_check={scrap_check} />
+                        <ScrapListCard
+                            category={category}
+                            filter={filter}
+                            post={scrap}
+                            // onDeleteScrap={handleDeleteScrap}
+                        />
                     </div>
                 ))}
             </div>
@@ -40,7 +60,6 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
                     <div
                         onClick={() => {
                             setCategory(item.id);
-                            apiPosts.getScrap(filter, category, page, scrap_check);
                         }}
                         key={item.id}
                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1 cursor-pointer"
@@ -52,7 +71,6 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
                     <div
                         onClick={() => {
                             setFilter(item.id);
-                            apiPosts.getScrap(filter, category, page, scrap_check);
                         }}
                         key={item.id}
                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02 mr-1 cursor-pointer"
@@ -65,83 +83,3 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
         </>
     );
 }
-
-// import React from 'react';
-// import { v4 as uuidv4 } from 'uuid';
-// import axios from 'axios';
-// import { useCookies } from 'react-cookie';
-// import { apiGet } from '../shared/Api';
-
-// export default function TotalPosts({ data, category, setCategory, filter, setFilter, page }) {
-//     const filterList = [
-//         { id: 1, name: '질문글' },
-//         { id: 2, name: '꿀팁글' },
-//     ];
-//     const categoryList = [
-//         { id: 1, name: '생활비' },
-//         { id: 2, name: '자취끼니' },
-//         { id: 3, name: '집안일' },
-//     ];
-//     const [cookies] = useCookies(['accessToken']);
-
-//     const fetchData = async (category, filter, page) => {
-//         try {
-//             const accessToken = cookies?.accessToken;
-//             if (!accessToken) {
-//                 console.log('Access token is missing.');
-//                 return;
-//             }
-
-//             const response = await axios.post(`/api/scrap/${filter}/${category}/${page}`, {
-//                 headers: {
-//                     access: cookies.accessToken,
-//                 },
-//             });
-
-//             console.log('scrapPost', response.data);
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     };
-
-//     return (
-//         <>
-//             <div className="flex mt-4">
-//                 {categoryList.map(item => (
-//                     <div
-//                         onClick={() => {
-//                             setCategory(item.id);
-//                             apiGet.getScrapFilterAndCategory(filter, category, page);
-//                         }}
-//                         key={item.id}
-//                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1 cursor-pointer"
-//                     >
-//                         {item.name}
-//                     </div>
-//                 ))}
-//                 {filterList.map(item => (
-//                     <div
-//                         onClick={() => {
-//                             setFilter(item.id);
-//                             apiGet.getScrapFilterAndCategory(filter, category, page);
-//                         }}
-//                         key={item.id}
-//                         className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02 mr-1 cursor-pointer"
-//                     >
-//                         {item.name}
-//                     </div>
-//                 ))}
-//             </div>
-//             {data?.pages.map(page => (
-//                 <div key={uuidv4()}>
-//                     {page?.data.map(scrap => (
-//                         <div key={scrap.post_id} className="w-full h-auto my-4 cursor-pointer">
-//                             <div>{scrap.title}</div>
-//                             <div>{scrap.content}</div>
-//                         </div>
-//                     ))}
-//                 </div>
-//             ))}
-//         </>
-//     );
-// }

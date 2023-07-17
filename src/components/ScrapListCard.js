@@ -1,8 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-// import likeActive from '../assets/icon/likeActive.svg';
-// import scrapActive from '../assets/icon/scrapActive.svg';
 import comment from '../assets/icon/comment.svg';
 import { formatAgo } from '../util/date';
 import { useCookies } from 'react-cookie';
@@ -15,19 +12,26 @@ export default function ScrapListCard({ post }) {
     const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
-    const { mutate: updateLikeMutate } = useMutation({
-        mutationFn: apiPosts.updatePostLike,
+
+    const { mutate: updateLikeMutate } = useMutation(apiPosts.updatePostLike, {
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['post'], post_id });
+            queryClient.invalidateQueries('scraps');
         },
     });
 
-    const { mutate: updateScrapMutate } = useMutation({
-        mutationFn: apiPosts.updatePostScrap,
+    const { mutate: updateScrapMutate } = useMutation(apiPosts.updatePostScrap, {
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['post'], post_id });
+            queryClient.invalidateQueries('scraps');
         },
     });
+
+    // const handleDeleteScrap = async () => {
+    //     try {
+    //         await deleteScrapMutate(post_id);
+    //     } catch (error) {
+    //         // Handle the error
+    //     }
+    // };
 
     const isDog = user_type === '강아지';
 
@@ -49,7 +53,7 @@ export default function ScrapListCard({ post }) {
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                updateLikeMutate({ user_id, post_id, cookies });
+                                updateLikeMutate({ user_id, post_id, cookies, scrap_check: true });
                             }}
                         >
                             <img className="w-4 h-4" src={likeActive} alt="" />
@@ -72,6 +76,7 @@ export default function ScrapListCard({ post }) {
                     </div>
                     <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
                 </div>
+                {/* <button onClick={handleDeleteScrap}>Delete</button> */}
             </div>
         </>
     );

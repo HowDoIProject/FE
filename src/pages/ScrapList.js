@@ -5,7 +5,7 @@ import { apiPosts } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
-import DeleteScrapButton from '../components/DeleteScrapButton';
+// import DeleteScrapButton from '../components/DeleteScrapButton';
 
 export default function ScrapList() {
     const [cookies] = useCookies(['accessToken']);
@@ -17,11 +17,11 @@ export default function ScrapList() {
         threshold: 1,
     });
 
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
     const accessToken = cookies.accessToken;
 
     const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-        queryKey: ['scrap', filter, category],
+        queryKey: ['scraps', filter, category],
         getNextPageParam: lastPage => {
             if (lastPage.data.total_page == lastPage.data.page) return false;
             return lastPage.data.page + 1;
@@ -31,21 +31,41 @@ export default function ScrapList() {
 
     console.log('data', data);
 
-    useEffect(() => {
-        if (inView && hasNextPage) fetchNextPage();
-    }, [inView]);
-
-    console.log('data', data);
+    // useEffect(() => {
+    //     if (inView && hasNextPage) fetchNextPage();
+    // }, [inView]);
 
     useEffect(() => {
         if (inView && hasNextPage) fetchNextPage();
     }, [inView, accessToken, scrap_check]);
 
+    const handleDeleteScrap = async (category, cookies, filter) => {
+        try {
+            if (cookies && cookies.accessToken) {
+                await apiPosts.DeleteScrap(filter, category, cookies);
+                // Handle any necessary actions after deleting the scrap post
+            } else {
+                // Handle the case when accessToken is not available in cookies
+                console.error('Access token not found in cookies');
+            }
+        } catch (error) {
+            // Handle the error
+            console.error('Error deleting scrap:', error);
+        }
+    };
+
     return (
         <div className="mx-5 item-align flex flex-col">
             {/* Move the "삭제하기" section to the right side */}
             <div className="self-end mt-4">
-                <DeleteScrapButton filter={filter} category={category} accessToken={cookies.accessToken} />
+                <button
+                    onClick={() => handleDeleteScrap(filter, cookies, category)}
+                    data-filter={filter}
+                    data-category={category}
+                    data-access-token={cookies.accessToken}
+                >
+                    삭제하기
+                </button>
             </div>
 
             <TotalScraps
