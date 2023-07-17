@@ -50,12 +50,7 @@ const Interest = () => {
         });
     };
 
-    const submitBtnActiveCheck = () => {
-        if (selectedAge && selectedGender && selectedCategories.length > 0) {
-            setSubmitBtnActive(true);
-            console.log('submitBtnActive', submitBtnActive);
-        }
-    };
+    const isActive = selectedAge && selectedGender && selectedCategories.length > 0;
 
     const genders = [
         { id: 1, name: '여성' },
@@ -96,7 +91,6 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
-                                        onKeyUp={submitBtnActiveCheck}
                                         required
                                     />
                                     <label
@@ -125,7 +119,6 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
-                                        onKeyUp={submitBtnActiveCheck}
                                         required
                                     />
                                     <label
@@ -156,7 +149,6 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
-                                        onKeyUp={submitBtnActiveCheck}
                                         required
                                     />
                                     <label
@@ -177,7 +169,7 @@ const Interest = () => {
                         onClick={handleNext}
                         type="submit"
                         className={
-                            submitBtnActive
+                            isActive
                                 ? `flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4`
                                 : `flex w-[320px] h-[44px] text-white bg-gray_03 rounded-xl justify-center items-center mb-4`
                         }

@@ -13,7 +13,8 @@ export default function WritePost() {
         image: '',
     });
     const [file, setFile] = useState('');
-    const [submitBtnActive, setSubmitBtnActive] = useState(false);
+
+    console.log('values', values);
 
     const navigate = useNavigate();
     const categories = [
@@ -50,11 +51,7 @@ export default function WritePost() {
         apiPosts.addPost(values, cookies, navigate);
     };
 
-    const submitBtnActiveCheck = () => {
-        return values.category !== '' && values.title !== '' && values.content !== ''
-            ? setSubmitBtnActive(true)
-            : setSubmitBtnActive(false);
-    };
+    const isActive = values.category && values.title && values.content;
 
     return (
         <div className="flex justify-center items-center">
@@ -73,7 +70,6 @@ export default function WritePost() {
                                     name="category"
                                     value={item.name}
                                     onChange={onChange}
-                                    onKeyUp={submitBtnActiveCheck}
                                     required
                                 />
                                 <label
@@ -95,14 +91,13 @@ export default function WritePost() {
                         제목
                     </label>
                     <textarea
-                        className="w-[320px] h-[44px] p-2 border rounded-lg border-[#999999]"
+                        className="w-[320px] h-[44px] p-2 border rounded-lg border-gray_03 text-[15px]"
                         type="text"
                         name="title"
                         value={values.title}
                         placeholder="제목을 입력해주세요"
                         id="title"
                         onChange={onChange}
-                        onKeyUp={submitBtnActiveCheck}
                         required
                     ></textarea>
                 </div>
@@ -111,14 +106,13 @@ export default function WritePost() {
                         질문 내용
                     </label>
                     <textarea
-                        className="w-[320px] h-[288px] p-2 border rounded-lg border-[#999999]"
+                        className="w-[320px] h-[288px] p-2 border rounded-lg border-gray_03 text-[15px]"
                         type="text"
                         name="content"
                         value={values.content}
                         placeholder="자취와 관련된 나의 고민을 이야기해주세요!&#13;&#10;상세히 적을수록 더욱 도움이 되는 답변을 얻을 수 있어요."
                         id="content"
                         onChange={onChange}
-                        onKeyUp={submitBtnActiveCheck}
                         required
                     />
                 </div>
@@ -156,9 +150,9 @@ export default function WritePost() {
                 </div>
                 <button
                     className={
-                        submitBtnActive
+                        isActive
                             ? `flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4`
-                            : `flex w-[320px] h-[44px] text-white bg-gray_02 rounded-xl justify-center items-center mb-4`
+                            : `flex w-[320px] h-[44px] text-white bg-gray_03 rounded-xl justify-center items-center mb-4`
                     }
                 >
                     등록
