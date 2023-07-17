@@ -53,26 +53,6 @@ export const apiPosts = {
             },
         });
     },
-    getScrap: (filter, category, page, cookies) => {
-        return api.get(`api/scrap/${filter}/${category}/${page}`, {
-            params: { filter, category },
-            headers: {
-                access: cookies.accessToken,
-            },
-        });
-    },
-    DeleteScrap: (filter, category, cookies) => {
-        if (cookies && cookies.accessToken) {
-            return api.delete(`api/scrap/${filter}/${category}`, {
-                params: { filter, category },
-                headers: {
-                    access: cookies.accessToken,
-                },
-            });
-        } else {
-            throw new Error('Access token not found in cookies');
-        }
-    },
 
     uploadImage: (payload, setValues, values, cookies) => {
         return api
@@ -209,26 +189,25 @@ export const apiPosts = {
 };
 
 export const apiGet = {
-    getScrapFilterAndCategory: (filter, category, page, cookies) => {
-        return api
-            .get(
-                `/api/scrap/${filter}/${category}/${page}`,
-                {},
-                {
-                    headers: {
-                        access: cookies.accessToken,
-                    },
-                }
-            )
-
-            .then(res => {
-                return {
-                    data: res.data,
-                };
-            })
-            .catch(error => {
-                console.log(error);
+    getScrap: (filter, category, page, cookies) => {
+        return api.get(`api/scrap/${filter}/${category}/${page}`, {
+            params: { filter, category },
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
+    },
+    DeleteScrap: (filter, category, cookies) => {
+        if (cookies && cookies.accessToken) {
+            return api.delete(`api/scrap/${filter}/${category}`, {
+                params: { filter, category },
+                headers: {
+                    access: cookies.accessToken,
+                },
             });
+        } else {
+            throw new Error('Access token not found in cookies');
+        }
     },
 };
 

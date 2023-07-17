@@ -7,31 +7,23 @@ import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
 
-export default function ScrapListCard({ post }) {
-    const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = post;
+export default function ScrapListCard({ scrap }) {
+    const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = scrap;
     const [cookies] = useCookies(['accessToken']);
 
     const queryClient = useQueryClient();
-
+    //좋아요를 클릭시 업데이트 되는 함수
     const { mutate: updateLikeMutate } = useMutation(apiPosts.updatePostLike, {
         onSuccess: () => {
             queryClient.invalidateQueries('scraps');
         },
     });
-
+    //스크랩을  클릭시 업데이트 되는 함수
     const { mutate: updateScrapMutate } = useMutation(apiPosts.updatePostScrap, {
         onSuccess: () => {
             queryClient.invalidateQueries('scraps');
         },
     });
-
-    // const handleDeleteScrap = async () => {
-    //     try {
-    //         await deleteScrapMutate(post_id);
-    //     } catch (error) {
-    //         // Handle the error
-    //     }
-    // };
 
     const isDog = user_type === '강아지';
 
@@ -40,15 +32,18 @@ export default function ScrapListCard({ post }) {
             <div className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button">
                 <div className="flex mb-4">
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
+                        {/** 카테고리를 표시합니다. */}
                         {category}
                     </div>
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02">
+                        {/** 질문글과, 꿀팁글을 표시합니다. */}
                         {isDog ? '질문글' : '꿀팁글'}
                     </div>
                 </div>
                 <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{title}</h1>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-row gap-6 text-[14px] items-center">
+                        {/** 좋아요, 스크랩, 댓글을 표시합니다. */}
                         <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
@@ -75,8 +70,7 @@ export default function ScrapListCard({ post }) {
                         </div>
                     </div>
                     <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
-                </div>
-                {/* <button onClick={handleDeleteScrap}>Delete</button> */}
+                </div>{' '}
             </div>
         </>
     );
