@@ -39,6 +39,18 @@ export const apiPosts = {
     getAll: () => {
         return api.get(`/api/post`);
     },
+    getRecommend: cookies => {
+        return api
+            .get(`api/recommend`, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => {
+                console.log('추천완료!', res);
+                return res;
+            });
+    },
     getDetail: (post_id, cookies) => {
         return api.get(`api/post/${post_id}`, {
             headers: {
@@ -157,6 +169,7 @@ export const apiPosts = {
         return api
             .post(
                 `/api/post/${post_id}/comment/${comment_id}`,
+                {},
 
                 {
                     headers: {
@@ -165,7 +178,10 @@ export const apiPosts = {
                 }
             )
             .then(res => {
-                alert('답변이 채택되었습니다!');
+                const result = confirm('답변을 채택하시겠습니까? 채택하시면 취소가 불가합니다.');
+                if (result) {
+                    alert('답변이 채택되었습니다!🤗');
+                }
             });
     },
     search: args => {
