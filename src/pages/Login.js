@@ -60,7 +60,7 @@ export default function Login() {
                     <div className="mb-8 font-['Pretendard-Bold'] text-[22px]">로그인</div>
                     <div className="flex flex-col mb-4">
                         <label className="font-['Pretendard-Medium'] text-[14px] mb-2" htmlFor="user_number">
-                            아이디
+                            핸드폰 번호
                         </label>
                         <input
                             className="w-full p-3 border border-gray_03 rounded-xl"

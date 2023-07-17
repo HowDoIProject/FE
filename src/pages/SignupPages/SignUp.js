@@ -37,20 +37,20 @@ export default function SignUp() {
             </div>
             <div className="mx-auto bg-bgjoin pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
                 <div className="flex flex-col items-center">
-                    <div className="mr-[120px] px-4 py-2 shadow-button text-gray_02 mt-6 rounded-2xl">
+                    <div className="mr-[120px] px-4 py-2 shadow-button text-[14px] text-gray_02 mt-6 rounded-2xl">
                         Q. 욕실거울에 때가 잘 안져요 ㅠ_ㅠ
                     </div>
-                    <div className="ml-[120px] px-4 py-2 shadow-button text-gray_02 mt-6 rounded-2xl">
+                    <div className="ml-[120px] px-4 py-2 shadow-button text-[14px] text-gray_02 mt-6 rounded-2xl">
                         A. 주방세제를 활용해보는 거 어때요?
                     </div>
                     <div className="text-brown font-['Pretendard-Bold'] text-[20px] mt-8 mr-[120px]">
                         <p>모든 자취걱정거리를 내려놓는</p>
                         <p>고민 해결 플랫폼</p>
                     </div>
-                    <img className="h-[45px] mt-6" src={logo} alt="Logo" />
-                    <div className="mt-10 font-['Pretendard-Bold']">어떤 회원으로 가입하시나요?</div>
+                    <img className="h-[45px] mt-8" src={logo} alt="Logo" />
+                    <div className="mt-[56px] font-['Pretendard-Bold']">어떤 회원으로 가입하시나요?</div>
                 </div>
-                <div className="flex flex-col items-center mt-6">
+                <div className="flex flex-col items-center mt-2">
                     <form onSubmit={onSubmit}>
                         <label htmlFor="puppy">
                             <input

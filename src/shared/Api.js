@@ -9,25 +9,6 @@ export const api = axios.create({
     // withCredentials: true, // set withCredentials to true globally
 });
 
-export const AuthApi = {
-    // Regarding member information
-    postSignUp: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/signup`, payload);
-    },
-
-    PostSend: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/send`, payload);
-    },
-
-    postVerify: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/verify`, payload);
-    },
-
-    postLogin: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/login`, payload);
-    },
-};
-
 export const apiPosts = {
     getPopular: (page, cookies) => {
         return api.get(`/api/topfive/${page}`, {
@@ -38,6 +19,18 @@ export const apiPosts = {
     },
     getAll: () => {
         return api.get(`/api/post`);
+    },
+    getRecommend: cookies => {
+        return api
+            .get(`api/recommend`, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => {
+                console.log('추천완료!', res);
+                return res;
+            });
     },
     getDetail: (post_id, cookies) => {
         return api.get(`api/post/${post_id}`, {
@@ -83,7 +76,7 @@ export const apiPosts = {
                 },
             })
             .then(res => {
-                alert('글이 등록되었습니다');
+                alert('글이 등록되었습니다🤗');
                 navigate('/');
             })
             .catch(e => {
@@ -164,6 +157,7 @@ export const apiPosts = {
         return api
             .post(
                 `/api/post/${post_id}/comment/${comment_id}`,
+                {},
 
                 {
                     headers: {
@@ -172,7 +166,10 @@ export const apiPosts = {
                 }
             )
             .then(res => {
-                alert('답변이 채택되었습니다!');
+                const result = confirm('답변을 채택하시겠습니까? 채택하시면 취소가 불가합니다.');
+                if (result) {
+                    alert('답변이 채택되었습니다!🤗');
+                }
             });
     },
     search: args => {
