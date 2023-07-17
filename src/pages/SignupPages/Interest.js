@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faUsers, faUtensils, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Interest = () => {
-    const location = useLocation();
-    const { user_type, nickname, password, password_confirm, user_number } = location.state;
-    const navigate = useNavigate();
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedGender, setSelectedGender] = useState('');
     const [selectedAge, setSelectedAge] = useState('');
+    const [submitBtnActive, setSubmitBtnActive] = useState(false);
 
     const handleInterestSelection = category => {
         if (selectedCategories.includes(category)) {
-            setSelectedCategories(prevCategories => prevCategories.filter(item => item !== category));
+            setSelectedCategories(selectedCategories.filter(item => item !== category));
         } else {
-            setSelectedCategories(prevCategories => [...prevCategories, category]);
+            setSelectedCategories([...selectedCategories, category]);
         }
     };
 
@@ -27,146 +24,163 @@ const Interest = () => {
         setSelectedAge(age);
     };
 
+    const handleNext = () => {
+        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+            console.log('Please select at least one category, gender, and age.');
+        } else {
+            // Handle the logic for the next step
+        }
+    };
+
+    const submitBtnActiveCheck = () => {
+        if (selectedAge && selectedGender && selectedCategories.length > 0) {
+            setSubmitBtnActive(true);
+            console.log('submitBtnActive', submitBtnActive);
+        }
+    };
+
     const isInterestSelected = category => {
         return selectedCategories.includes(category);
     };
 
-    const handleConfirm = () => {
-        console.log('State:', {
-            user_type,
-            nickname,
-            password,
-            password_confirm,
-            user_number,
-            category: selectedCategories.toString(),
-            gender: selectedGender,
-            age: selectedAge,
-        });
-    };
+    console.log('selectedCategories', selectedCategories);
+    console.log('selectedCategorieslength', selectedCategories.length);
+    console.log('selectedGender', selectedGender);
+    console.log('selectedAge', selectedAge);
 
-    const handlePrevious = event => {
-        event.preventDefault();
-        navigate('/UserInfo', { state: location.state });
-    };
+    const genders = [
+        { id: 1, name: '여성' },
+        { id: 2, name: '남성' },
+    ];
 
-    const handleNext = () => {
-        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
-            console.log('Please select at least one category, gender, and age.');
-            return;
-        }
+    const ages = [
+        { id: 3, name: '10' },
+        { id: 4, name: '20' },
+        { id: 5, name: '30' },
+    ];
 
-        navigate('/Confirm', {
-            state: {
-                user_type,
-                nickname,
-                password,
-                password_confirm,
-                user_number,
-                category: selectedCategories.map(String),
-                gender: selectedGender,
-                age: selectedAge,
-            },
-        });
-    };
+    const categories = [
+        { id: 6, name: '자취끼니' },
+        { id: 7, name: '생활비' },
+        { id: 8, name: '집안일' },
+    ];
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-3xl font-bold mb-8">관심사를 선택해보세요</h1>
-            <div className="grid grid-cols-3 gap-4">
-                <button
-                    className={`p-4 rounded-lg ${
-                        isInterestSelected('자취끼니') ? 'bg-blue-500' : 'bg-gray-200 hover:bg-blue-600'
-                    }`}
-                    onClick={() => handleInterestSelection('자취끼니')}
-                >
-                    자취끼니
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        isInterestSelected('생활비') ? 'bg-green-500' : 'bg-gray-200 hover:bg-green-600'
-                    }`}
-                    onClick={() => handleInterestSelection('생활비')}
-                >
-                    생활비
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        isInterestSelected('집안일') ? 'bg-yellow-500' : 'bg-gray-200 hover:bg-yellow-600'
-                    }`}
-                    onClick={() => handleInterestSelection('집안일')}
-                >
-                    집안일
-                </button>
+        <>
+            <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
+                <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
+                    <div className="mx-auto font-['Pretendard-Bold']">회원가입</div>
+                </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-4 mt-4">
-                <button
-                    className={`p-4 rounded-lg ${
-                        selectedGender === '남성' ? 'bg-blue-500' : 'bg-gray-200 hover:bg-blue-600'
-                    }`}
-                    onClick={() => handleGenderSelection('남성')}
-                >
-                    Male
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        selectedGender === '여성' ? 'bg-pink-500' : 'bg-gray-200 hover:bg-pink-600'
-                    }`}
-                    onClick={() => handleGenderSelection('여성')}
-                >
-                    Female
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        selectedAge === '10s' ? 'bg-purple-500' : 'bg-gray-200 hover:bg-purple-600'
-                    }`}
-                    onClick={() => handleAgeSelection('10')}
-                >
-                    10s
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        selectedAge === '20s' ? 'bg-indigo-500' : 'bg-gray-200 hover:bg-indigo-600'
-                    }`}
-                    onClick={() => handleAgeSelection('20')}
-                >
-                    20s
-                </button>
-                <button
-                    className={`p-4 rounded-lg ${
-                        selectedAge === '30s+' ? 'bg-red-500' : 'bg-gray-200 hover:bg-red-600'
-                    }`}
-                    onClick={() => handleAgeSelection('30')}
-                >
-                    30s+
-                </button>
-            </div>
-            <div className="mt-4">
-                <div className="flex justify-between mt-4">
+            <div className="mx-auto bg-bgjoin pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
+                <div className="mx-10">
+                    <div className="font-['Pretendard-Bold'] mt-[60px] mb-2">관심사를 선택해보세요</div>
+                    <div className="text-gray_01 text-[14px] mb-[40px]">
+                        선택한 정보를 토대로 게시글을 추천해드립니다
+                    </div>
+                    <div className="mb-[40px] w-[320px]">
+                        <div className="flex font-['Pretendard-Bold'] text-[15px] mb-5">성별을 선택해주세요</div>
+                        <div className="flex items-center justify-between mb-5">
+                            {genders.map(item => (
+                                <div key={item.id} className="">
+                                    <input
+                                        className="mr-1 accent-primary"
+                                        type="radio"
+                                        id={item.id}
+                                        name="gender"
+                                        value={item.name}
+                                        onChange={() => handleGenderSelection(item.name)}
+                                        onKeyUp={submitBtnActiveCheck}
+                                        required
+                                    />
+                                    <label
+                                        className={
+                                            selectedGender === item.name
+                                                ? `text-[14px] border text-white bg-primary border-primary px-[64px] py-3 w-full rounded-2xl cursor-pointer`
+                                                : `text-[14px] border text-primary bg-white border-primary px-[64px] py-3 w-full rounded-2xl cursor-pointer`
+                                        }
+                                        htmlFor={item.id}
+                                    >
+                                        {item.name}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="mb-[40px] w-[320px]">
+                        <div className="flex font-['Pretendard-Bold'] text-[15px] mb-5 mt-5">나이를 선택해주세요</div>
+                        <div className="flex items-center justify-between">
+                            {ages.map(item => (
+                                <div key={item.id} className="">
+                                    <input
+                                        className="mr-1 accent-primary"
+                                        type="radio"
+                                        id={item.id}
+                                        name="age"
+                                        value={item.name}
+                                        onChange={() => handleAgeSelection(item.name)}
+                                        onKeyUp={submitBtnActiveCheck}
+                                        required
+                                    />
+                                    <label
+                                        className={
+                                            selectedAge === item.name
+                                                ? `text-[14px] border text-white bg-primary border-primary px-10 py-3 w-full rounded-2xl cursor-pointer`
+                                                : `text-[14px] border text-primary bg-white border-primary px-10 py-3 w-full rounded-2xl cursor-pointer`
+                                        }
+                                        htmlFor={item.id}
+                                    >
+                                        {item.name}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="mb-[100px] w-[320px]">
+                        <div className="flex font-['Pretendard-Bold'] text-[15px] mb-5 mt-5">
+                            얻고 싶은 자취 정보는 무엇인가요? (중복선택 가능)
+                        </div>
+                        <div className="flex items-center justify-between">
+                            {categories.map(item => (
+                                <div key={item.id}>
+                                    <input
+                                        className="mr-1 accent-primary"
+                                        type="radio"
+                                        id={item.id}
+                                        name="category"
+                                        value={item.name}
+                                        onChange={() => handleInterestSelection(item.name)}
+                                        onKeyUp={submitBtnActiveCheck}
+                                        required
+                                    />
+                                    <label
+                                        className={
+                                            isInterestSelected(item.name)
+                                                ? `text-[14px] border text-white bg-primary border-primary px-7 py-3 w-full rounded-2xl cursor-pointer`
+                                                : `text-[14px] border text-primary bg-white border-primary px-7 py-3 w-full rounded-2xl cursor-pointer`
+                                        }
+                                        htmlFor={item.id}
+                                    >
+                                        {item.name}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     <button
-                        type="button"
-                        onClick={handleConfirm}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        확인
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handlePrevious}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        이전
-                    </button>
-                    <button
-                        type="submit"
                         onClick={handleNext}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit"
+                        className={
+                            submitBtnActive
+                                ? `flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4`
+                                : `flex w-[320px] h-[44px] text-white bg-gray_03 rounded-xl justify-center items-center mb-4`
+                        }
                     >
-                        다음
+                        가입완료
                     </button>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
