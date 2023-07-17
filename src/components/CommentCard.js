@@ -13,7 +13,7 @@ import { formatAgo } from '../util/date';
 import ModalComment from './ModalComment';
 import { apiPosts } from '../shared/Api';
 
-export default function CommentCard({ commentInfo, post_id, userIdPost }) {
+export default function CommentCard({ postDetailData, commentInfo, post_id, userIdPost }) {
     const { comment, created_at, image, nickname, user_type, comment_id, like_num, user_id, chosen, like_check } =
         commentInfo || {};
 
@@ -74,11 +74,11 @@ export default function CommentCard({ commentInfo, post_id, userIdPost }) {
                                 chooseCommentMutate({ post_id, comment_id, cookies });
                             }}
                         >
-                            {chosen == 1 ? (
+                            {chosen === 1 ? (
                                 <div className="inline-flex text-[11px] px-2 py-1 rounded-3xl bg-white text-primary border border-primary mr-3 cursor-pointer">
                                     채택된 답변
                                 </div>
-                            ) : loggedUserId == userIdPost ? (
+                            ) : loggedUserId == userIdPost && postDetailData.data.post[0].ischosen === false ? (
                                 <div className="inline-flex text-[11px] px-2 py-1 rounded-2xl bg-white text-gray_01 border border-gray_01 mr-3 cursor-pointer">
                                     채택하기
                                 </div>

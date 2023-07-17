@@ -58,7 +58,7 @@ export default function PostList() {
                 page={page}
             />
             <div ref={targetRef}>
-                <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
+                <div className="absolute bottom-0 w-[400px] h-[110px]"></div>
             </div>
         </div>
     );
