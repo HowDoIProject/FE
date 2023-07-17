@@ -1,10 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 import like from '../assets/icon/like.svg';
-import scrap from '../assets/icon/scrap.svg';
-import comment from '../assets/icon/comment.svg';
 import dog from '../assets/icon/commentdog.svg';
 import parent from '../assets/icon/commentparent.svg';
 import commentdot from '../assets/icon/commentdot.svg';
@@ -12,10 +10,13 @@ import likeActive from '../assets/icon/likeActive.svg';
 import { formatAgo } from '../util/date';
 import ModalComment from './ModalComment';
 import { apiPosts } from '../shared/Api';
+import EditCommentForm from './EditCommentForm';
 
 export default function CommentCard({ postDetailData, commentInfo, post_id, userIdPost }) {
     const { comment, created_at, image, nickname, user_type, comment_id, like_num, user_id, chosen, like_check } =
         commentInfo || {};
+
+    console.log('commentInfo', commentInfo);
 
     const [cookies] = useCookies(['accessToken']);
     const jwtToken = cookies.accessToken;
@@ -25,6 +26,7 @@ export default function CommentCard({ postDetailData, commentInfo, post_id, user
     } = decodedToken;
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalCommentEditOpen, setModalCommentEditOpen] = useState(false);
 
     const queryClient = useQueryClient();
 
@@ -41,6 +43,11 @@ export default function CommentCard({ postDetailData, commentInfo, post_id, user
 
     const isDog = user_type === '강아지';
 
+    const commentUpdateHandler = () => {
+        setModalOpen(!modalOpen);
+        setModalCommentEditOpen(!modalCommentEditOpen);
+    };
+
     return (
         <>
             <div className="flex items-center justify-between mt-4 relative">
@@ -55,10 +62,21 @@ export default function CommentCard({ postDetailData, commentInfo, post_id, user
                 )}
                 {modalOpen && (
                     <ModalComment
+                        commentUpdateHandler={commentUpdateHandler}
                         modalOpen={modalOpen}
                         setModalOpen={setModalOpen}
                         commentInfo={commentInfo}
                         post_id={post_id}
+                    />
+                )}
+                {modalCommentEditOpen && (
+                    <EditCommentForm
+                        image={image}
+                        comment={comment}
+                        modalCommentEditOpen={modalCommentEditOpen}
+                        setModalCommentEditOpen={setModalCommentEditOpen}
+                        post_id={post_id}
+                        comment_id={comment_id}
                     />
                 )}
             </div>
