@@ -17,6 +17,7 @@ export default function WelcomeCardLoggedIn() {
         user_type: { user_type: loggedUserType },
     } = decodedToken;
 
+    console.log('user_id', loggedUserId);
     return (
         <>
             {decodedToken && loggedUserType == '강아지' ? (

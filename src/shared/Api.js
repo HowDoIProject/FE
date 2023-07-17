@@ -9,25 +9,6 @@ export const api = axios.create({
     // withCredentials: true, // set withCredentials to true globally
 });
 
-export const AuthApi = {
-    // Regarding member information
-    postSignUp: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/signup`, payload);
-    },
-
-    PostSend: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/send`, payload);
-    },
-
-    postVerify: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/verify`, payload);
-    },
-
-    postLogin: payload => {
-        return axios.post(`${process.env.REACT_APP_SERVER_URL})/api/login`, payload);
-    },
-};
-
 export const apiPosts = {
     getPopular: (page, cookies) => {
         return api.get(`/api/topfive/${page}`, {
@@ -88,7 +69,7 @@ export const apiPosts = {
                 },
             })
             .then(res => {
-                alert('글이 등록되었습니다');
+                alert('글이 등록되었습니다🤗');
                 navigate('/');
             })
             .catch(e => {
