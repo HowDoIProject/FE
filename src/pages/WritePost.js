@@ -13,6 +13,8 @@ export default function WritePost() {
         image: '',
     });
     const [file, setFile] = useState('');
+    const [submitBtnActive, setSubmitBtnActive] = useState(false);
+
     const navigate = useNavigate();
     const categories = [
         { id: 1, name: '생활비' },
@@ -48,11 +50,19 @@ export default function WritePost() {
         apiPosts.addPost(values, cookies, navigate);
     };
 
+    const submitBtnActiveCheck = () => {
+        return values.category !== '' && values.title !== '' && values.content !== ''
+            ? setSubmitBtnActive(true)
+            : setSubmitBtnActive(false);
+    };
+
     return (
         <div className="flex justify-center items-center">
             <form onSubmit={onSubmitHandler}>
                 <div className="mb-4">
-                    <h1 className="mt-4 mb-2">카테고리를 선택해주세요 (중복선택 불가)</h1>
+                    <h1 className="font-['Pretendard-Bold'] mt-6 mb-1 text-[15px]">
+                        카테고리를 선택해주세요 (중복선택 불가)
+                    </h1>
                     <div className="flex gap-3">
                         {categories.map(item => (
                             <div key={item.id}>
@@ -63,15 +73,25 @@ export default function WritePost() {
                                     name="category"
                                     value={item.name}
                                     onChange={onChange}
+                                    onKeyUp={submitBtnActiveCheck}
                                     required
                                 />
-                                <label htmlFor={item.id}>{item.name}</label>
+                                <label
+                                    className={
+                                        values.category === item.name
+                                            ? `text-[12px] border text-white bg-primary border-primary px-3 py-1 rounded-xl`
+                                            : `text-[12px] border text-primary bg-white border-primary px-3 py-1 rounded-xl`
+                                    }
+                                    htmlFor={item.id}
+                                >
+                                    {item.name}
+                                </label>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="flex flex-col mb-4">
-                    <label className="mb-2" htmlFor="title">
+                    <label className="mb-1 font-['Pretendard-Bold'] text-[15px]" htmlFor="title">
                         제목
                     </label>
                     <textarea
@@ -82,11 +102,12 @@ export default function WritePost() {
                         placeholder="제목을 입력해주세요"
                         id="title"
                         onChange={onChange}
+                        onKeyUp={submitBtnActiveCheck}
                         required
                     ></textarea>
                 </div>
                 <div className="flex flex-col mb-4">
-                    <label className="mb-2" htmlFor="content">
+                    <label className="mb-1 font-['Pretendard-Bold'] text-[15px]" htmlFor="content">
                         질문 내용
                     </label>
                     <textarea
@@ -97,11 +118,12 @@ export default function WritePost() {
                         placeholder="자취와 관련된 나의 고민을 이야기해주세요!&#13;&#10;상세히 적을수록 더욱 도움이 되는 답변을 얻을 수 있어요."
                         id="content"
                         onChange={onChange}
+                        onKeyUp={submitBtnActiveCheck}
                         required
                     />
                 </div>
                 <div className="mb-8">
-                    <div className="mb-2">사진첨부</div>
+                    <div className="mb-1 font-['Pretendard-Bold'] text-[15px]">사진첨부</div>
                     <div className="flex gap-2">
                         <label
                             className="w-20 h-20 flex justify-center items-center cursor-pointer bg-gray_04 rounded-lg"
@@ -132,7 +154,13 @@ export default function WritePost() {
                         </div>
                     </div>
                 </div>
-                <button className="flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4">
+                <button
+                    className={
+                        submitBtnActive
+                            ? `flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4`
+                            : `flex w-[320px] h-[44px] text-white bg-gray_02 rounded-xl justify-center items-center mb-4`
+                    }
+                >
                     등록
                 </button>
             </form>
