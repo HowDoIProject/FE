@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
-
 const Interest = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedGender, setSelectedGender] = useState('');
@@ -25,7 +23,7 @@ const Interest = () => {
     };
 
     const handleAgeSelection = age => {
-        setselectedAge(age);
+        setSelectedAge(age);
     };
 
     const handleNext = () => {
@@ -35,7 +33,6 @@ const Interest = () => {
             // Handle the logic for the next step
         }
     };
-
 
     const submitBtnActiveCheck = () => {
         if (selectedAge && selectedGender && selectedCategories.length > 0) {
@@ -53,25 +50,23 @@ const Interest = () => {
     console.log('selectedGender', selectedGender);
     console.log('selectedAge', selectedAge);
 
-    const handleNext = () => {
-        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
-            console.log('Please select at least one category, gender, and age.');
-            return;
-        }
-
+    // const handleNext = () => {
+    //     if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+    //         console.log('Please select at least one category, gender, and age.');
+    //         return;
+    //     }
 
     const genders = [
         { id: 1, name: '여성' },
         { id: 2, name: '남성' },
     ];
-
 
     const isActive = selectedAge && selectedGender && selectedCategories.length > 0;
 
-    const genders = [
-        { id: 1, name: '여성' },
-        { id: 2, name: '남성' },
-    ];
+    // const genders = [
+    //     { id: 1, name: '여성' },
+    //     { id: 2, name: '남성' },
+    // ];
 
     const ages = [
         { id: 3, name: '10' },
@@ -110,9 +105,7 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-
                                         required
                                     />
                                     <label
@@ -141,9 +134,7 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-
                                         required
                                     />
                                     <label
@@ -174,9 +165,7 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-
                                         required
                                     />
                                     <label
@@ -197,20 +186,12 @@ const Interest = () => {
                         onClick={handleNext}
                         type="submit"
                         className={
-
-                            submitBtnActive
-
                             isActive
-
                                 ? `flex w-[320px] h-[44px] text-white bg-primary rounded-xl justify-center items-center mb-4`
                                 : `flex w-[320px] h-[44px] text-white bg-gray_03 rounded-xl justify-center items-center mb-4`
                         }
                     >
-
-                        가입완료
-
                         다음으로
-
                     </button>
                 </div>
             </div>
