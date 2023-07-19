@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/icon/logo.svg';
+import Footer from '../components/Footer';
 
 export default function Login() {
     const [userNumber, setUserNumber] = useState('');
@@ -98,6 +99,7 @@ export default function Login() {
                     </div>
                 </form>
             </div>
+            <Footer />
         </>
     );
 }
