@@ -81,3 +81,30 @@ export default function ScrapListCard({ scrap }) {
         </>
     );
 }
+// import React from 'react';
+
+// export default function ScrapListCard({ scrap, user_type }) {
+//     const { category, title, like_num, scrap_num, comment_num, created_at } = scrap;
+//     const isDog = user_type === '강아지';
+//     return (
+//         <div className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button">
+//             <div className="flex mb-4">
+//                 <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
+//                     {category}
+//                 </div>
+//                 <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02">
+//                     {isDog ? 'Question' : 'Tips'}
+//                 </div>
+//             </div>
+//             <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{title}</h1>
+//             <div className="flex justify-between items-center">
+//                 <div className="flex flex-row gap-6 text-[14px] items-center">
+//                     <div className="flex items-center gap-1">{like_num}</div>
+//                     <div className="flex items-center gap-1">{scrap_num}</div>
+//                     <div className="flex items-center gap-1">{comment_num}</div>
+//                 </div>
+//                 <div className="text-[14px] text-gray_02">{created_at}</div>
+//             </div>
+//         </div>
+//     );
+// }

@@ -69,3 +69,56 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
         </>
     );
 }
+
+// TotalScraps component
+// TotalScraps component
+
+// import React, { useState, useEffect } from 'react';
+// import ScrapListCard from './ScrapListCard';
+// import { apiGet } from '../shared/Api';
+// import { useCookies } from 'react-cookie';
+
+// export default function TotalScraps({ category, setCategory, filter, setFilter, page }) {
+//     const filterList = [
+//         { id: 1, name: '질문글' },
+//         { id: 2, name: '꿀팁글' },
+//     ];
+//     const categoryList = [
+//         { id: 1, name: '생활비' },
+//         { id: 2, name: '자취끼니' },
+//         { id: 3, name: '집안일' },
+//     ];
+//     const [cookies] = useCookies(['accessToken']);
+//     const [data, setData] = useState(null);
+
+//     useEffect(() => {
+//         fetchData();
+//     }, [category, setCategory, filter, setFilter, page]);
+
+//     const fetchData = async () => {
+//         try {
+//             const scrapsData = await apiGet.getScrap(filter, category, page, cookies);
+//             setData(scrapsData);
+//         } catch (error) {
+//             console.error('Failed to fetch scraps:', error);
+//         }
+//     };
+
+//     const renderScraps = () => {
+//         if (!data || data.pages.length === 0) {
+//             return <div className="mt-40">There are no scraps.</div>;
+//         }
+
+//         return data.pages.map(page => (
+//             <div key={page.id}>
+//                 {page.data.mypage.map(scrap => (
+//                     <div key={scrap.id} className="w-full h-auto my-4 cursor-pointer">
+//                         <ScrapListCard scrap={scrap} />
+//                     </div>
+//                 ))}
+//             </div>
+//         ));
+//     };
+
+//     return <>{renderScraps()}</>;
+// }
