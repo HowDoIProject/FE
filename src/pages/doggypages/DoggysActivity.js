@@ -208,41 +208,41 @@ const DoggysActivity = () => {
     useEffect(() => {
         handleShowMyComment();
     }, [cookies.accessToken]);
-    const handleEditComment = async (postId, commentId, updatedComment) => {
-        const updatedData = {
-            comment: updatedComment,
-            image: '',
-        };
+    // const handleEditComment = async (postId, commentId, updatedComment) => {
+    //     const updatedData = {
+    //         comment: updatedComment,
+    //         image: '',
+    //     };
 
-        try {
-            const response = await axios.put(
-                `https://howdoiapp.shop/api/post/${postId}/comment/${commentId}`,
-                updatedData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        access: `${cookies.accessToken}`,
-                    },
-                }
-            );
+    //     try {
+    //         const response = await axios.put(
+    //             `https://howdoiapp.shop/api/post/${postId}/comment/${commentId}`,
+    //             updatedData,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     access: `${cookies.accessToken}`,
+    //                 },
+    //             }
+    //         );
 
-            if (response.status === 200) {
-                // Update the comment data in the state
-                setFilteredComments(prevComments => {
-                    return prevComments.map(prevComment => {
-                        if (prevComment.comment_id === commentId) {
-                            return { ...prevComment, comment: updatedComment };
-                        }
-                        return prevComment;
-                    });
-                });
-            } else {
-                console.error('Failed to edit the comment. Response:', response);
-            }
-        } catch (error) {
-            console.error('An error occurred while updating the comment:', error);
-        }
-    };
+    //         if (response.status === 200) {
+    //             // Update the comment data in the state
+    //             setFilteredComments(prevComments => {
+    //                 return prevComments.map(prevComment => {
+    //                     if (prevComment.comment_id === commentId) {
+    //                         return { ...prevComment, comment: updatedComment };
+    //                     }
+    //                     return prevComment;
+    //                 });
+    //             });
+    //         } else {
+    //             console.error('Failed to edit the comment. Response:', response);
+    //         }
+    //     } catch (error) {
+    //         console.error('An error occurred while updating the comment:', error);
+    //     }
+    // };
 
     const handleShowMyChosen = async () => {
         setShowMyPost(false);

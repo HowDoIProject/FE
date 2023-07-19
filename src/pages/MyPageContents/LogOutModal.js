@@ -8,8 +8,9 @@ function LogoutModal() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        removeCookie('accessToken', { path: '/' });
-        setShowModal(false);
+        removeCookie('accessToken', { path: '/' }); //path넣어줘야 삭제가 바로 됨.
+        alert('로그아웃 되었습니다!');
+        // setShowModal(false);
         navigate('/');
     };
 
