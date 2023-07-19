@@ -22,8 +22,6 @@ export default function Login() {
         event.preventDefault();
 
         if (userNumber && password) {
-            alert('로그인 성공!😃');
-
             try {
                 const response = await axios.post('https://howdoiapp.shop/api/login', {
                     user_number: userNumber,
@@ -32,14 +30,14 @@ export default function Login() {
 
                 if (response.status === 200) {
                     const { access } = response.data;
-
+                    alert('로그인 성공!😃');
                     setCookie('accessToken', access, { path: '/', secure: true });
                     navigate('/Mypage');
                 } else {
                     console.error('Login failed');
                 }
             } catch (error) {
-                alert('로그인에 실패했습니다.🥲');
+                alert('로그인에 실패했습니다🥲');
                 console.error('Login failed:', error);
             }
         }
