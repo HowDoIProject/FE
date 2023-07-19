@@ -226,7 +226,7 @@ export default function MomsActivity() {
                         <div className="flex flex-col items-start">
                             <div className="mt-4 w-full">
                                 <div className="graph">
-                                    <HorizontalBarGraph /> {/* 그래프 */}
+                                    <HorizontalBarGraph /> 그래프
                                 </div>
                             </div>
                         </div>
@@ -234,16 +234,6 @@ export default function MomsActivity() {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
-                                <div className="graph-label">My answer</div>
-                            </div>
-                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
-                                <div className="graph-label">Help me</div>
-                            </div>
-                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
-                                <div className="graph-label">Post</div>
-                            </div> */}
 
             <div className="flex items-center mt-7">
                 {/* <img src={question} alt="Question Icon" className="mr-2" />

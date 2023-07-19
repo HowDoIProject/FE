@@ -44,7 +44,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                     {isDog ? '질문글' : '꿀팁글'}
                 </div>
             </div>
-            <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{comment}</h1>
+            <h1 className="line-clamp-2 w-[356px] h-12 mb-3 text-[15px]">{comment.comment}</h1>
             <div className="flex justify-between items-center">
                 <div className="flex flex-row gap-6 text-[14px] items-center">
                     <div
@@ -72,7 +72,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                         {comment_num}
                     </div>
                 </div>
-                <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div>
+                {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
             </div>
         </div>
     );

@@ -12,14 +12,18 @@ import { apiPosts } from '../shared/Api';
 
 export default function ChosenListCard({ post, chosencomment, comment_id, user_id }) {
     const { like_num, scrap_num, user_type, comment_num, post_id } = post || {};
-
-    // if (!chosencomment || !chosencomment.comment) {
-    //     // Handle case when chosencomment is undefined or comment property is missing
-    //     return <p>chosencomment.comment_id</p>;
-    // }
+    // const filterList = [
+    //     { id: 1, name: '질문글' },
+    //     { id: 2, name: '꿀팁글' },
+    // ];
+    // const categoryList = [
+    //     { id: 1, name: '생활비' },
+    //     { id: 2, name: '자취끼니' },
+    //     { id: 3, name: '집안일' },
+    // ];
 
     const { comment } = chosencomment;
-    const { category, setCategory } = useState(['자취끼니', '생활비', '집안일']);
+    const { category } = useState(['자취끼니', '생활비', '집안일']);
     const [cookies] = useCookies(['accessToken']);
     const [isLike, setIsLike] = useState(false);
     const [isScrap, setIsScrap] = useState(false);
@@ -51,9 +55,9 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
-                    <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
+                    {/* <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
                         {category}
-                    </div>
+                    </div> */}
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-gray_02">
                         {isDog ? '질문글' : '꿀팁글'}
                     </div>

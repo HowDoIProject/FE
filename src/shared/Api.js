@@ -76,7 +76,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => {
+            .then(_res => {
                 alert('글이 등록되었습니다');
                 navigate('/');
             })
@@ -91,7 +91,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => {
+            .then(_res => {
                 setValues({ comment: '', image: '' });
                 setFile('');
                 alert('댓글이 등록되었습니다🤗');
@@ -104,7 +104,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => {
+            .then(_res => {
                 alert('댓글이 삭제되었습니다');
             });
     },
@@ -115,7 +115,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(res => {
+            .then(_res => {
                 setValues({ comment: '', image: '' });
                 setFile('');
                 alert('댓글이 수정되었습니다');
@@ -165,7 +165,7 @@ export const apiPosts = {
                     },
                 }
             )
-            .then(res => {
+            .then(_res => {
                 alert('답변이 채택되었습니다!');
             });
     },
@@ -200,13 +200,13 @@ export const apiGet = {
     DeleteScrap: (filter, category, cookies) => {
         if (cookies && cookies.accessToken) {
             return api
-                .post(`api/scrap/${filter}/${category}`, {
+                .delete(`api/scrap/${filter}/${category}`, {
                     params: { filter, category },
                     headers: {
                         access: cookies.accessToken,
                     },
                 })
-                .then(res => {
+                .then(Response => {
                     alert('스크랩이 삭제되었습니다');
                 });
         }
