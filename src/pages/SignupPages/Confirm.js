@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import 'tailwindcss/tailwind.css';
+import image1 from '../../assets/icon/signupend.svg';
 
 export default function Confirm() {
     const navigate = useNavigate();
@@ -24,17 +24,23 @@ export default function Confirm() {
     const verification = cookies.verification;
     const [error, setError] = useState();
 
-    const handlePrevious = event => {
-        event.preventDefault();
-        navigate('/Interest', { state: location.state });
-    };
-
     const handleConfirm = async () => {
         if (Number(verification) !== Number(user_number)) {
             setError('Sign up with a verified number.');
         }
 
         const selectedCategoriesArray = Array.isArray(selectedCategories) ? selectedCategories : [];
+
+        console.log({
+            user_type,
+            nickname,
+            password,
+            password_confirm,
+            user_number,
+            category: selectedCategoriesArray.join(','),
+            gender: selectedGender,
+            age: selectedAge,
+        });
 
         try {
             const response = await axios.post(
@@ -58,7 +64,8 @@ export default function Confirm() {
             );
 
             if (response.status === 201) {
-                navigate('/login', { state: { user_type: 'user_type' } });
+                alert('회원가입이 완료되었습니다!💫');
+                navigate('/');
             } else {
                 console.error('Signup failed');
             }
@@ -68,26 +75,28 @@ export default function Confirm() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-3xl font-bold mb-8">버튼을 누르면 완료됩니다.</h1>
-            <div className="mt-4">
-                <div className="flex justify-between mt-4">
+        <>
+            <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
+                <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
+                    <div className="mx-auto font-['Pretendard-Bold']">회원가입</div>
+                </div>
+            </div>
+            <div className="mx-auto bg-bgjoin pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
+                <div className="mx-10 flex flex-col items-center justify-center">
+                    <div className="font-['Pretendard-Bold'] mt-[60px] mb-2">
+                        <div>모든 자취걱정거리를 내려놓는 </div>
+                        <div>고민 해결 플랫폼 하우두아이</div>
+                    </div>
+                    <img className="my-8" src={image1} alt="" />
                     <button
                         type="button"
                         onClick={handleConfirm}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-primary text-white py-4 rounded-xl w-full text-[14px] mt-[120px]"
                     >
                         가입완료
                     </button>
-                    <button
-                        type="button"
-                        onClick={handlePrevious}
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        이전으로가기
-                    </button>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

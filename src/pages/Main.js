@@ -9,6 +9,7 @@ import WelcomeCardNotLoggedIn from '../components/WelcomeCardNotLoggedIn';
 import { Link } from 'react-router-dom';
 import WelcomeCardLoggedIn from '../components/WelcomeCardLoggedIn';
 import SearchBar from '../components/SearchBar';
+import MainPageCardNotLogged from '../components/MainPageCardNotLogged';
 
 export default function Main() {
     const queryClient = useQueryClient();
@@ -26,8 +27,13 @@ export default function Main() {
         apiPosts.getByFilterAndCategory(0, 0, 1, cookies)
     );
 
+    const { data: recommendData } = useQuery(['posts', 'recommend'], () => apiPosts.getRecommend(cookies));
+
+    console.log('recommendData', recommendData);
+
     const slider1 = useRef(null);
     const slider2 = useRef(null);
+    const slider3 = useRef(null);
 
     const slideLeft = sliderRef => {
         sliderRef.current.scrollLeft = sliderRef.current.scrollLeft - 280;
@@ -115,6 +121,57 @@ export default function Main() {
             </section>
             <section className="mb-6">
                 <h1 className="ml-7 font-['Pretendard-Bold']">회원님을 위한 추천글</h1>
+                <div className="relative flex items-center">
+                    <MdChevronLeft
+                        className="opacity-50 cursor-pointer hover:opacity-100"
+                        onClick={() => slideLeft(slider3)}
+                        size={20}
+                    />
+                    <div
+                        ref={slider3}
+                        className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
+                    >
+                        {/* {recommendData?.data.result.map(post => {
+                            return (
+                                <div
+                                    key={post.post_id}
+                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                >
+                                    <MainPageCard post={post} />
+                                </div>
+                            );
+                        })} */}
+                        {cookies.accessToken ? (
+                            recommendData?.data.result.map(post => {
+                                return (
+                                    <div
+                                        key={post.post_id}
+                                        className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    >
+                                        <MainPageCard post={post} />
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <>
+                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                    <MainPageCardNotLogged />
+                                </div>
+                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                    <MainPageCardNotLogged />
+                                </div>
+                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                    <MainPageCardNotLogged />
+                                </div>
+                            </>
+                        )}
+                    </div>
+                    <MdChevronRight
+                        className="opacity-50 cursor-pointer hover:opacity-100"
+                        onClick={() => slideRight(slider3)}
+                        size={20}
+                    />
+                </div>
             </section>
         </>
     );
