@@ -6,7 +6,6 @@ import mypage from '../assets/icon/mypage.svg';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 
-
 export default function Footer() {
     const [cookies] = useCookies(['accessToken']);
     return (
@@ -27,7 +26,10 @@ export default function Footer() {
                     <img src={post} alt={post} />
                     <h1>글 올리기</h1>
                 </Link>
-                <Link to="/mypage" className="flex flex-col min-w-[94px] items-center justify-center gap-1">
+                <Link
+                    to={cookies.accessToken ? '/mypage' : '/login'}
+                    className="flex flex-col min-w-[94px] items-center justify-center gap-1"
+                >
                     <img src={mypage} alt={mypage} />
                     <h1>마이페이지</h1>
                 </Link>
