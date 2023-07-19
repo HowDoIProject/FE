@@ -199,25 +199,19 @@ export const apiGet = {
     },
     DeleteScrap: (filter, category, cookies) => {
         if (cookies && cookies.accessToken) {
-            return api.delete(`api/scrap/${filter}/${category}`, {
-                params: { filter, category },
-                headers: {
-                    access: cookies.accessToken,
-                },
-            });
-        } else {
-            throw new Error('Access token not found in cookies');
+            return api
+                .post(`api/scrap/${filter}/${category}`, {
+                    params: { filter, category },
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                })
+                .then(res => {
+                    alert('스크랩이 삭제되었습니다');
+                });
         }
     },
 };
-
-// getScrapFilterAndCategory: (filter, category, page, cookies) => {
-//     return api.get(`api/scrap/${filter}/${category}/${page}`, {
-//         headers: {
-//             access: cookies.accessToken,
-//         },
-//     });
-// },
 
 export const apiMyPage = {
     getMyPage: () => {

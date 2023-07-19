@@ -12,7 +12,7 @@ import { apiPosts } from '../shared/Api';
 // import moment from 'moment';
 
 export default function CommentListCard({ post, comment, comment_id, user_id }) {
-    const { like_num, scrap_num, user_type, comment_num, created_at, post_id } = post;
+    const { like_num, scrap_num, user_type, comment_num, post_id } = comment;
     const [cookies] = useCookies(['accessToken']);
     const [isLike, setIsLike] = useState(false);
     const [isScrap, setIsScrap] = useState(false);

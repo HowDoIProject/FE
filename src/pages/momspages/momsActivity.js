@@ -98,6 +98,8 @@ export default function MomsActivity() {
         handleShowMyComment();
     }, [cookies.accessToken]);
 
+    console.log('comments', mycomments);
+
     const handleShowMyChosen = async () => {
         setShowMyPosts(false);
         setShowMyComment(false);

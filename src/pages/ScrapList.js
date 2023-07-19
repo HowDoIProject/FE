@@ -35,17 +35,16 @@ export default function ScrapList() {
     }, [inView, accessToken, filter, category]);
 
     // 스크랩 삭제를 처리하는 함수
-    const handleDeleteScrap = async (category, cookies, filter) => {
+    const handleDeleteScrap = async (category, accessToken, filter) => {
         try {
-            if (cookies && cookies.accessToken) {
+            if (cookies.accessToken) {
                 // 제공된 필터와 카테고리를 사용하여 API를 호출하여 스크랩을 삭제합니다.
-                await apiGet.DeleteScrap(filter, category, cookies, scrap_check);
+                await apiGet.DeleteScrap(filter, category, accessToken);
 
                 // 스크랩 상태를 삭제된 것으로 업데이트합니다.
-                setScrapCheck(false);
-
+                setScrapCheck(true);
+                alert('스크랩이 삭제되었습니다');
                 // 'scrap' 쿼리를 무효화하여 업데이트된 데이터를 다시 가져옵니다.
-                queryClient.invalidateQueries('scrap');
                 queryClient.invalidateQueries('scrap', { exact: true });
             } else {
                 console.error('쿠키에서 액세스 토큰을 찾을 수 없습니다');
@@ -60,14 +59,7 @@ export default function ScrapList() {
         <div className="mx-5 item-align flex flex-col">
             {/* "삭제하기" 섹션을 오른쪽으로 이동 */}
             <div className="self-end mt-4">
-                <button
-                    onClick={() => handleDeleteScrap(filter, cookies, category)}
-                    data-filter={filter}
-                    data-category={category}
-                    data-access-token={cookies.accessToken}
-                >
-                    삭제하기
-                </button>
+                <button onClick={() => handleDeleteScrap(filter, cookies.accessToken, category)}>삭제하기</button>
             </div>
             {/* 스크랩 목록을 표시합니다. */}
             <TotalScraps
