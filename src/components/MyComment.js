@@ -3,39 +3,36 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import like from '../assets/icon/like.svg';
 import scrap from '../assets/icon/scrap.svg';
 import comments from '../assets/icon/comment.svg';
-import { formatAgo } from '../util/date';
 import { useCookies } from 'react-cookie';
 import likeActive from '../assets/icon/likeActive.svg';
-import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
-import moment from 'moment';
 
-export default function CommentListCard({ post, comment, comment_id, user_id }) {
-    const { like_num, scrap_num, user_type, comment_num, created_at, post_id } = post;
+export default function CommentListCard({ comment, comment_id, userIdPost }) {
+    const { like_num, user_type, post_id } = comment;
+    // const { comment_num, created_at } = comment;
+    const [like_check, setIsLike] = useState(false);
+
     const [cookies] = useCookies(['accessToken']);
-    const [isLike, setIsLike] = useState(false);
-    const [isScrap, setIsScrap] = useState(false);
-
     const queryClient = useQueryClient();
-    const { mutate: updateLikeMutate } = useMutation({
+
+    const { mutate: updateCommentLikeMutate } = useMutation({
         mutationFn: apiPosts.updateCommentLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id });
+            queryClient.invalidateQueries({ queryKey: ['post', post_id] });
         },
     });
-
-    const { mutate: updateScrapMutate } = useMutation({
-        mutationFn: apiPosts.updatePostScrap,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id });
-        },
-    });
+    // const { mutate: updateScrapMutate } = useMutation({
+    //     mutationFn: apiPosts.updatePostScrap,
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id });
+    //     },
+    // });
 
     const isDog = user_type === '강아지';
 
-    if (!comment) {
-        return null; // 코멘트가 없을 경우 null이나 원하는 대체 UI를 반환합니다.
-    }
+    // if (!comment) {
+    //     return null; // 코멘트가 없을 경우 null이나 원하는 대체 UI를 반환합니다.
+    // }
 
     return (
         <div className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button">
@@ -51,13 +48,14 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                         className="flex items-center gap-1 cursor-pointer"
                         onClick={e => {
                             e.stopPropagation();
-                            updateLikeMutate({ user_id, comment_id, cookies });
+                            setIsLike(!like_check);
+                            updateCommentLikeMutate({ userIdPost, comment_id, cookies });
                         }}
                     >
-                        <img className="w-4 h-4" src={isLike ? likeActive : like} alt="" />
+                        <img className="w-4 h-4" src={like_check ? likeActive : like} alt="" />
                         {like_num}
                     </div>
-                    <div
+                    {/* <div
                         className="flex items-center gap-1 cursor-pointer"
                         onClick={e => {
                             e.stopPropagation();
@@ -66,11 +64,11 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                     >
                         <img className="w-4 h-4" src={isScrap ? scrapActive : scrap} alt="" />
                         {scrap_num}
-                    </div>
-                    <div className="flex items-center gap-1">
+                    </div> */}
+                    {/* <div className="flex items-center gap-1">
                         <img className="h-4 w-4" src={comments} alt="" />
                         {comment_num}
-                    </div>
+                    </div> */}
                 </div>
                 {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
             </div>

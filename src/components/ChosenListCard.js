@@ -32,14 +32,14 @@ export default function ChosenListCard({ post, chosencomment, comment_id, user_i
     const { mutate: updateLikeMutate } = useMutation({
         mutationFn: apiPosts.updateCommentLike,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id, category });
+            queryClient.invalidateQueries({ queryKey: ['posts'], comment_id, user_id, post_id, category });
         },
     });
 
     const { mutate: updateScrapMutate } = useMutation({
         mutationFn: apiPosts.updatePostScrap,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['comments'], comment_id, post_id, category });
+            queryClient.invalidateQueries({ queryKey: ['Posts'], comment_id, user_id, post_id, category });
         },
     });
 
