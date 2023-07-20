@@ -48,29 +48,54 @@ export default function MyPage() {
         navigate('/login');
     };
 
-    const renderModal = () => {
-        if (!showModal) {
-            return null;
-        }
+    // const renderModal = () => {
+    //     if (!showModal) {
+    //         return null;
+    //     }
 
-        return (
-            <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                    <p className="text-center">로그인 후에 이용하실 수 있습니다.</p>
-                    <button
-                        className="mt-4 mx-auto block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                        onClick={closeModal}
-                    >
-                        닫기
-                    </button>
-                </div>
-            </div>
-        );
-    };
+    //     return (
+    //         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    //             <div className="bg-white rounded-lg shadow-lg p-6">
+    //                 <p className="text-center">로그인 후에 이용하실 수 있습니다.</p>
+    //                 <button
+    //                     className="mt-4 mx-auto block px-4 py-2 bg-primary text-white rounded-md"
+    //                     onClick={closeModal}
+    //                 >
+    //                     닫기
+    //                 </button>
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     return (
         <>
-            {renderModal()}
+            {/* {renderModal()} */}
+            <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
+                <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
+                    <div className="mx-auto font-['Pretendard-Bold']">마이페이지</div>
+                </div>
+            </div>
+            <div className="mx-auto bg-bgjoin pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
+                <div className="mx-10">
+                    <div className="flex items-center justify-between">
+                        <div className="text-center">
+                            <h1 className="text-lg font-bold mb-2">
+                                안녕하세요
+                                <br />
+                                {nickname && nickname.nickname}
+                                {user_type && ` ${user_type.user_type}`}님
+                            </h1>
+                            <div className="mb-2">
+                                {/* <Link to="/change" onClick={handleViewDeleteInfo}>
+                                        <h5>내 정보 보기/삭제</h5>
+                                    </Link> */}
+                            </div>
+                        </div>
+                        <div className="">{user_type === '엄빠' ? <ProfilePicture /> : <DoggyProfilePicture />}</div>
+                    </div>
+                </div>
+            </div>
 
             <div className="max-w-sm mx-auto mt-10">
                 <div className="flex items-center justify-center mt-10">
