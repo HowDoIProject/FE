@@ -18,7 +18,7 @@ const ProfilePicture = () => {
 
     return (
         <div className="w-20 h-20 flex justify-center items-center rounded-full bg-[#D9D9D9]">
-            <img src={mommy} className="w-full h-full text-gray-800" onClick={handleEditClick} />
+            <img src={mommy} className="w-20 h-20 text-gray-800" alt="" onClick={handleEditClick} />
             <input
                 type="file"
                 accept="image/*"
