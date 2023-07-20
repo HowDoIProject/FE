@@ -63,7 +63,7 @@ export default function CommentListCard({ comment, comment_id, user_id }) {
                             <img className="w-4 h-4" src={isLike ? likeActive : like} alt="" />
                             {like_num}
                         </div>
-                        <div
+                        {/* <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
@@ -77,7 +77,7 @@ export default function CommentListCard({ comment, comment_id, user_id }) {
                         <div className="flex items-center gap-1">
                             <img className="h-4 w-4" src={comments} alt="" />
                             {comment_num}
-                        </div>
+                        </div> */}
                     </div>
                     {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
                 </div>

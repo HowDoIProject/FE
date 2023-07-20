@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const Interest = () => {
     const location = useLocation();
@@ -23,12 +25,54 @@ const Interest = () => {
     };
 
     const handleAgeSelection = age => {
-        setselectedAge(age);
+        setSelectedAge(age);
     };
+
+
+    const handleNext = () => {
+        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+            console.log('Please select at least one category, gender, and age.');
+        } else {
+            // Handle the logic for the next step
+        }
+    };
+
+    const submitBtnActiveCheck = () => {
+        if (selectedAge && selectedGender && selectedCategories.length > 0) {
+            setSubmitBtnActive(true);
+            console.log('submitBtnActive', submitBtnActive);
+        }
+    };
+
 
     const isInterestSelected = category => {
         return selectedCategories.includes(category);
     };
+
+
+    console.log('selectedCategories', selectedCategories);
+    console.log('selectedCategorieslength', selectedCategories.length);
+    console.log('selectedGender', selectedGender);
+    console.log('selectedAge', selectedAge);
+
+    // const handleNext = () => {
+    //     if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+    //         console.log('Please select at least one category, gender, and age.');
+    //         return;
+    //     }
+
+    const genders = [
+        { id: 1, name: '여성' },
+        { id: 2, name: '남성' },
+    ];
+
+    const isActive = selectedAge && selectedGender && selectedCategories.length > 0;
+
+    // const genders = [
+    //     { id: 1, name: '여성' },
+    //     { id: 2, name: '남성' },
+    // ];
+
 
     const handleNext = () => {
         if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
@@ -56,6 +100,7 @@ const Interest = () => {
         { id: 1, name: '여성' },
         { id: 2, name: '남성' },
     ];
+
     const ages = [
         { id: 3, name: '10' },
         { id: 4, name: '20' },
@@ -91,7 +136,9 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
-                                        required
+
+                                        onKeyUp={submitBtnActiveCheck}
+                          required
                                     />
                                     <label
                                         className={
@@ -119,6 +166,9 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
+
+                                        onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
@@ -149,6 +199,9 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
+
+                                        onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
