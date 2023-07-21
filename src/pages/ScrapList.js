@@ -1,20 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import question from '../assets/icon/question.svg';
 import { apiGet } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
 
 export default function ScrapList() {
+    const [cookies] = useCookies(['accessToken']);
     const [filter, setFilter] = useState(0);
     const [category, setCategory] = useState(0);
     const [page, setPage] = useState(1);
     const [targetRef, inView] = useInView({
         threshold: 1,
     });
-    const [cookies] = useCookies(['accessToken']);
     const [showModal, setShowModal] = useState(false);
     const [showSecondModal, setShowSecondModal] = useState(false);
     const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
@@ -38,7 +38,7 @@ export default function ScrapList() {
         try {
             await axios.post(
                 `https://howdoiapp.shop/api/scrap/${filter}/${category}`,
-                { category, filter },
+                { filter, category },
                 {
                     headers: {
                         access: cookies.accessToken,
@@ -47,9 +47,9 @@ export default function ScrapList() {
             );
             refetch();
             console.log('성공적으로 전체 스크랩이 삭제되었습니다.');
-            alert('스크랩이 모두 지워졌습니다.');
+            // alert('스크랩이 모두 지워졌습니다.');
             //모달을 닫아준다.
-            setShowSecondModal(false);
+            openSecondModal();
             queryClient.invalidateQueries('scrap', { exact: true });
         } catch (error) {
             console.error('전체삭제 실패:', error);
@@ -68,7 +68,6 @@ export default function ScrapList() {
         setShowSecondModal(true);
         closeModal();
     };
-
     const closeSecondModal = () => {
         setShowSecondModal(false);
     };
@@ -112,7 +111,7 @@ export default function ScrapList() {
                             </p>
                             <div className="flex flex-col items-center">
                                 <button
-                                    onClick={openSecondModal}
+                                    onClick={handleDeleteAllScraps}
                                     className="w-80 px-10 py-2 bg-orange-300 text-white rounded hover:bg-orange-400 mb-2"
                                 >
                                     모두 삭제하기
@@ -131,11 +130,11 @@ export default function ScrapList() {
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <p className="text-xl font-bold mb-4 text-center">
-                                스크랩된 글들을 모두가 삭제 되었습니다.
+                                스크랩된 글들을 모두가 삭제 하였습니다.
                             </p>
                             <div className="flex flex-col items-center">
                                 <button
-                                    onClick={handleDeleteAllScraps}
+                                    onClick={closeSecondModal}
                                     className="px-40 py-2 bg-whitesmoke-300 text-gray-500 rounded hover:bg-gray-200 mb-2"
                                 >
                                     닫기
