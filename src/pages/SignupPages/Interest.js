@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
+
 const Interest = () => {
     const location = useLocation();
     const { user_type, nickname, password, password_confirm, user_number } = location.state;
@@ -24,11 +26,13 @@ const Interest = () => {
 
     const handleAgeSelection = age => {
         setselectedAge(age);
+
     };
 
     const isInterestSelected = category => {
         return selectedCategories.includes(category);
     };
+
 
     const handleNext = () => {
         if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
@@ -91,6 +95,7 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
+
                                         required
                                     />
                                     <label
@@ -119,6 +124,9 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
+
+                                        onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
@@ -149,6 +157,9 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
+
+                                        onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
