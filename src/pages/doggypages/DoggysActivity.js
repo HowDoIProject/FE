@@ -9,6 +9,7 @@ import ChosenListCard from '../../components/ChosenListCard';
 import MyComment from '../../components/MyComment';
 import Footer from '../../components/Footer';
 import noresult from '../../assets/icon/noresult.svg';
+import HorizontalBarGraph from './HorizontalBarGraph';
 
 const DoggysActivity = () => {
     const location = useLocation();
@@ -189,6 +190,7 @@ const DoggysActivity = () => {
             </div>
             <div className="mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
                 <div className="mx-5">
+                    {user_type.user_type === '엄빠' && <HorizontalBarGraph nickname={nickname} />}
                     <div className="flex w-full mt-4 justify-evenly mb-8">
                         <button
                             onClick={handleShowMyPost}

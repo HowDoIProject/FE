@@ -79,3 +79,13 @@ input#search::-webkit-input-placeholder {
 [type='radio'] + img {
     cursor: pointer;
 }
+
+.container {
+    border-radius: 10px;
+}
+
+.label {
+    font-size: 8px;
+    margin-right: 4px;
+    color: white;
+}
