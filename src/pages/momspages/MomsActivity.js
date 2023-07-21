@@ -236,7 +236,7 @@ export default function MomsActivity() {
             </div>
 
             <div className="flex items-center mt-7">
-                {/* <img src={question} alt="Question Icon" className="mr-2" />
+                {/* <img src={question} alt="Question Icon" className="mr-2" />  {/* <img src={question} alt="Question Icon" className="mr-2" />
                 <h1 className="m-4 mt-3">레벨제도란 무엇인가요?</h1> */}
             </div>
             {/* 기간별 필터 버튼 */}
