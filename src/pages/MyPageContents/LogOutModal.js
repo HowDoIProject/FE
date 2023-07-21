@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 function LogoutModal() {
     const [showModal, setShowModal] = useState(false);
-    const [cookies, removeCookie] = useCookies(['accessToken']);
+    const [cookies, _, removeCookie] = useCookies(['accessToken']);
     const navigate = useNavigate();
 
     const handleLogout = () => {
