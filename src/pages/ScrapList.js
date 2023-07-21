@@ -8,7 +8,6 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 export default function ScrapList() {
-    const [scrap_check, setScrapCheck] = useState(false);
     const [filter, setFilter] = useState(0);
     const [category, setCategory] = useState(0);
     const [page, setPage] = useState(1);
@@ -48,7 +47,7 @@ export default function ScrapList() {
             );
             refetch();
             console.log('성공적으로 전체 스크랩이 삭제되었습니다.');
-            // alert('스크랩이 모두 지워졌습니다.');
+            alert('스크랩이 모두 지워졌습니다.');
             //모달을 닫아준다.
             setShowSecondModal(false);
             queryClient.invalidateQueries('scrap', { exact: true });
