@@ -11,7 +11,6 @@ import Confirm from '../pages/SignupPages/Confirm';
 import Interest from '../pages/SignupPages/Interest';
 import Main from '../pages/Main';
 import DoggysActivity from '../pages/doggypages/DoggysActivity';
-import MomsActivity from '../pages/momspages/MomsActivity';
 import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
@@ -30,7 +29,6 @@ const Router = () => {
                 <Route path="/confirm" element={<Confirm />} />
                 <Route path="/signup" element={<SignUp />} />
                 {/* 마이페이지 */}
-                <Route path="/momsactivity" element={<MomsActivity />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/activity" element={<DoggysActivity />} />
                 <Route path="/mypage/update/:post_id" element={<EditPostForm />} />
