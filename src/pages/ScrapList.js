@@ -74,12 +74,13 @@ export default function ScrapList() {
 
     return (
         <div className="mx-5 item-align flex flex-col">
-            <div className="bg-orange-50 p-5 rounded-lg max-w-md mx-auto my-8">
-                <div className="flex items-center mt-4">
+            <div className="bg-bgcard p-5 rounded-xl mx-5 my-6 shadow-button">
+                <div className="flex items-center text-gray_01">
                     <img src={question} alt="Question Icon" className="mr-2" />
-                    <p className="text-left text-sm">
-                        스크랩된 글 삭제를 원하신다면, 스크랩버튼을 한 번 더 눌러주세요!
-                    </p>
+                    <div className="flex flex-col flex-start">
+                        <p>스크랩된 글 삭제를 원하신다면</p>
+                        <p>스크랩버튼을 한 번 더 눌러주세요!</p>
+                    </div>
                 </div>
             </div>
 
