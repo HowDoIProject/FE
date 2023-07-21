@@ -108,8 +108,8 @@ export default function MyPage() {
                             {/* </button> */}
                         </div>
                         <hr className="border-gray-03" />
-                        <div className="flex items-center justify-between cursor-pointer mt-4">
-                            <LogoutModal />
+                        <div className="flex items-center justify-between mt-4">
+                            <LogoutModal className="cursor-pointer" />
                             <img src={arrows} className="h-5" />
                         </div>
                     </div>
