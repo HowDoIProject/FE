@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
 const Interest = () => {
+    const location = useLocation();
+    const { user_type, nickname, password, password_confirm, user_number } = location.state;
+    const navigate = useNavigate();
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedGender, setSelectedGender] = useState('');
-
-    const [selectedAge, setSelectedAge] = useState('');
-
+    const [selectedAge, setselectedAge] = useState('');
     const [submitBtnActive, setSubmitBtnActive] = useState(false);
 
     const handleInterestSelection = category => {
         if (selectedCategories.includes(category)) {
-            setSelectedCategories(selectedCategories.filter(item => item !== category));
+            setSelectedCategories(prevCategories => prevCategories.filter(item => item !== category));
         } else {
-            setSelectedCategories([...selectedCategories, category]);
+            setSelectedCategories(prevCategories => [...prevCategories, category]);
         }
     };
 
@@ -25,6 +27,7 @@ const Interest = () => {
     const handleAgeSelection = age => {
         setSelectedAge(age);
     };
+
 
     const handleNext = () => {
         if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
@@ -41,9 +44,11 @@ const Interest = () => {
         }
     };
 
+
     const isInterestSelected = category => {
         return selectedCategories.includes(category);
     };
+
 
     console.log('selectedCategories', selectedCategories);
     console.log('selectedCategorieslength', selectedCategories.length);
@@ -68,18 +73,44 @@ const Interest = () => {
     //     { id: 2, name: '남성' },
     // ];
 
+
+    const handleNext = () => {
+        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
+            console.log('Please select at least one category, gender, and age.');
+            return;
+        }
+
+        navigate('/Confirm', {
+            state: {
+                user_type,
+                nickname,
+                password,
+                password_confirm,
+                user_number,
+                category: selectedCategories.map(String),
+                gender: selectedGender,
+                age: selectedAge,
+            },
+        });
+    };
+
+    const isActive = selectedAge && selectedGender && selectedCategories.length > 0;
+
+    const genders = [
+        { id: 1, name: '여성' },
+        { id: 2, name: '남성' },
+    ];
+
     const ages = [
         { id: 3, name: '10' },
         { id: 4, name: '20' },
         { id: 5, name: '30' },
     ];
-
     const categories = [
         { id: 6, name: '자취끼니' },
         { id: 7, name: '생활비' },
         { id: 8, name: '집안일' },
     ];
-
     return (
         <>
             <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
@@ -105,8 +136,9 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
+
                                         onKeyUp={submitBtnActiveCheck}
-                                        required
+                          required
                                     />
                                     <label
                                         className={
@@ -134,7 +166,9 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
+
                                         onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
@@ -165,7 +199,9 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
+
                                         onKeyUp={submitBtnActiveCheck}
+
                                         required
                                     />
                                     <label
