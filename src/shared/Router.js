@@ -16,6 +16,7 @@ import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
 import PopularPosts from '../components/PopularPosts';
+import EditPostForm from '../components/EditPostForm';
 
 const Router = () => {
     return (
@@ -32,6 +33,7 @@ const Router = () => {
                 <Route path="/momsactivity" element={<MomsActivity />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/activity" element={<DoggysActivity />} />
+                <Route path="/mypage/update/:post_id" element={<EditPostForm />} />
 
                 {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
                 <Route element={<Layout />}>
