@@ -21,15 +21,9 @@ export default function MyPage() {
     const [showModal, setShowModal] = useState(!jwtToken || !decodedToken);
 
     const handleShowActivity = () => {
-        if (user_type.user_type === '엄빠') {
-            navigate('/momsactivity', {
-                state: { user_type, nickname, user_id },
-            });
-        } else {
-            navigate('/activity', {
-                state: { user_type, nickname, user_id },
-            });
-        }
+        navigate('/activity', {
+            state: { user_type, nickname, user_id },
+        });
     };
 
     // const handleViewDeleteInfo = () => {
