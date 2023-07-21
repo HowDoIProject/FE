@@ -22,9 +22,9 @@ function LogoutModal() {
 
             {showModal && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center  bg-main/[.35]">
-                    <div className="bg-white rounded-lg p-8">
+                    <div className="bg-white rounded-2xl p-8">
                         <p>정말로 로그아웃 하시겠습니까?</p>
-                        <div className="flex justify-end mt-4">
+                        <div className="flex items-center justify-center mt-4">
                             <button onClick={handleLogout} className="bg-primary text-white py-2 px-4 rounded mr-2">
                                 네
                             </button>

@@ -44,10 +44,10 @@ export default function MyPage() {
     console.log(user_id);
     console.log(nickname);
     // console.log(password);
-    const closeModal = () => {
-        setShowModal(false);
-        navigate('/login');
-    };
+    // const closeModal = () => {
+    //     setShowModal(false);
+    //     navigate('/login');
+    // };
 
     // const renderModal = () => {
     //     if (!showModal) {
@@ -79,7 +79,7 @@ export default function MyPage() {
             </div>
             <div className="mx-auto bg-bgjoin pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
                 <div className="mx-10">
-                    <div className="flex items-center justify-between bg-white shadow-mainbox p-6 rounded-xl mt-[60px]">
+                    <div className="flex items-center justify-between bg-white shadow-mainbox p-6 rounded-xl mt-[96px]">
                         <div>
                             <div className="font-['Pretendard-Bold'] text-[15px] flex flex-col flex-start">
                                 <div>안녕하세요</div>
@@ -96,17 +96,13 @@ export default function MyPage() {
                         </div>
                         <div className="">{user_type === '엄빠' ? <ProfilePicture /> : <DoggyProfilePicture />}</div>
                     </div>
-                    <div className="flex flex-col bg-white shadow-mainbox p-6 rounded-xl mt-[60px] font-['Pretendard-Medium'] text-[15px]">
-                        <div className="flex items-center justify-between mb-4">
-                            <button onClick={handleShowActivity}>내 활동 보기</button>
-                            <img src={arrows} onClick={handleShowActivity} className="h-5" />
+                    <div className="flex flex-col bg-white shadow-mainbox p-6 rounded-xl mt-[96px] font-['Pretendard-Medium'] text-[15px]">
+                        <div onClick={handleShowActivity} className="flex items-center justify-between mb-4">
+                            <button>내 활동 보기</button>
+                            <img src={arrows} className="h-5" />
                         </div>
                         <hr className="border-gray-03" />
-                        <div className="flex items-center my-4">
-                            {/* <button onClick={handleShowActivity}> */}
-                            고객센터 (준비중)
-                            {/* </button> */}
-                        </div>
+                        <div className="flex items-center my-4">고객센터 (준비중)</div>
                         <hr className="border-gray-03" />
                         <div className="flex items-center justify-between mt-4">
                             <LogoutModal className="cursor-pointer" />

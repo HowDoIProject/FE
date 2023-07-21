@@ -86,7 +86,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(_res => {
+            .then(res => {
                 setValues({ comment: '', image: '' });
                 setFile('');
                 alert('댓글이 등록되었습니다🤗');
@@ -99,7 +99,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(_res => {
+            .then(res => {
                 alert('댓글이 삭제되었습니다');
             });
     },
@@ -110,7 +110,7 @@ export const apiPosts = {
                     access: cookies.accessToken,
                 },
             })
-            .then(_res => {
+            .then(res => {
                 setValues({ comment: '', image: '' });
                 setFile('');
                 alert('댓글이 수정되었습니다');
@@ -184,6 +184,23 @@ export const apiPosts = {
             .then(res => {
                 console.log('검색완료!', res);
                 return res;
+            });
+    },
+    updatePost: (payload, post_id, cookies, setValues, setFile, navigate) => {
+        return api
+            .put(`api/mypage/${post_id}`, payload, {
+                headers: {
+                    access: cookies.accessToken,
+                },
+            })
+            .then(res => {
+                setValues({ category: '', title: '', content: '', image: '' });
+                setFile('');
+                alert('글이 수정되었습니다🤗');
+                navigate('/activity');
+            })
+            .catch(e => {
+                console.log(e);
             });
     },
 };
