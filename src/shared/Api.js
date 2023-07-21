@@ -46,13 +46,7 @@ export const apiPosts = {
             },
         });
     },
-    getScrap: (filter, category, page, cookies) => {
-        return api.get(`api/scrap/${filter}/${category}/${page}`, {
-            headers: {
-                access: cookies.accessToken,
-            },
-        });
-    },
+
     uploadImage: (payload, setValues, values, cookies) => {
         return api
             .post(`/api/uploads`, payload, {
@@ -189,39 +183,49 @@ export const apiPosts = {
                 return res;
             });
     },
-};
-
-export const apiGet = {
-    getScrapFilterAndCategory: (filter, category, page, cookies) => {
+    updatePost: (payload, post_id, cookies, setValues, setFile, navigate) => {
         return api
-            .get(
-                `/api/scrap/${filter}/${category}/${page}`,
-                {},
-                {
-                    headers: {
-                        access: cookies.accessToken,
-                    },
-                }
-            )
-
-            .then(res => {
-                return {
-                    data: res.data,
-                };
+            .put(`api/mypage/${post_id}`, payload, {
+                headers: {
+                    access: cookies.accessToken,
+                },
             })
-            .catch(error => {
-                console.log(error);
+            .then(res => {
+                setValues({ category: '', title: '', content: '', image: '' });
+                setFile('');
+                alert('글이 수정되었습니다🤗');
+                navigate('/activity');
+            })
+            .catch(e => {
+                console.log(e);
             });
     },
 };
 
-// getScrapFilterAndCategory: (filter, category, page, cookies) => {
-//     return api.get(`api/scrap/${filter}/${category}/${page}`, {
-//         headers: {
-//             access: cookies.accessToken,
-//         },
-//     });
-// },
+export const apiGet = {
+    getScrap: (filter, category, page, cookies) => {
+        return api.get(`api/scrap/${filter}/${category}/${page}`, {
+            params: { filter, category },
+            headers: {
+                access: cookies.accessToken,
+            },
+        });
+    },
+    DeleteScrap: (filter, category, cookies) => {
+        if (cookies && cookies.accessToken) {
+            return api
+                .post(`api/scrap/${filter}/${category}`, {
+                    params: { filter, category },
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                })
+                .then(res => {
+                    alert('스크랩이 삭제되었습니다');
+                });
+        }
+    },
+};
 
 export const apiMyPage = {
     getMyPage: () => {

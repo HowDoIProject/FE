@@ -87,6 +87,7 @@ export default function PostDetail() {
 
                         <h1 className="mb-5 font-['Pretendard-Bold']">{title}</h1>
                         <div className="whitespace-pre-wrap text-[15px]">{content}</div>
+                        {image && <img className="w-[96px] h-[96px] rounded-lg object-cover mt-4" src={image} alt="" />}
                     </div>
                     <div className="p-4">
                         <div className="mb-4 text-gray_02 text-[14px]">{formatAgo(created_at, 'ko')} </div>
@@ -120,7 +121,6 @@ export default function PostDetail() {
 
             <div className="flex justify-center mb-[144px] mt-6">
                 <ul className="w-[360px] bg-gray_05 rounded-lg divide-y divide-y-reverse divide-gray_04 shadow-button flex flex-col-reverse">
-
                     {data?.data.comment.map(comment => {
                         return (
                             <li className="px-4" key={comment.comment_id}>

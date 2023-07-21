@@ -7,6 +7,8 @@ import EditDeleteSelectWindow from './EditDeleteSelection';
 import FilterButton from './FilteredButton';
 import ChosenListCard from '../../components/ChosenListCard';
 import MyComment from '../../components/MyComment';
+import Footer from '../../components/Footer';
+import noresult from '../../assets/icon/noresult.svg';
 
 const DoggysActivity = () => {
     const location = useLocation();
@@ -40,68 +42,6 @@ const DoggysActivity = () => {
     const handleButtonClick = buttonName => {
         setSelectedButton(buttonName === selectedButton ? null : buttonName);
     };
-
-    const handleEdit = () => {
-        // Handle edit action
-        console.log('Edit option selected');
-    };
-    const handleDeleteComment = () => {
-        // Handle edit action
-        console.log('Edit option selected');
-    };
-    // 게시물 수정 요청 처리
-    const handleUpdate = async (post_id, updatedData) => {
-        try {
-            const response = await axios.put(`https://howdoiapp.shop/api/mypage/${post_id}`, updatedData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    access: `${cookies.accessToken}`,
-                },
-            });
-
-            if (response.status === 200) {
-                console.log(response);
-            } else {
-                console.error('게시물 수정에 실패했습니다');
-            }
-        } catch (error) {
-            console.error('게시물 수정 중 오류가 발생했습니다:', error);
-        }
-    };
-    console.log(user_type);
-    console.log('user_id', user_id);
-    console.log(nickname);
-    // const handleEditPost = (post_id, updatedTitle, updatedContent, updatedImage) => {
-    //     const updatedData = {
-    //         title: updatedTitle,
-    //         content: updatedContent,
-    //         image: updatedImage,
-    //     };
-
-    //     handleUpdate(post_id, updatedData);
-    // };
-
-    // 게시물 삭제 요청 처리
-    const handleDelete = postId => {
-        axios
-            .delete(`https://howdoiapp.shop/api/mypage/${postId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    access: `${cookies.accessToken}`,
-                },
-            })
-            .then(() => {
-                console.log('Post successfully deleted');
-                setFilteredPosts(prevPosts => prevPosts.filter(post => post.post_id !== postId));
-            })
-            .catch(error => {
-                console.error('Failed to delete post:', error);
-            });
-    };
-
-    useEffect(() => {
-        handleDelete();
-    }, [cookies.accessToken]);
 
     // 기간별 필터링 처리
     const handleFilterByPeriod = period => {
@@ -174,7 +114,6 @@ const DoggysActivity = () => {
 
     useEffect(() => {
         handleShowMyPost();
-        handleEdit();
     }, [cookies.accessToken]);
 
     // 내 댓글 보기 처리
@@ -202,45 +141,6 @@ const DoggysActivity = () => {
             }
         } catch (error) {
             console.error('Error fetching comments:', error);
-        }
-    };
-
-    useEffect(() => {
-        handleShowMyComment();
-    }, [cookies.accessToken]);
-    const handleEditComment = async (postId, commentId, updatedComment) => {
-        const updatedData = {
-            comment: updatedComment,
-            image: '',
-        };
-
-        try {
-            const response = await axios.put(
-                `https://howdoiapp.shop/api/post/${postId}/comment/${commentId}`,
-                updatedData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        access: `${cookies.accessToken}`,
-                    },
-                }
-            );
-
-            if (response.status === 200) {
-                // Update the comment data in the state
-                setFilteredComments(prevComments => {
-                    return prevComments.map(prevComment => {
-                        if (prevComment.comment_id === commentId) {
-                            return { ...prevComment, comment: updatedComment };
-                        }
-                        return prevComment;
-                    });
-                });
-            } else {
-                console.error('Failed to edit the comment. Response:', response);
-            }
-        } catch (error) {
-            console.error('An error occurred while updating the comment:', error);
         }
     };
 
@@ -272,10 +172,6 @@ const DoggysActivity = () => {
     };
 
     useEffect(() => {
-        handleShowMyChosen();
-    }, [cookies.accessToken]);
-
-    useEffect(() => {
         if (selectedPostId !== undefined) {
             const selectedPost = filteredPosts.find(post => post.post_id === selectedPostId);
             if (selectedPost) {
@@ -285,49 +181,42 @@ const DoggysActivity = () => {
     }, [selectedPostId, filteredPosts]);
 
     return (
-        <div className="max-w-md mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4 text-center">내 활동 보기</h2>
-            <div className="mb-4">
-                <h3 className="text-lg font-bold mb-2"></h3>
-            </div>
-            <div className="mb-8">
-                <h3 className="text-lg font-bold text-center mb-10"></h3>
-                <div className="flex justify-center space-x-8 mb-10">
-                    <button
-                        onClick={handleShowMyPost}
-                        className={`px-4 py-2 square-md ${
-                            showMyPost
-                                ? 'bg-white-500 text-black border-b-2 border-black'
-                                : 'bg-white-200 text-black-800'
-                        }`}
-                    >
-                        내 작성글
-                    </button>
-
-                    <button
-                        onClick={handleShowMyComment}
-                        className={`px-4 py-2 square-md ${
-                            showMyComments
-                                ? 'bg-white-500 text-black border-b-2 border-black'
-                                : 'bg-white-200 text-black-800'
-                        }`}
-                    >
-                        내 댓글
-                    </button>
-                    <button
-                        onClick={handleShowMyChosen}
-                        className={`px-4 py-2 square-md ${
-                            ShowMyChosenComment
-                                ? 'bg-white-500 text-black border-b-2 border-black'
-                                : 'bg-white-200 text-black-800'
-                        }`}
-                    >
-                        내 채택
-                    </button>
+        <>
+            <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
+                <div className="relative max-w-[420px] mx-auto w-full flex justify-between items-center">
+                    <div className="mx-auto font-['Pretendard-Bold']">내 활동 보기</div>
                 </div>
-                {/* 기간 월별 */}
-                <div className="flex justify-left mb-7">
-                    <div className="flex space-x-5">
+            </div>
+            <div className="mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
+                <div className="mx-5">
+                    <div className="flex w-full mt-4 justify-evenly mb-8">
+                        <button
+                            onClick={handleShowMyPost}
+                            className={`px-4 py-2 w-1/3 ${
+                                showMyPost ? 'border-b-2 text-[14px] border-main' : 'text-gray_02 text-[14px]'
+                            }`}
+                        >
+                            내 작성글
+                        </button>
+                        <button
+                            onClick={handleShowMyComment}
+                            className={`px-4 py-2 w-1/3 ${
+                                showMyComments ? 'border-b-2 text-[14px] border-main' : 'text-gray_02 text-[14px]'
+                            }`}
+                        >
+                            내 답변
+                        </button>
+                        <button
+                            onClick={handleShowMyChosen}
+                            className={`px-4 py-2 w-1/3 ${
+                                ShowMyChosenComment ? 'border-b-2 text-[14px] border-main' : 'text-gray_02 text-[14px]'
+                            }`}
+                        >
+                            내 채택내역
+                        </button>
+                    </div>
+                    {/* 기간 월별 */}
+                    {/* <div className="flex gap-3 mt-8 mb-5">
                         <FilterButton
                             label="오늘"
                             selected={selectedOption === 'today'}
@@ -348,116 +237,97 @@ const DoggysActivity = () => {
                             selected={selectedOption === '6months'}
                             onClick={() => handleFilterByPeriod('6months')}
                         />
-                    </div>
-                </div>
-            </div>
-            {/* //내가 쓴 글 수정하는 란 */}
-            <div>
-                {/* 내 작성글 */}
-                {showMyPost && (
-                    <div>
-                        <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
-                        <h4 className="text-lg font-bold">내 작성글</h4>
-                        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-                            filteredPosts.map(post => (
-                                <div key={post.post_id} className="rounded-lg mb-4 bg-white-100">
-                                    {post.post_id === selectedPostId ? (
-                                        <div></div>
-                                    ) : (
-                                        <div className="relative">
-                                            <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
-                                                <div className="relative">
-                                                    <PostListCard
-                                                        post={post}
-                                                        post_id={post_id}
-                                                        setFilteredPosts={setFilteredPosts}
-                                                    />
-                                                    <div className="absolute top-0 right-0">
-                                                        <EditDeleteSelectWindow
-                                                            post_id={post.post_id}
+                    </div> */}
+                    {/* 내 작성글 */}
+                    {showMyPost && (
+                        <div>
+                            {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
+                                filteredPosts.map(post => (
+                                    <div key={post.post_id}>
+                                        {post.post_id === selectedPostId ? (
+                                            <div></div>
+                                        ) : (
+                                            <div className="relative">
+                                                <div className="w-full my-4 cursor-pointer">
+                                                    <div className="relative">
+                                                        <PostListCard
+                                                            post={post}
+                                                            post_id={post_id}
                                                             setFilteredPosts={setFilteredPosts}
                                                         />
+                                                        <div className="absolute top-0 right-0">
+                                                            <EditDeleteSelectWindow
+                                                                post={post}
+                                                                post_id={post.post_id}
+                                                                setFilteredPosts={setFilteredPosts}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="mt-40 flex flex-col items-center justify-center gap-8">
+                                    <img className="w-20" src={noresult} alt="" />
+                                    <div className="font-['Pretendard-Bold'] text-gray_01 text-[18px]">
+                                        작성한 글이 없습니다
+                                    </div>
                                 </div>
-                            ))
-                        ) : (
-                            <p>오늘의 게시물이 없습니다.</p>
-                        )}
-                    </div>
-                )}
-
-                {/* 내 댓글 보기 */}
-                {showMyComments && (
-                    <div>
-                        <h4 className="text-lg font-bold">내 댓글</h4>
-                        {Array.isArray(comments) && comments.length > 0 ? (
-                            comments.map(comment => (
-                                <div key={comment.comment_id} className="rounded-lg mb-4 bg-white-100">
-                                    {comment.comment_id === selectedCommentId ? (
-                                        <div></div>
-                                    ) : (
-                                        <div className="relative">
-                                            <div className="w-full h-[200px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
-                                                <div className="relative">
-                                                    <MyComment
-                                                        comments={comment.comment}
-                                                        post={{ category, post }}
-                                                        post_id={post_id}
-                                                        setFilteredPosts={setFilteredPosts}
-                                                        setFilteredComments={setFilteredComments}
-                                                        comment={comment}
-                                                        comment_id={comment_id}
-                                                    />
-
-                                                    <div className="absolute top-0 right-0">
-                                                        {/* <CommentEditDeleteSelectWindow
-                                                            post_id={post.post_id}
-                                                            comment_id={comment.comment_id}
-                                                            setFilteredComments={setFilteredComments}
-                                                            comment={comment}
-                                                            handleEditComment={() =>
-                                                                handleEditComment(post_id, comment_id, cookies)
-                                                            }
-                                                            handleDeleteComment={() =>
-                                                                handleDeleteComment(post_id, comment_id, cookies)
-                                                            }
-                                                        /> */}
-                                                    </div>
+                            )}
+                        </div>
+                    )}
+                    {/* 내 댓글 보기 */}
+                    {showMyComments && (
+                        <div>
+                            {Array.isArray(comments) && comments.length > 0 ? (
+                                comments.map(comment => (
+                                    <div key={comment.comment_id}>
+                                        {comment.comment_id === selectedCommentId ? (
+                                            <div></div>
+                                        ) : (
+                                            <div className="relative">
+                                                <div className="w-full my-4 cursor-pointer">
+                                                    <MyComment commentInfo={comment} />
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="mt-40 flex flex-col items-center justify-center gap-8">
+                                    <img className="w-20" src={noresult} alt="" />
+                                    <div className="font-['Pretendard-Bold'] text-gray_01 text-[18px]">
+                                        작성한 댓글이 없습니다
+                                    </div>
                                 </div>
-                            ))
-                        ) : (
-                            <p>No comments found.</p>
-                        )}
-                    </div>
-                )}
-
-                {ShowMyChosenComment && (
-                    <div>
-                        <h4 className="text-lg font-bold">내 채택</h4>
-                        {Array.isArray(mychosen) && mychosen.length > 0 ? (
-                            mychosen.map(chosencomment => (
-                                <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
-                                    <ChosenListCard chosencomment={chosencomment} />
-                                    {/* <p>Comment: {chosencomment.comment}</p>
-                      <p>글제목: {chosencomment.category}</p> */}
-                                    {/* <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p> */}
+                            )}
+                        </div>
+                    )}
+                    {/* 내 채택 내역보기 */}
+                    {ShowMyChosenComment && (
+                        <div>
+                            {Array.isArray(mychosen) && mychosen.length > 0 ? (
+                                mychosen.map(chosencomment => (
+                                    <div key={chosencomment.comment_id} className="w-full cursor-pointer my-4">
+                                        <ChosenListCard chosenCommentInfo={chosencomment} />
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="mt-40 flex flex-col items-center justify-center gap-8">
+                                    <img className="w-20" src={noresult} alt="" />
+                                    <div className="font-['Pretendard-Bold'] text-gray_01 text-[18px]">
+                                        채택된 댓글이 없습니다
+                                    </div>
                                 </div>
-                            ))
-                        ) : (
-                            <p>채택한 데이터가 없습니다.</p>
-                        )}
-                    </div>
-                )}
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

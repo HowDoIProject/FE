@@ -11,8 +11,8 @@ import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
 // import moment from 'moment';
 
-export default function CommentListCard({ post, comment, comment_id, user_id }) {
-    const { like_num, scrap_num, user_type, comment_num, created_at, post_id } = post;
+export default function CommentListCard({ comment, comment_id, user_id }) {
+    const { like_num, scrap_num, user_type, comment_num, post_id } = comment;
     const [cookies] = useCookies(['accessToken']);
     const [isLike, setIsLike] = useState(false);
     const [isScrap, setIsScrap] = useState(false);
@@ -40,7 +40,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
     return (
         <>
             <div
-                onClick={() => navigate(`/post/${post_id}`)}
+                // onClick={() => navigate(`/post/${post_id}`)}
                 className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
             >
                 <div className="flex mb-4">
@@ -56,18 +56,18 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsLike(!isLike);
+                                setIsLike(!isLike);
                                 updateLikeMutate({ user_id, comment_id, cookies });
                             }}
                         >
                             <img className="w-4 h-4" src={isLike ? likeActive : like} alt="" />
                             {like_num}
                         </div>
-                        <div
+                        {/* <div
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                // setIsScrap(!isScrap);
+                                setIsScrap(!isScrap);
                                 updateScrapMutate({ user_id, comment_id, cookies });
                             }}
                         >
@@ -77,7 +77,7 @@ export default function CommentListCard({ post, comment, comment_id, user_id }) 
                         <div className="flex items-center gap-1">
                             <img className="h-4 w-4" src={comments} alt="" />
                             {comment_num}
-                        </div>
+                        </div> */}
                     </div>
                     {/* <div className="text-[14px] text-gray_02">{formatAgo(created_at, 'ko')}</div> */}
                 </div>
