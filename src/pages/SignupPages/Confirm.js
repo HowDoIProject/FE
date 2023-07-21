@@ -70,6 +70,8 @@ export default function Confirm() {
                 console.error('Signup failed');
             }
         } catch (error) {
+            alert(error.response.data.message);
+            navigate('/signup');
             console.error('Signup failed:', error);
         }
     };
