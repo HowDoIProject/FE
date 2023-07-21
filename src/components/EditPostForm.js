@@ -1,20 +1,28 @@
-import React, { useState, useRef } from 'react';
-import { Form, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { api, apiPosts } from '../shared/Api';
+import { apiPosts } from '../shared/Api';
 import image1 from '../assets/icon/camera.svg';
 import image2 from '../assets/icon/delete.svg';
 
-export default function WritePost() {
+export default function EditPostForm() {
+    const { post_id } = useParams();
+    const {
+        state: { post },
+    } = useLocation();
+
+    const { category, title, content, image } = post;
+
     const [values, setValues] = useState({
-        category: '',
-        title: '',
-        content: '',
+        category: category,
+        title: title,
+        content: content,
         image: '',
     });
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState(image);
 
-    // console.log('values', values);
+    console.log('editpost', post);
+    console.log('values', values);
 
     const navigate = useNavigate();
     const categories = [
@@ -61,7 +69,7 @@ export default function WritePost() {
             return;
         } else {
             e.preventDefault();
-            apiPosts.addPost(values, cookies, navigate);
+            apiPosts.updatePost(values, post_id, cookies, setValues, setFile, navigate);
         }
     };
 

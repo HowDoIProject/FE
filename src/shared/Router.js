@@ -16,6 +16,7 @@ import WritePost from '../pages/WritePost';
 import PostDetail from '../pages/PostDetail';
 import PostList from '../pages/PostList';
 import PopularPosts from '../components/PopularPosts';
+import EditPostForm from '../components/EditPostForm';
 
 const Router = () => {
     return (
@@ -28,6 +29,11 @@ const Router = () => {
                 <Route path="/userinfo" element={<UserInfo />} />
                 <Route path="/confirm" element={<Confirm />} />
                 <Route path="/signup" element={<SignUp />} />
+                {/* 마이페이지 */}
+                <Route path="/momsactivity" element={<MomsActivity />} />
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/activity" element={<DoggysActivity />} />
+                <Route path="/mypage/update/:post_id" element={<EditPostForm />} />
 
                 {/* 여기에서 Layout 컴포넌트를 사용하여 중첩된 라우트를 구성합니다. */}
                 <Route element={<Layout />}>
@@ -43,11 +49,6 @@ const Router = () => {
                     <Route path="/write" element={<WritePost />} />
                     {/* 스크랩 화면 관련 */}
                     <Route path="/scrap" element={<ScrapList />} />
-                    {/* 마이페이지 */}
-                    <Route path="/momsactivity" element={<MomsActivity />} />
-                    <Route path="/mypage" element={<MyPage />} />
-                    <Route path="/activity" element={<DoggysActivity />} />
-
                     {/* 멤버십 등록 단계 */}
                     <Route path="/interest" element={<Interest />} />
                     <Route path="/userinfo" element={<UserInfo />} />

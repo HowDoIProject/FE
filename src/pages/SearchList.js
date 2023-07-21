@@ -24,7 +24,7 @@ export default function SearchList() {
             if (lastPage.data.total_page == lastPage.data.page) return false;
             return lastPage.data.page + 1;
         },
-        queryFn: ({ pageParam = 1 }) => apiPosts.search({ keyword, pageParam, cookies }),
+        queryFn: ({ pageParam = 1 }) => apiPosts.search({ keyword, page, cookies }),
     });
 
     useEffect(() => {
