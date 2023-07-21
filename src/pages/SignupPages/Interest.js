@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
 const Interest = () => {
     const location = useLocation();
     const { user_type, nickname, password, password_confirm, user_number } = location.state;
@@ -25,16 +24,7 @@ const Interest = () => {
     };
 
     const handleAgeSelection = age => {
-        setSelectedAge(age);
-    };
-
-
-    const handleNext = () => {
-        if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
-            console.log('Please select at least one category, gender, and age.');
-        } else {
-            // Handle the logic for the next step
-        }
+        setselectedAge(age);
     };
 
     const submitBtnActiveCheck = () => {
@@ -44,35 +34,14 @@ const Interest = () => {
         }
     };
 
-
     const isInterestSelected = category => {
         return selectedCategories.includes(category);
     };
-
 
     console.log('selectedCategories', selectedCategories);
     console.log('selectedCategorieslength', selectedCategories.length);
     console.log('selectedGender', selectedGender);
     console.log('selectedAge', selectedAge);
-
-    // const handleNext = () => {
-    //     if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
-    //         console.log('Please select at least one category, gender, and age.');
-    //         return;
-    //     }
-
-    const genders = [
-        { id: 1, name: '여성' },
-        { id: 2, name: '남성' },
-    ];
-
-    const isActive = selectedAge && selectedGender && selectedCategories.length > 0;
-
-    // const genders = [
-    //     { id: 1, name: '여성' },
-    //     { id: 2, name: '남성' },
-    // ];
-
 
     const handleNext = () => {
         if (selectedCategories.length === 0 || !selectedGender || !selectedAge) {
@@ -136,9 +105,8 @@ const Interest = () => {
                                         name="gender"
                                         value={item.name}
                                         onChange={() => handleGenderSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-                          required
+                                        required
                                     />
                                     <label
                                         className={
@@ -166,9 +134,7 @@ const Interest = () => {
                                         name="age"
                                         value={item.name}
                                         onChange={() => handleAgeSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-
                                         required
                                     />
                                     <label
@@ -199,9 +165,7 @@ const Interest = () => {
                                         name="category"
                                         value={item.name}
                                         onChange={() => handleInterestSelection(item.name)}
-
                                         onKeyUp={submitBtnActiveCheck}
-
                                         required
                                     />
                                     <label
