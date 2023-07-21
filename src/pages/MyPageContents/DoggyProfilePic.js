@@ -17,7 +17,7 @@ const DoggyProfilePicture = () => {
     // };
 
     return (
-        <div className="w-20 h-20 flex justify-center items-center">
+        <div className="w-[96px] h-[96px] flex justify-center items-center">
             <img src={image3} className="w-full h-full" />
             {/* <input
                 type="file"
