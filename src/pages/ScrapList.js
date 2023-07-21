@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useMutation, useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import question from '../assets/icon/question.svg';
 import { apiGet } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
@@ -16,7 +17,7 @@ export default function ScrapList() {
     });
     const [cookies] = useCookies(['accessToken']);
     const [showModal, setShowModal] = useState(false);
-
+    const [showSecondModal, setShowSecondModal] = useState(false);
     const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
         queryKey: ['scrap', filter, category],
         getNextPageParam: lastPage => {
@@ -47,9 +48,9 @@ export default function ScrapList() {
             );
             refetch();
             console.log('성공적으로 전체 스크랩이 삭제되었습니다.');
-            alert('스크랩이 모두 지워졌습니다.');
+            // alert('스크랩이 모두 지워졌습니다.');
             //모달을 닫아준다.
-            setShowModal(false);
+            setShowSecondModal(false);
             queryClient.invalidateQueries('scrap', { exact: true });
         } catch (error) {
             console.error('전체삭제 실패:', error);
@@ -63,48 +64,88 @@ export default function ScrapList() {
     const closeModal = () => {
         setShowModal(false);
     };
+    //두번째 모달창을 열면서 첫번째 모달창을 닫아준다.
+    const openSecondModal = () => {
+        setShowSecondModal(true);
+        closeModal();
+    };
+
+    const closeSecondModal = () => {
+        setShowSecondModal(false);
+    };
 
     return (
         <div className="mx-5 item-align flex flex-col">
-            <div className="self-end mt-4">
-                <button onClick={openModal} className="px-1 py-1 bg-blue-400 text-white rounded hover:bg-blue-500">
-                    전체 삭제
-                </button>
-            </div>
-            <TotalScraps
-                data={data}
-                category={category}
-                setCategory={setCategory}
-                filter={filter}
-                setFilter={setFilter}
-                page={page}
-                cookies={cookies}
-            />
-            <div ref={targetRef}>
-                <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
+            <div className="bg-orange-50 p-5 rounded-lg max-w-md mx-auto my-8">
+                <div className="flex items-center mt-4">
+                    <img src={question} alt="Question Icon" className="mr-2" />
+                    <p className="text-left text-sm">
+                        스크랩된 글 삭제를 원하신다면, 스크랩버튼을 한 번 더 눌러주세요!
+                    </p>
+                </div>
             </div>
 
-            {showModal && (
-                <div className="fixed inset-0 flex align-items items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-lg p-6">
-                        <p className="text-xl font-bold mb-4">정말 스크랩 된 글들을 모두 삭제하시겠어요?</p>
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleDeleteAllScraps}
-                                className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-red-600 mr-2"
-                            >
-                                모두 삭제하기
-                            </button>
-                            <button
-                                onClick={closeModal}
-                                className="px-4 py-2 bg-gray-300 text-gray-500 rounded hover:bg-gray-200"
-                            >
-                                닫기
-                            </button>
+            <div className="mx-5 item-align flex flex-col">
+                <div className="self-end item-align">
+                    <button onClick={openModal} className="text-xl font-bold text-center underline">
+                        모두삭제
+                    </button>
+                </div>
+                <TotalScraps
+                    data={data}
+                    category={category}
+                    setCategory={setCategory}
+                    filter={filter}
+                    setFilter={setFilter}
+                    page={page}
+                    cookies={cookies}
+                />
+
+                <div ref={targetRef}>
+                    <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
+                </div>
+                {showModal && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg shadow-lg p-6">
+                            <p className="text-xl font-bold mb-4 text-center">
+                                정말로 스크랩 된 글들을
+                                <br /> 모두 삭제 하시겠습니까?
+                            </p>
+                            <div className="flex flex-col items-center">
+                                <button
+                                    onClick={openSecondModal}
+                                    className="w-80 px-10 py-2 bg-orange-300 text-white rounded hover:bg-orange-400 mb-2"
+                                >
+                                    모두 삭제하기
+                                </button>
+                                <button
+                                    onClick={closeModal}
+                                    className="w-80 px-10 py-2 bg-whitesmoke-300 text-gray-500 rounded hover:bg-gray-200 mb-2"
+                                >
+                                    닫기
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+                {showSecondModal && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg shadow-lg p-6">
+                            <p className="text-xl font-bold mb-4 text-center">
+                                스크랩된 글들을 모두가 삭제 되었습니다.
+                            </p>
+                            <div className="flex flex-col items-center">
+                                <button
+                                    onClick={handleDeleteAllScraps}
+                                    className="px-40 py-2 bg-whitesmoke-300 text-gray-500 rounded hover:bg-gray-200 mb-2"
+                                >
+                                    닫기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

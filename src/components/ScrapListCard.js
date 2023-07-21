@@ -6,14 +6,14 @@ import { useCookies } from 'react-cookie';
 import likeActive from '../assets/icon/likeActive.svg';
 import scrapActive from '../assets/icon/scrapActive.svg';
 import { apiPosts } from '../shared/Api';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function ScrapListCard({ scrap }) {
     const { category, title, like_num, scrap_num, post_id, user_type, comment_num, created_at, user_id } = scrap;
 
-//scrap 으로 변경
-//삭제를 하면 모든 게시물이 삭제되는 점이 있음
-//개선 해야할 점
+    //scrap 으로 변경
+    //삭제를 하면 모든 게시물이 삭제되는 점이 있음
+    //개선 해야할 점 ---> 개선 완료 (2023.07.21)
 
     const [cookies] = useCookies(['accessToken']);
 
@@ -32,10 +32,16 @@ export default function ScrapListCard({ scrap }) {
     });
 
     const isDog = user_type === '강아지';
+    const navigate = useNavigate();
 
     return (
         <>
-            <div className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button">
+            <div
+                onClick={() => {
+                    cookies.accessToken ? navigate(`/post/${post_id}`) : navigate('/login');
+                }}
+                className="w-full h-full justify-between rounded-xl bg-gray_05 p-3 shadow-button"
+            >
                 <div className="flex mb-4">
                     <div className="inline-flex text-white text-[11px] px-3 py-1 rounded-2xl bg-primary mr-1">
                         {/** 카테고리를 표시합니다. */}
@@ -54,7 +60,7 @@ export default function ScrapListCard({ scrap }) {
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                updateLikeMutate({ user_id, post_id, cookies, scrap_check: true });
+                                updateLikeMutate({ user_id, post_id, cookies });
                             }}
                         >
                             <img className="w-4 h-4" src={likeActive} alt="" />
@@ -64,7 +70,7 @@ export default function ScrapListCard({ scrap }) {
                             className="flex items-center gap-1 cursor-pointer"
                             onClick={e => {
                                 e.stopPropagation();
-                                updateScrapMutate({ user_id, post_id, cookies, scrap_check: true });
+                                updateScrapMutate({ user_id, post_id, cookies });
                             }}
                         >
                             <img className="w-4 h-4" src={scrapActive} alt="" />
