@@ -101,7 +101,7 @@ export default function ScrapList() {
 
                 <div ref={targetRef}>
                     <div className="flex justify-center items-center h-screen" ref={targetRef}>
-                        <div className="w-1/2 h-1/2"></div>
+                        {/* <div className="w-1/2 h-1/2"></div> */}
                     </div>
                 </div>
 
