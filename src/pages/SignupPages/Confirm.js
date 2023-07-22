@@ -65,7 +65,7 @@ export default function Confirm() {
 
             if (response.status === 201) {
                 alert('회원가입이 완료되었습니다!💫');
-                navigate('/');
+                navigate('/login');
             } else {
                 console.error('Signup failed');
             }
