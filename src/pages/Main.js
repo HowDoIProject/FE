@@ -67,7 +67,7 @@ export default function Main() {
                                 return (
                                     <div
                                         key={post.post_id}
-                                        className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                        className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300"
                                     >
                                         <MainPageCard post={post} />
                                     </div>
@@ -105,7 +105,7 @@ export default function Main() {
                             return (
                                 <div
                                     key={post.post_id}
-                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                    className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300"
                                 >
                                     <MainPageCard post={post} />
                                 </div>
@@ -131,22 +131,12 @@ export default function Main() {
                         ref={slider3}
                         className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
                     >
-                        {/* {recommendData?.data.result.map(post => {
-                            return (
-                                <div
-                                    key={post.post_id}
-                                    className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
-                                >
-                                    <MainPageCard post={post} />
-                                </div>
-                            );
-                        })} */}
                         {cookies.accessToken ? (
                             recommendData?.data.result.map(post => {
                                 return (
                                     <div
                                         key={post.post_id}
-                                        className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300"
+                                        className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300"
                                     >
                                         <MainPageCard post={post} />
                                     </div>
@@ -154,13 +144,13 @@ export default function Main() {
                             })
                         ) : (
                             <>
-                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                <div className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300">
                                     <MainPageCardNotLogged />
                                 </div>
-                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                <div className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300">
                                     <MainPageCardNotLogged />
                                 </div>
-                                <div className="w-[146px] h-[146px] m-3 inline-block cursor-pointer hover:scale-105 ease-in-out duration-300">
+                                <div className="w-[146px] h-[146px] m-3 inline-flex cursor-pointer hover:scale-105 ease-in-out duration-300">
                                     <MainPageCardNotLogged />
                                 </div>
                             </>
