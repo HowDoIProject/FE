@@ -6,7 +6,7 @@ import { apiGet } from '../shared/Api';
 import { useInView } from 'react-intersection-observer';
 import TotalScraps from '../components/TotalScrap';
 import { useCookies } from 'react-cookie';
-//전체 삭제 주석처리 해놓음
+
 export default function ScrapList() {
     const [cookies] = useCookies(['accessToken']);
     const [filter, setFilter] = useState(0);
@@ -34,43 +34,43 @@ export default function ScrapList() {
 
     const queryClient = useQueryClient();
 
-    // const handleDeleteAllScraps = async () => {
-    //     try {
-    //         await axios.post(
-    //             `https://howdoiapp.shop/api/scrap/${filter}/${category}`,
-    //             { filter, category },
-    //             {
-    //                 headers: {
-    //                     access: cookies.accessToken,
-    //                 },
-    //             }
-    //         );
-    //         refetch();
-    //         console.log('성공적으로 전체 스크랩이 삭제되었습니다.');
-    //         // alert('스크랩이 모두 지워졌습니다.');
-    //         //모달을 닫아준다.
-    //         openSecondModal();
-    //         queryClient.invalidateQueries('scrap', { exact: true });
-    //     } catch (error) {
-    //         console.error('전체삭제 실패:', error);
-    //     }
-    // };
+    const handleDeleteAllScraps = async () => {
+        try {
+            await axios.post(
+                `https://howdoiapp.shop/api/scrap/${filter}/${category}`,
+                { filter, category },
+                {
+                    headers: {
+                        access: cookies.accessToken,
+                    },
+                }
+            );
+            refetch();
+            console.log('성공적으로 전체 스크랩이 삭제되었습니다.');
+            // alert('스크랩이 모두 지워졌습니다.');
+            //모달을 닫아준다.
+            openSecondModal();
+            queryClient.invalidateQueries('scrap', { exact: true });
+        } catch (error) {
+            console.error('전체삭제 실패:', error);
+        }
+    };
 
-    // const openModal = () => {
-    //     setShowModal(true);
-    // };
+    const openModal = () => {
+        setShowModal(true);
+    };
 
-    // const closeModal = () => {
-    //     setShowModal(false);
-    // };
-    // //두번째 모달창을 열면서 첫번째 모달창을 닫아준다.
-    // const openSecondModal = () => {
-    //     setShowSecondModal(true);
-    //     closeModal();
-    // };
-    // const closeSecondModal = () => {
-    //     setShowSecondModal(false);
-    // };
+    const closeModal = () => {
+        setShowModal(false);
+    };
+    //두번째 모달창을 열면서 첫번째 모달창을 닫아준다.
+    const openSecondModal = () => {
+        setShowSecondModal(true);
+        closeModal();
+    };
+    const closeSecondModal = () => {
+        setShowSecondModal(false);
+    };
 
     return (
         <div className="mx-5 item-align flex flex-col">
@@ -85,11 +85,11 @@ export default function ScrapList() {
             </div>
 
             <div className="mx-5 item-align flex flex-col">
-                {/* <div className="self-end item-align">
+                <div className="self-end item-align">
                     <button onClick={openModal} className="text-xl font-bold text-center underline">
                         모두삭제
                     </button>
-                </div> */}
+                </div> 
                 <TotalScraps
                     data={data}
                     category={category}
@@ -104,7 +104,7 @@ export default function ScrapList() {
                     <div className="absolute bottom-0 w-[400px] h-[110px]"></div>
                 </div>
 
-                {/* {showModal && (
+                 {showModal && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <p className="text-xl font-bold mb-4 text-center">
@@ -144,7 +144,7 @@ export default function ScrapList() {
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
             </div>
         </div>
     );
