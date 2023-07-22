@@ -101,9 +101,7 @@ export default function ScrapList() {
                 />
 
                 <div ref={targetRef}>
-                    <div className="flex justify-center items-center h-screen" ref={targetRef}>
-                        <div className="w-1/2 h-1/2">스크랩 된 글이 없습니다.</div>
-                    </div>
+                    <div className="absolute bottom-0 w-[400px] h-[110px]"></div>
                 </div>
 
                 {/* {showModal && (
