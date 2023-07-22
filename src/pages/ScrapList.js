@@ -106,7 +106,7 @@ export default function ScrapList() {
                     <div className="absolute bottom-0 w-[400px] h-[110px]"></div>
                 </div>
 
-          {showModal && (
+  
 
                  {showModal && (
 
