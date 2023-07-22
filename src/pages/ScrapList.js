@@ -85,11 +85,11 @@ export default function ScrapList() {
             </div>
 
             <div className="mx-5 item-align flex flex-col">
-                {/* <div className="self-end item-align">
+                <div className="self-end item-align">
                     <button onClick={openModal} className="text-xl font-bold text-center underline">
                         모두삭제
                     </button>
-                </div> */}
+                </div> 
                 <TotalScraps
                     data={data}
                     category={category}
@@ -101,8 +101,9 @@ export default function ScrapList() {
                 />
 
                 <div ref={targetRef}>
-                    <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
+                    <div className="absolute bottom-0 w-[400px] h-[110px]"></div>
                 </div>
+
                  {showModal && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6">
