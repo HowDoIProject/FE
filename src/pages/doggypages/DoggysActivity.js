@@ -197,7 +197,13 @@ const DoggysActivity = () => {
             </div>
             <div className="mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
                 <div className="mx-5">
-                    {user_type?.user_type === '엄빠' ? <HorizontalBarGraph nickname={nickname} /> : ''}
+                    {user_type?.user_type === '엄빠' ? (
+                        <div className="mt-8">
+                            <HorizontalBarGraph nickname={nickname.nickname} />
+                        </div>
+                    ) : (
+                        ''
+                    )}
                     <div className="flex w-full mt-4 justify-evenly mb-8">
                         <button
                             onClick={handleShowMyPost}
