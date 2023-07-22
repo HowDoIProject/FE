@@ -10,10 +10,16 @@ import MyComment from '../../components/MyComment';
 import Footer from '../../components/Footer';
 import noresult from '../../assets/icon/noresult.svg';
 import HorizontalBarGraph from './HorizontalBarGraph';
+import jwtDecode from 'jwt-decode';
 
 const DoggysActivity = () => {
+    const [cookies] = useCookies(['accessToken']);
+    const jwtToken = cookies.accessToken;
+    const decodedToken = jwtToken ? jwtDecode(jwtToken) : null;
+    const user_type = decodedToken?.user_type;
+    const nickname = decodedToken?.nickname;
     const location = useLocation();
-    const { user_type, nickname, user_id } = location.state || {};
+    // const { nickname, user_id } = location.state || {};
     const [postData, setPostData] = useState([]);
     const [mycomments, setMyComments] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
@@ -22,7 +28,6 @@ const DoggysActivity = () => {
     const [showMyPost, setShowMyPost] = useState(false);
     const [showMyComments, setShowMyComments] = useState(false);
     const [ShowMyChosenComment, setShowMyChosenComment] = useState(false);
-    const [cookies, setCookies] = useCookies(['accessToken']);
     const accessToken = cookies.accessToken;
     const [selectedCommentId, setSelectedCommentId] = useState(null);
     const [selectedPostId, setSelectedPostId] = useState();
@@ -181,6 +186,8 @@ const DoggysActivity = () => {
         }
     }, [selectedPostId, filteredPosts]);
 
+    console.log('activityusertype', user_type);
+
     return (
         <>
             <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
@@ -190,7 +197,7 @@ const DoggysActivity = () => {
             </div>
             <div className="mx-auto pt-[52px] pb-[80px] min-w-[360px] max-w-[420px] h-full min-h-screen relative">
                 <div className="mx-5">
-                    {user_type?.user_type === '엄빠' && <HorizontalBarGraph nickname={nickname} />}
+                    {user_type?.user_type === '엄빠' ? <HorizontalBarGraph nickname={nickname} /> : ''}
                     <div className="flex w-full mt-4 justify-evenly mb-8">
                         <button
                             onClick={handleShowMyPost}
