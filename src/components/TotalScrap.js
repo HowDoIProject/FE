@@ -21,7 +21,7 @@ export default function TotalScraps({ data, category, setCategory, filter, setFi
     }
     const renderscrap = () => {
         if (!data || data.pages.length === 0) {
-            return <div className="mt-40">스크랩 한 글이 없습니다.</div>;
+            return <div className="mt-40">스크랩 된 글이 없습니다.</div>;
         }
         console.log('data', data);
         return data.pages.map(page => (
