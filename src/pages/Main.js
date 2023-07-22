@@ -46,7 +46,7 @@ export default function Main() {
     return (
         <>
             <SearchBar />
-            <div className="flex justify-center mx-5 mb-6">
+            <div className="flex justify-center mb-6 mx-5">
                 {cookies.accessToken ? <WelcomeCardLoggedIn /> : <WelcomeCardNotLoggedIn />}
             </div>
             <section className="mb-6">

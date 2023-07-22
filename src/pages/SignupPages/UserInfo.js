@@ -63,6 +63,7 @@ const UserInfo = () => {
                 })
                 .then(response => {
                     console.log('인증번호 전송에 성공!');
+                    alert('인증번호가 발송되었습니다! 못 받을 경우, 다시 눌러주세요😊');
                     setShowVerification(true);
                 })
                 .catch(error => {

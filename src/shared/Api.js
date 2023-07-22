@@ -226,15 +226,3 @@ export const apiGet = {
         }
     },
 };
-
-export const apiMyPage = {
-    getMyPage: () => {
-        return axios.get(`${process.env.REACT_APP_SERVER_URL}/api/mypage/`);
-    },
-    putMyPage: post_id => {
-        return axios.put(`${process.env.REACT_APP_SERVER_URL}/api/mypage/${post_id}`);
-    },
-    deleteMyPage: post_id => {
-        return axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/mypage/${post_id}`);
-    },
-};

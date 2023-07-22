@@ -14,7 +14,7 @@ export default function SearchBar() {
     };
 
     return (
-        <div className="flex justify-between items-center p-5 mb-6 bg-white rounded-es-[20px] rounded-ee-[20px] shadow-searchbar">
+        <div className="flex gap-10 items-center p-5 mb-6 bg-white rounded-es-[20px] rounded-ee-[20px] shadow-searchbar">
             <form onSubmit={onSubmitHandler}>
                 <input
                     className="h-7 p-2 rounded-full text-[14px] text-gray_02"
@@ -26,11 +26,10 @@ export default function SearchBar() {
                 />
             </form>
             {/*scrap 링크 추가 */}
-            <div className="flex gap-3">
-                <Link to="/scrap" className="flex flex-col min-w-[40px] items-center justify-center gap-1">
+            <div>
+                <Link to="/scrap" className="flex min-w-[40px] items-center justify-center gap-1">
                     <img src={scrap} alt="" className="w-6 h-6" />
                 </Link>
-                <img src={notif} alt="" className="w-6 h-6" />
             </div>
             <div></div>
         </div>
