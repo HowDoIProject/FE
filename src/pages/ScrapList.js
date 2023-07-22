@@ -103,7 +103,7 @@ export default function ScrapList() {
                 <div ref={targetRef}>
                     <div className="absolute bottom-0 w-[200px] h-[200px]"></div>
                 </div>
-                {/* {showModal && (
+                 {showModal && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <p className="text-xl font-bold mb-4 text-center">
@@ -143,7 +143,7 @@ export default function ScrapList() {
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
             </div>
         </div>
     );
