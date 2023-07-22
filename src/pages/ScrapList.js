@@ -85,7 +85,9 @@ export default function ScrapList() {
             </div>
 
             <div className="mx-5 item-align flex flex-col">
-              <div className="self-end item-align">
+
+                <div className="self-end item-align">
+
                     <button onClick={openModal} className="text-xl font-bold text-center underline">
                         모두삭제
                     </button>
@@ -105,6 +107,9 @@ export default function ScrapList() {
                 </div>
 
           {showModal && (
+
+                 {showModal && (
+
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <p className="text-xl font-bold mb-4 text-center">
