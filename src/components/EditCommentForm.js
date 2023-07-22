@@ -50,9 +50,15 @@ export default function EditCommentForm({
     };
 
     const onSubmitHandler = e => {
-        e.preventDefault();
-        apiPosts.updateComment(values, post_id, comment_id, cookies, setValues, setFile);
-        setModalCommentEditOpen(false);
+        if (values.comment.trim().length === 0) {
+            e.preventDefault();
+            alert('댓글을 작성해주세요😊');
+            return;
+        } else {
+            e.preventDefault();
+            apiPosts.updateComment(values, post_id, comment_id, cookies, setValues, setFile);
+            setModalCommentEditOpen(false);
+        }
     };
 
     return (
