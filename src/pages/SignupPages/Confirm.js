@@ -18,7 +18,7 @@ export default function Confirm() {
         age: selectedAge,
     } = location.state;
 
-    const selectedCategories = Array.isArray(category) ? category.map(Number) : [];
+    const selectedCategories = Array.isArray(category) ? category.map(String) : [];
 
     const [cookies] = useCookies(['verification']);
     const verification = cookies.verification;
