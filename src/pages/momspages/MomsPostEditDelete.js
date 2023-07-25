@@ -38,7 +38,7 @@ const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
         setUpdatedImage('');
     };
     const handleGoBack = () => {
-        toggleEditMode();
+        goBack(); // Call the goBack function passed as a prop
     };
 
     const handleEditPost = async (updatedTitle, updatedContent, updatedImage) => {
@@ -81,7 +81,7 @@ const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`https://api.howdoiapp.shop/api/mypage/${post_id}`, {
+            await axios.delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -128,22 +128,22 @@ const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
                         <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg">
                             <ul>
                                 <li>
-                                    <div className="absolute right-3 mt-2 flex">
-                                        <button
-                                            type="button"
-                                            className="px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 mr-2"
-                                            onClick={toggleEditMode}
-                                        >
-                                            수정
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-600"
-                                            onClick={handleDelete}
-                                        >
-                                            삭제
-                                        </button>
-                                    </div>
+                                    <button
+                                        type="button"
+                                        className="block px-4 py-2 hover:bg-gray-100"
+                                        onClick={toggleEditMode}
+                                    >
+                                        수정
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="block px-4 py-2 hover:bg-gray-100"
+                                        onClick={handleDelete}
+                                    >
+                                        삭제
+                                    </button>
                                 </li>
                             </ul>
                         </div>
