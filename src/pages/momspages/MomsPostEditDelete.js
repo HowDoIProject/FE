@@ -81,7 +81,7 @@ const MomsPostEditDelteWindow = ({ post_id, setFilteredPosts, goBack }) => {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+            await axios.delete(`https://api.howdoiapp.shop/api/mypage/${post_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,

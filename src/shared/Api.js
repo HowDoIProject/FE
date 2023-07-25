@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // create axios instance with singleton pattern
 export const api = axios.create({
-    baseURL: 'https://howdoiapp.shop',
+    baseURL: 'https://api.howdoiapp.shop',
     headers: {
         /* */
     },

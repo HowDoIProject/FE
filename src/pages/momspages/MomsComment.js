@@ -9,7 +9,7 @@ const MyCommentButton = ({ showMyComment, handleShowMyComment }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+                const response = await axios.get('https://api.howdoiapp.shop/api/mycomment', {
                     headers: {
                         'Content-Type': 'application/json',
                         access: cookies.accessToken,

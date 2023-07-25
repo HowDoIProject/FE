@@ -40,7 +40,7 @@ export default function MomsActivity() {
         setShowMyChosenComments(false);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mypage', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mypage', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -70,7 +70,7 @@ export default function MomsActivity() {
         setShowMyChosenComments(false);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mycomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -106,7 +106,7 @@ export default function MomsActivity() {
         setShowMyChosenComments(true);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mychosencomment', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mychosencomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,

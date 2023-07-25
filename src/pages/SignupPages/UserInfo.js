@@ -58,7 +58,7 @@ const UserInfo = () => {
     const handleSendVerificationCode = () => {
         if (user_number) {
             axios
-                .post('https://howdoiapp.shop/api/send', {
+                .post('https://api.howdoiapp.shop/api/send', {
                     user_number,
                 })
                 .then(response => {
@@ -84,7 +84,7 @@ const UserInfo = () => {
 
             //API 인증코드
             axios
-                .post('https://howdoiapp.shop/api/verify', payload)
+                .post('https://api.howdoiapp.shop/api/verify', payload)
                 .then(response => {
                     const success = response.data;
                     if (success) {

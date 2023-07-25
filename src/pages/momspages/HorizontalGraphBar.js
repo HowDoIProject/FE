@@ -14,7 +14,7 @@ const HorizontalBarGraph = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://howdoiapp.shop/api/mystat', {
+                const response = await axios.get('https://api.howdoiapp.shop/api/mystat', {
                     headers: {
                         access: `${cookies.accessToken}`,
                     },

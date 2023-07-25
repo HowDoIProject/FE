@@ -106,6 +106,7 @@ const Interest = () => {
         { id: 7, name: '생활비' },
         { id: 8, name: '집안일' },
     ];
+
     return (
         <>
             <div className="flex items-center fixed top-0 px-6 w-full border-b-[0.5px] border-slate-300 h-[52px] z-20 bg-white">
