@@ -40,7 +40,7 @@ export default function MomsActivity() {
         setShowMyChosenComments(false);
 
         try {
-            const response = await axios.get('https://api.howdoiapp.shop/api/mypage', {
+            const response = await axios.get('https://howdoiapp.shop/api/mypage', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -70,7 +70,7 @@ export default function MomsActivity() {
         setShowMyChosenComments(false);
 
         try {
-            const response = await axios.get('https://api.howdoiapp.shop/api/mycomment', {
+            const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -98,15 +98,13 @@ export default function MomsActivity() {
         handleShowMyComment();
     }, [cookies.accessToken]);
 
-    console.log('comments', mycomments);
-
     const handleShowMyChosen = async () => {
         setShowMyPosts(false);
         setShowMyComment(false);
         setShowMyChosenComments(true);
 
         try {
-            const response = await axios.get('https://api.howdoiapp.shop/api/mychosencomment', {
+            const response = await axios.get('https://howdoiapp.shop/api/mychosencomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -226,7 +224,7 @@ export default function MomsActivity() {
                         <div className="flex flex-col items-start">
                             <div className="mt-4 w-full">
                                 <div className="graph">
-                                    <HorizontalBarGraph /> 그래프
+                                    <HorizontalBarGraph /> {/* 그래프 */}
                                 </div>
                             </div>
                         </div>
@@ -235,8 +233,18 @@ export default function MomsActivity() {
                 </div>
             </div>
 
+            {/* <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
+                                <div className="graph-label">My answer</div>
+                            </div>
+                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
+                                <div className="graph-label">Help me</div>
+                            </div>
+                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
+                                <div className="graph-label">Post</div>
+                            </div> */}
+
             <div className="flex items-center mt-7">
-                {/* <img src={question} alt="Question Icon" className="mr-2" />  {/* <img src={question} alt="Question Icon" className="mr-2" />
+                {/* <img src={question} alt="Question Icon" className="mr-2" />
                 <h1 className="m-4 mt-3">레벨제도란 무엇인가요?</h1> */}
             </div>
             {/* 기간별 필터 버튼 */}
