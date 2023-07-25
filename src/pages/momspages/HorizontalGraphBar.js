@@ -15,7 +15,7 @@ const HorizontalBarGraph = ({ nickname }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://howdoiapp.shop/api/mystat', {
+                const response = await axios.get('https://api.howdoiapp.shop/api/mystat', {
                     headers: {
                         access: `${cookies.accessToken}`,
                     },
@@ -34,11 +34,11 @@ const HorizontalBarGraph = ({ nickname }) => {
 
     return (
         <div>
-            <div className="w-full h-[216px] px-6 py-4 justify-between items-center rounded-xl bg-bgcard shadow-mainbox mt-8">
+            <div className="w-full h-[216px] px-6 py-4 justify-between items-center rounded-xl bg-bgcard shadow-mainbox">
                 <div className="flex justify-between border-b border-gray_03 pb-4 items-center">
                     <div className="flex flex-col items-start gap-1">
                         <h1 className="font-['Pretendard-Bold']">안녕하세요!</h1>
-                        <h1 className="font-['Pretendard-Bold'] w-[180px] line-clamp-1">{nickname.nickname}님</h1>
+                        <h1 className="font-['Pretendard-Bold'] w-[180px] line-clamp-1">{nickname}님</h1>
                     </div>
                     <img src={parents} alt="" />
                 </div>
