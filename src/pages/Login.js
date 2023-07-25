@@ -24,7 +24,7 @@ export default function Login() {
 
         if (userNumber && password) {
             try {
-                const response = await axios.post('https://howdoiapp.shop/api/login', {
+                const response = await axios.post('https://api.howdoiapp.shop/api/login', {
                     user_number: userNumber,
                     password: password,
                 });

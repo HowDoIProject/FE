@@ -20,7 +20,7 @@ const EditDeleteSelectWindow = ({ post, post_id, setFilteredPosts }) => {
     const handleDelete = async () => {
         try {
             await axios
-                .delete(`https://howdoiapp.shop/api/mypage/${post_id}`, {
+                .delete(`https://api.howdoiapp.shop/api/mypage/${post_id}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         access: `${cookies.accessToken}`,

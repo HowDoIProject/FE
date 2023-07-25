@@ -5,7 +5,7 @@ const ShowMyPostButton = ({ cookies, setPostData, setFilteredPosts }) => {
     const [showMyPost, setShowMyPost] = useState(false);
     const handleShowMyPost = async () => {
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mypage', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mypage', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,

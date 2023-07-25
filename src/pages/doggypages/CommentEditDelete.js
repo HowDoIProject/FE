@@ -39,7 +39,7 @@ const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setFilteredComment
 
         try {
             const response = await axios.put(
-                `https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`,
+                `https://api.howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`,
                 formData,
                 {
                     headers: {
@@ -70,7 +70,7 @@ const CommentEditDeleteSelectWindow = ({ post_id, comment_id, setFilteredComment
 
     const handleDeleteComment = () => {
         axios
-            .delete(`https://howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`, {
+            .delete(`https://api.howdoiapp.shop/api/post/${post_id}/comment/${comment_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,

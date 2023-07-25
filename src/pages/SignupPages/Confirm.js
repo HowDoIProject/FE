@@ -44,7 +44,7 @@ export default function Confirm() {
 
         try {
             const response = await axios.post(
-                'https://howdoiapp.shop/api/signup',
+                'https://api.howdoiapp.shop/api/signup',
                 {
                     user_type,
                     nickname,
