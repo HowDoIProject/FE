@@ -4,31 +4,19 @@ import axios from 'axios';
 import parent from '../../assets/icon/parent.svg';
 import question from '../../assets/icon/question.svg';
 import { useCookies } from 'react-cookie';
-import HorizontalBarGraph from './HorizontalGraphBar';
 import MyPostButton from './MomsPost';
 import MyChosenButton from './MomsChosen';
-import FilterButton from './FilterButton';
+import MyCommentButton from './MomsComment';
 import PostListCard from '../../components/PostListCard';
-import MomsComment from '../../components/MomsComment';
-import MomsPostEditDelteWindow from './MomsPostEditDelete';
-import ChosenListCard from '../../components/ChosenListCard';
+import CommentCard from '../../components/CommentCard';
 
 export default function MomsActivity() {
     const location = useLocation();
     const { user_type, nickname, user_id } = location.state || {};
     const [posts, setPosts] = useState([]);
-    const [selectedPostId, setSelectedPostId] = useState();
-    const [filteredChosenComments, setFilteredChosenComments] = useState([]);
-    const [cookies] = useCookies(['accessToken']);
     const [filter, setFilter] = useState('today');
-    const [filteredPosts, setFilteredPosts] = useState([]);
-    const [filteredComments, setFilteredComments] = useState([]);
+    const [cookies] = useCookies(['accessToken']);
     const [mycomments, setMyComments] = useState([]);
-    const [comment, setComment] = useState([]);
-    const [post_id, setPostId] = useState();
-    const [post, setPost] = useState([]);
-    const [category, setCategory] = useState();
-    const [comment_id, setCommentId] = useState();
     const [mychosen, setMyChosen] = useState([]);
     const [showMyPosts, setShowMyPosts] = useState(false);
     const [showMyComment, setShowMyComment] = useState(false);
@@ -111,86 +99,22 @@ export default function MomsActivity() {
                 },
             });
 
-            const { data } = response;
+            const { mypage } = response.data;
 
-            if (Array.isArray(data.mychosencomment) && data.mychosencomment.length > 0) {
-                console.log('My chosencomment:', data.mychosencomment);
-                setMyChosen(data.mychosencomment);
+            if (mypage.length === 0) {
+                console.log('No posts found.');
             } else {
-                console.log('No adopted articles found.');
-                setMyChosen([]);
+                console.log('My Posts:', mypage);
+                setPosts(mypage);
             }
         } catch (error) {
-            console.error('Error fetching adopted articles:', error);
+            console.error('Error fetching data:', error);
         }
     };
 
     useEffect(() => {
         handleShowMyChosen();
     }, [cookies.accessToken]);
-
-    const handleFilterByPeriod = period => {
-        const currentDate = new Date();
-        let filteredData = [];
-
-        if (period === 'today') {
-            filteredData = posts.filter(
-                post => new Date(post.created_at).toDateString() === currentDate.toDateString()
-            );
-        } else if (period === '1month') {
-            const oneMonthAgo = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
-            filteredData = posts.filter(
-                post => new Date(post.created_at) >= oneMonthAgo && new Date(post.created_at) <= currentDate
-            );
-        } else if (period === '3months') {
-            const threeMonthsAgo = new Date(currentDate.getTime() - 90 * 24 * 60 * 60 * 1000);
-            filteredData = posts.filter(
-                post => new Date(post.created_at) >= threeMonthsAgo && new Date(post.created_at) <= currentDate
-            );
-        } else if (period === '6months') {
-            const sixMonthsAgo = new Date(currentDate.getTime() - 180 * 24 * 60 * 60 * 1000);
-            filteredData = posts.filter(
-                post => new Date(post.created_at) >= sixMonthsAgo && new Date(post.created_at) <= currentDate
-            );
-        }
-
-        const filteredComments = mycomments.filter(comment => {
-            const createdAtDate = new Date(comment.created_at);
-            const diffInMonths =
-                (currentDate.getFullYear() - createdAtDate.getFullYear()) * 12 +
-                (currentDate.getMonth() - createdAtDate.getMonth());
-            return diffInMonths <= 6;
-        });
-
-        const filteredChosenComments = mychosen.filter(chosencomment => {
-            const createdAtDate = new Date(chosencomment.updated_at);
-            const diffInMonths =
-                (currentDate.getFullYear() - createdAtDate.getFullYear()) * 12 +
-                (currentDate.getMonth() - createdAtDate.getMonth());
-            return diffInMonths <= 6;
-        });
-
-        setFilteredPosts(filteredData);
-        setFilteredComments(filteredComments);
-        setFilteredChosenComments(filteredChosenComments);
-        setFilter(period);
-
-        if (showMyPosts) {
-            setFilteredPosts(filteredData);
-        } else if (showMyComment) {
-            setFilteredComments(filteredComments);
-        } else if (showMyChosenComments) {
-            setFilteredChosenComments(filteredChosenComments);
-        }
-    };
-    useEffect(() => {
-        if (selectedPostId !== undefined) {
-            const selectedPost = filteredPosts.find(post => post.post_id === selectedPostId);
-            if (selectedPost) {
-                setPost(selectedPost);
-            }
-        }
-    }, [selectedPostId, filteredPosts]);
 
     return (
         <>
@@ -210,54 +134,24 @@ export default function MomsActivity() {
 
                     <div className="mt-4 w-full">
                         <div className="graph">
-                            <HorizontalBarGraph />
+                            <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
+                                <div className="graph-label">내가 쓴 답 </div>
+                            </div>
+                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
+                                <div className="graph-label">도웁 됬어요 </div>
+                            </div>
+                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
+                                <div className="graph-label">게시글</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <div className="graph-bar bg-blue-500" style={{ width: '60%' }}>
-                                <div className="graph-label">My answer</div>
-                            </div>
-                            <div className="graph-bar bg-green-500" style={{ width: '30%' }}>
-                                <div className="graph-label">Help me</div>
-                            </div>
-                            <div className="graph-bar bg-green-800" style={{ width: '70%' }}>
-                                <div className="graph-label">Post</div>
-                            </div> */}
 
             <div className="flex items-center">
                 <img src={question} alt="Question Icon" className="mr-2" />
-                <h1 className="m-4 mt-3">레벨제도란 무엇인가요?</h1>
+                <h1 className="m-0">레벨제도란 무엇인가요?</h1>
             </div>
-            {/* 기간별 필터 버튼 */}
-            <div className="flex justify-left mb-7">
-                <div className="flex space-x-5">
-                    <FilterButton
-                        label="오늘"
-                        selected={filter === 'today'}
-                        onClick={() => handleFilterByPeriod('today')}
-                    />
-
-                    <FilterButton
-                        label="1 개월"
-                        selected={filter === '1month'}
-                        onClick={() => handleFilterByPeriod('1month')}
-                    />
-
-                    <FilterButton
-                        label="3 개월"
-                        selected={filter === '3months'}
-                        onClick={() => handleFilterByPeriod('3months')}
-                    />
-
-                    <FilterButton
-                        label="6개월"
-                        selected={filter === '6months'}
-                        onClick={() => handleFilterByPeriod('6months')}
-                    />
-                </div>
-            </div>
-
             <div className="mb-8">
                 <h3 className="text-lg font-bold text-center mb-10"></h3>
                 <div className="flex justify-center space-x-10 mb-10">
@@ -278,82 +172,69 @@ export default function MomsActivity() {
                         handleShowMyChosen={handleShowMyChosen}
                     />
                 </div>
+
                 {showMyPosts && (
                     <div>
-                        <h4 className="bg-gray-100 text-lg font-bold mb-2 text-center"></h4>
-                        <h4 className="text-lg font-bold">나의 게시글</h4>
-                        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-1">
-                                {filteredPosts.map(post => (
+                        <h4 className="text-lg font-bold">My Posts</h4>
+                        {Array.isArray(posts) && posts.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-4">
+                                {posts.map(post => (
                                     <div key={post.post_id} className="bg-white p-4 rounded shadow">
-                                        {post.post_id === selectedPostId ? (
-                                            <div></div>
-                                        ) : (
-                                            <div className="relative">
-                                                <div className="w-full h-[160px] my-4 cursor-pointer hover:scale-105 ease-in-out duration-300">
-                                                    <div className="relative">
-                                                        <PostListCard
-                                                            post={post}
-                                                            post_id={post_id}
-                                                            setFilteredPosts={setFilteredPosts}
-                                                        />
-                                                        <div className="absolute top-0 right-0">
-                                                            <MomsPostEditDelteWindow
-                                                                post_id={post.post_id}
-                                                                setFilteredPosts={setFilteredPosts}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                                        <PostListCard post={post} />
+                                        {/* <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                                        <p className="mb-2">{post.content}</p>
+                                        <p>By: {post.nickname}</p>
+                                        <p>Likes: {post.like}</p>
+                                        <p>Scraps: {post.scrap}</p>
+                                        <p>Created At: {new Date(post.created_at).toLocaleDateString()}</p>
+                                        <p>Updated At: {new Date(post.updated_at).toLocaleDateString()}</p> */}
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p>오늘의 게시글이 없습니다.</p>
+                            <p>No posts available.</p>
                         )}
                     </div>
                 )}
+
                 {showMyComment && (
                     <div>
-                        <h4 className="text-lg font-bold">나의 댓글</h4>
-                        {Array.isArray(filteredComments) && filteredComments.length > 0 ? (
+                        <h4 className="text-lg font-bold">My Comment</h4>
+                        {Array.isArray(mycomments) && mycomments.length > 0 ? (
                             <div className="grid grid-cols-1 gap-4">
-                                {filteredComments.map(mycomment => (
+                                {mycomments.map(mycomment => (
                                     <div key={mycomment.comment_id} className="bg-white p-4 rounded shadow">
                                         <div className="comment-box bg-gray-100 rounded-lg p-4 transition-colors duration-300 hover:bg-gray-100">
-                                            <MomsComment
-                                                post={post}
-                                                comment={mycomment.comment}
-                                                comment_id={mycomment.comment_id}
-                                                user_id={mycomment.user_id}
-                                            />
+                                            <h3>{mycomment.comment}</h3>
+                                            <p>Category: {mycomment.category}</p>
+                                            <p>Chosen: {mycomment.chosen === 1 ? 'Yes' : 'No'}</p>
+                                            <p>Created At: {new Date(mycomment.created_at).toLocaleDateString()}</p>
+                                            {/* <div className="text-[14px] text-gray_02">
+                                                {formatAgo(created_at, 'ko')}
+                                            </div> */}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p>댓글을 찾을 수 없습니다. </p>
+                            <p>No comments found.</p>
                         )}
                     </div>
                 )}
+
                 {showMyChosenComments && (
-                    <div className="box">
-                        <h4 className="text-lg font-bold">내 채택내역 & 탑글내역 </h4>
-                        {Array.isArray(filteredChosenComments) && filteredChosenComments.length > 0 ? (
-                            filteredChosenComments.map(chosencomment => (
-                                <div key={chosencomment.comment_id} className="comment-box">
-                                    <ChosenListCard
-                                        post={post}
-                                        chosencomment={chosencomment}
-                                        comment_id={chosencomment.comment_id}
-                                        user_id={chosencomment.user_id}
-                                    />
+                    <div>
+                        <h4 className="text-lg font-bold">My Chosen Comments</h4>
+                        {Array.isArray(mychosen) && mychosen.length > 0 ? (
+                            mychosen.map(chosencomment => (
+                                <div key={chosencomment.comment_id} className="border p-4 rounded-lg my-4">
+                                    <p>Comment: {chosencomment.comment}</p>
+                                    <p>Category: {chosencomment.category}</p>
+                                    <p>Chosen At: {new Date(chosencomment.updated_at).toLocaleDateString()}</p>
                                 </div>
                             ))
                         ) : (
-                            <p>No accepted articles found.</p>
+                            <p>채택한 데이터가 없습니다.</p>
                         )}
                     </div>
                 )}
