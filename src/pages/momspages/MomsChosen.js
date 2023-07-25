@@ -11,7 +11,7 @@ const MomsChosen = ({ showMyChosenComments, handleShowMyChosen }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://api.howdoiapp.shop/api/mychosencomment', {
+                const response = await axios.get('https://howdoiapp.shop/api/mychosencomment', {
                     headers: {
                         'Content-Type': 'application/json',
                         access: cookies.accessToken,
