@@ -96,7 +96,7 @@ const DoggysActivity = () => {
         setShowMyChosenComment(false);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mypage', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mypage', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: `${cookies.accessToken}`,
@@ -129,7 +129,7 @@ const DoggysActivity = () => {
         setShowMyChosenComment(false);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/mycomment', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/mycomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: cookies.accessToken,
@@ -156,7 +156,7 @@ const DoggysActivity = () => {
         setShowMyChosenComment(true);
 
         try {
-            const response = await axios.get('https://howdoiapp.shop/api/chosencomment', {
+            const response = await axios.get('https://api.howdoiapp.shop/api/chosencomment', {
                 headers: {
                     'Content-Type': 'application/json',
                     access: cookies.accessToken,

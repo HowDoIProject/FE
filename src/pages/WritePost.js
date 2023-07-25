@@ -47,15 +47,15 @@ export default function WritePost() {
     };
 
     const onSubmitHandler = e => {
-        if (values.category === '') {
+        if (values.category.trim().length === 0) {
             e.preventDefault();
             alert('카테고리를 선택해주세요😊');
             return;
-        } else if (values.title === '') {
+        } else if (values.title.trim().length === 0) {
             e.preventDefault();
             alert('제목을 입력해주세요😊');
             return;
-        } else if (values.content === '') {
+        } else if (values.content.trim().length === 0) {
             e.preventDefault();
             alert('내용을 입력해주세요😊');
             return;

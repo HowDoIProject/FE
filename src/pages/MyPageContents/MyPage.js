@@ -34,9 +34,6 @@ export default function MyPage() {
     //     navigate('/change');
     // };
 
-    console.log(user_type);
-    console.log(user_id);
-    console.log(nickname);
     // console.log(password);
     // const closeModal = () => {
     //     setShowModal(false);

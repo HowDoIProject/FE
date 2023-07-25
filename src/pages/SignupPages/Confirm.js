@@ -18,7 +18,7 @@ export default function Confirm() {
         age: selectedAge,
     } = location.state;
 
-    const selectedCategories = Array.isArray(category) ? category.map(Number) : [];
+    const selectedCategories = Array.isArray(category) ? category.map(String) : [];
 
     const [cookies] = useCookies(['verification']);
     const verification = cookies.verification;
@@ -44,7 +44,7 @@ export default function Confirm() {
 
         try {
             const response = await axios.post(
-                'https://howdoiapp.shop/api/signup',
+                'https://api.howdoiapp.shop/api/signup',
                 {
                     user_type,
                     nickname,

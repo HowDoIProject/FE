@@ -37,8 +37,14 @@ export default function AddCommentForm({ post_id }) {
     };
 
     const onSubmitHandler = e => {
-        e.preventDefault();
-        apiPosts.addComment(values, post_id, cookies, setValues, setFile);
+        if (values.comment.trim().length === 0) {
+            e.preventDefault();
+            alert('댓글을 작성해주세요😊');
+            return;
+        } else {
+            e.preventDefault();
+            apiPosts.addComment(values, post_id, cookies, setValues, setFile);
+        }
     };
 
     return (
