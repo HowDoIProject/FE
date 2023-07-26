@@ -3,10 +3,9 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=HowDoI&fontSize=90" />
 </div>
 
-<div align="center">
-  <p align="center">
+<div>
 	  
-  ## 서비스 소개
+  # 서비스 소개
   
 사회초년생이라 이것저것 모르는 게 너무 많나요?
 자취 생활 꿀팁이 필요한데 찾기가 귀찮나요?
@@ -21,10 +20,11 @@ HowDoI는 이런 2030세대의 사회초년생 분들이 다양한 부모세대
  
 
 <div>
-## 기획의도 
+	
+# 기획의도 
 
  
-# 타겟:
+## 타겟:
 사회 초년생이라 이것저것 모르는 게 많은 2030세대
 사회생활, 자취생활 등의 팁을 찾기위해 
 </br>
@@ -33,7 +33,7 @@ HowDoI는 이런 2030세대의 사회초년생 분들이 다양한 부모세대
 
 <div>
 	
-# 페인포인트:
+## 페인포인트:
 물어보고 싶은 것은 많은데 부모님도 모르는 부분이 있어 
 도움을 받을 수 있는 부분에 한계가 있다.
 </br>
@@ -43,19 +43,16 @@ HowDoI는 이런 2030세대의 사회초년생 분들이 다양한 부모세대
 
 <div>
 	
-# 솔루션:
+## 솔루션:
 생활비, 자취끼니, 집안일 등을 ‘엄빠에게’ 질문하면 정확하게 답을 제공받을 수 있는 서비스가 필요하다.
 
 </div>
 
-<div align="center">
-  <h4 align="center">
 
-	기술 스택:
- 
-  </h4>
-</div>
-<div align="center">
+
+## 기술 스택:
+
+<div >
 	<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" />
 	<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
   <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
@@ -65,7 +62,9 @@ HowDoI는 이런 2030세대의 사회초년생 분들이 다양한 부모세대
 
 
 
-<div align="center">
+
+
+<div>
 주요 기술, 라이브러리 및 프레임워크 사용:
 
 SPA설계 : react
@@ -77,17 +76,26 @@ SPA설계 : react
 Style = Tailwind css 
 
 React Query: React 애플리케이션에서 서버 상태를 관리하고 캐싱하는 강력한
+</br>
 라이브러리로, 데이터 가져오기와 동기화를 용이하게 해줍니다.
 </br>
+
 Infinite Scroll: 사용자가 페이지를 스크롤할 때 동적으로 콘텐츠를 
+</br>
 로드하여 부드러운 브라우징 경험을 제공하는 기술입니다.
 </br>
+
 Axios: 브라우저에서 HTTP 요청을 만들기 위해 널리 사용되는 JavaScript 
+</br>
 라이브러리로, 이 프로젝트에서 API로부터 데이터를 가져오는 데 사용됩니다.
 </br>
+
 React useState Hook: 함수형 컴포넌트에 상태 로직을 추가하는 데 사용되는 
+</br>
+
 내장된 React Hook으로, UI 내에서 동적 데이터 조작을 가능하게 합니다.
 </br>
+
 </div>
 ---------------------------------------------------------
 
