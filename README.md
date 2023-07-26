@@ -3,8 +3,8 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=HowDoI&fontSize=90" />
 </div>
 
-<div align="center>
-  <p align="center>
+<div align="center">
+  <p align="center">
   서비스 소개
 사회초년생이라 이것저것 모르는 게 너무 많나요?
 자취 생활 꿀팁이 필요한데 찾기가 귀찮나요?
