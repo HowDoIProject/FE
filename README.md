@@ -54,7 +54,7 @@ HowDoI는 이런 2030세대의 사회초년생 분들이 다양한 부모세대
     <img src="https://img.shields.io/badge/ReactQuery-FF4154?style=flat&logo=ReactQuery&logoColor=white"/>
 </div>
 
----------------------------------------------
+
 
 <div align="center">
 주요 기술, 라이브러리 및 프레임워크 사용:
@@ -67,14 +67,18 @@ SPA설계 : react
 
 Style = Tailwind css 
 
-React Query: React 애플리케이션에서 서버 상태를 관리하고 캐싱하는 강력한 라이브러리로, 데이터 가져오기와 동기화를 용이하게 해줍니다.
-
-Infinite Scroll: 사용자가 페이지를 스크롤할 때 동적으로 콘텐츠를 로드하여 부드러운 브라우징 경험을 제공하는 기술입니다.
-
-Axios: 브라우저에서 HTTP 요청을 만들기 위해 널리 사용되는 JavaScript 라이브러리로, 이 프로젝트에서 API로부터 데이터를 가져오는 데 사용됩니다.
-
-React useState Hook: 함수형 컴포넌트에 상태 로직을 추가하는 데 사용되는 내장된 React Hook으로, UI 내에서 동적 데이터 조작을 가능하게 합니다.
-
+React Query: React 애플리케이션에서 서버 상태를 관리하고 캐싱하는 강력한
+라이브러리로, 데이터 가져오기와 동기화를 용이하게 해줍니다.
+</br>
+Infinite Scroll: 사용자가 페이지를 스크롤할 때 동적으로 콘텐츠를 
+로드하여 부드러운 브라우징 경험을 제공하는 기술입니다.
+</br>
+Axios: 브라우저에서 HTTP 요청을 만들기 위해 널리 사용되는 JavaScript 
+라이브러리로, 이 프로젝트에서 API로부터 데이터를 가져오는 데 사용됩니다.
+</br>
+React useState Hook: 함수형 컴포넌트에 상태 로직을 추가하는 데 사용되는 
+내장된 React Hook으로, UI 내에서 동적 데이터 조작을 가능하게 합니다.
+</br>
 </div>
 ---------------------------------------------------------
 
