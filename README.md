@@ -122,10 +122,10 @@ Git을 사용하여 이 저장소를 로컬 기기로 복제하세요:
 소스 코드를 변경하면 개발 서버가 페이지를 자동으로 다시 로드합니다.
 
 </div>
-
+<div>
 앱 주요기능 
 
-<div align="center">
+
 ## 기능 소개
 
 <details>
@@ -174,13 +174,13 @@ Git을 사용하여 이 저장소를 로컬 기기로 복제하세요:
 ####  채택된 댓글은 모두 다 볼 수 있습니다. 
 
 </details>
-<details>
+
 ![회원가입](https://github.com/HowDoIProject/FE/assets/115998794/e673b358-802f-4524-bd6f-9108d17e7749) 
 ![4 페이지](https://github.com/HowDoIProject/FE/assets/115998794/d9290dd1-c140-4851-a813-a634aff2e51f)
 ![글쓰기](https://github.com/HowDoIProject/FE/assets/115998794/4c9639fe-b69a-4206-ba8c-78808defa73c)
-</details>
-</div>
 
+
+</div>
 
 -----------------------------------------------------------------------------------------------------------------
 
